@@ -36,6 +36,15 @@ public class User {
 		this.customerType = customerType;
 		this.gender = gender;
 	}
+	public User(String username, String password, String name, String surname, LocalDate dateOfBirth, GenderEnum gender) {
+		super();
+		this.username = username;
+		this.password = password;
+		this.name = name;
+		this.surname = surname;
+		this.dateOfBirth = dateOfBirth;
+		this.gender = gender;
+	}
 	public String getUsername() {
 		return username;
 	}

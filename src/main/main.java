@@ -6,6 +6,8 @@ import static spark.Spark.staticFiles;
 
 import java.io.File;
 
+import Controller.CustomerController;
+
 public class main {
 
 	public static void main(String[] args) throws Exception {
@@ -16,6 +18,8 @@ public class main {
 		get("/test", (req, res) -> {
 			return "Works";
 		});
+		new CustomerController();
+		CustomerController.writeCustomers();
 		// TODO Auto-generated method stub
 
 	}
