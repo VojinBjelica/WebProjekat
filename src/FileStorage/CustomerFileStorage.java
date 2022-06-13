@@ -1,7 +1,6 @@
 package FileStorage;
 
 import java.io.BufferedReader;
-import java.io.Console;
 import java.io.File;
 import java.io.FileReader;
 import java.time.LocalDate;
@@ -39,7 +38,7 @@ public class CustomerFileStorage {
                     GenderEnum gen = GenderEnum.Male;
                     if(gender.equals("Male")) gen = GenderEnum.Male;
                     else if(gender.equals("Female")) gen = GenderEnum.Female;
-                    Customer customer = new Customer(username,password,name,surname, LocalDate.of(2020,5,5),gen);
+                    Customer customer = new Customer(username,password,name,surname, LocalDate.of(2000,5,15),gen);
                     customers.add(customer);
                 }
             } catch (Exception ex) {
@@ -58,13 +57,12 @@ public class CustomerFileStorage {
         }
         return customers;
     }
-	public void writeCustomers() {
-		ArrayList<Customer> customerList = readCustomers();
-		for(Customer c : customerList)
+	public void writeCustomers()
+	{
+		for(Customer c : readCustomers())
 		{
-			System.out.println(c.getName() + "," + c.getSurname());
+			System.out.println(c.getName() + " " + c.getSurname());
 		}
-	
 	}
 
 }

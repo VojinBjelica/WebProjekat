@@ -7,12 +7,15 @@ import beans.Customer;
 
 public class CustomerService {
 	
-	CustomerFileStorage cfs = new CustomerFileStorage();
+	public CustomerFileStorage cfs;
+	public CustomerService()
+	{
+		cfs = new CustomerFileStorage();
+	}
 	public ArrayList<Customer> readCustomers()
 	{
 		return cfs.readCustomers();
 	}
-	
 	public void writeCustomers()
 	{
 		cfs.writeCustomers();
