@@ -20,5 +20,13 @@ public class CustomerService {
 	{
 		cfs.writeCustomers();
 	}
+	public boolean addCustomerInFile()
+	{
+		return cfs.addCustomerInFile();
+	}
+	public Customer addCustomer(Customer customer)
+	{
+		return cfs.addCustomer(customer);
+	}
 
 }

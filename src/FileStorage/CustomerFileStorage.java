@@ -3,6 +3,9 @@ package FileStorage;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.StringTokenizer;
@@ -12,6 +15,7 @@ import beans.GenderEnum;
 
 public class CustomerFileStorage {
 	
+	public static ArrayList<Customer> customerList = new ArrayList<Customer>();
 	public ArrayList<Customer> readCustomers() {
         ArrayList<Customer> customers = new ArrayList<Customer>();
         BufferedReader in = null;
@@ -19,7 +23,7 @@ public class CustomerFileStorage {
             File file = new File("./customers.txt");
             System.out.println(file.getCanonicalPath());
             in = new BufferedReader(new FileReader(file));
-            String line, username = "", password = "", name = "",surname = "",gender = "", locDate = "";
+            String line, username = "", password = "", name = "",surname = "",gender = "";
             StringTokenizer st;
             try {
                 while ((line = in.readLine()) != null) {
@@ -33,13 +37,13 @@ public class CustomerFileStorage {
                         name = st.nextToken().trim();
                         surname = st.nextToken().trim();
                         gender = st.nextToken().trim();
-                        locDate = st.nextToken().trim();
                     }
                     GenderEnum gen = GenderEnum.Male;
                     if(gender.equals("Male")) gen = GenderEnum.Male;
                     else if(gender.equals("Female")) gen = GenderEnum.Female;
                     Customer customer = new Customer(username,password,name,surname, LocalDate.of(2000,5,15),gen);
                     customers.add(customer);
+                    customerList = customers;
                 }
             } catch (Exception ex) {
                 ex.printStackTrace();
@@ -64,5 +68,40 @@ public class CustomerFileStorage {
 			System.out.println(c.getName() + " " + c.getSurname());
 		}
 	}
+	public boolean addCustomerInFile() 
+    {
+		
+        FileWriter fileWriter;
+        try {
+            fileWriter = new FileWriter("./customers.txt");
+        PrintWriter output = new PrintWriter(fileWriter, true);
+        System.out.println("duzina liste: " + customerList.size());
+        for(Customer customer : customerList)
+        {
+            String outputString = "";
+            outputString += customer.getUsername() + ";";
+            outputString += customer.getPassword() + ";";
+            outputString += customer.getName() + ";";
+            outputString += customer.getSurname() + ";";
+            if(customer.getGender() == GenderEnum.Male)
+            outputString += "Male" + ";";
+            else if(customer.getGender() == GenderEnum.Female)
+            outputString += "Female" + ";";
+            output.println(outputString);
+        }
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        return true;
+    }
+	public Customer addCustomer(Customer customer)
+	{
+		customerList = readCustomers();
+		customerList.add(customer);
+		addCustomerInFile();
+		return customer;
+	}
+	
 
 }

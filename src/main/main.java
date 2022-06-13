@@ -20,6 +20,7 @@ public class main {
 		});
 		new CustomerController();
 		CustomerController.writeCustomers();
+		CustomerController.addCustomer();
 		// TODO Auto-generated method stub
 
 	}

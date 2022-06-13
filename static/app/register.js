@@ -2,7 +2,7 @@ Vue.component("register", {
 	data: function () {
 		    return {
 		      
-		      user:{name:null,surname:null,username:null,password:null,gender:null,birthDate:null}
+		      user:{name:null,surname:null,username:null,password:null,gender:null}
 		   
 		    }
 	},
@@ -44,7 +44,7 @@ Vue.component("register", {
 <p>Password:</p>
 </td>
 <td>
-<input v-model="user.password" type="text" />
+<input v-model="user.password" type="password" />
 </td>
 </tr>
 <tr>
@@ -60,7 +60,7 @@ Vue.component("register", {
 <p>Date:</p>
 </td>
 <td>
-<input  type="text" />
+<input  type="date" />
 </td>
 </tr>
 <tr>
@@ -68,7 +68,7 @@ Vue.component("register", {
 <input type="button" v-on:click="writeCustomers()" value="Login"/>
 </td>
 <td>
-<input  type="button" value="Register"/>
+<input  type="button" v-on:click="addCustomer()" value="Register"/>
 </td>
 </tr>
 </table>
@@ -80,10 +80,18 @@ Vue.component("register", {
 				axios  
 		          .post('customer/write',this.user)
 		          .then(response => (alert(response.data)))
+		          },
+		addCustomer : function () {
+			alert("Usao u add")
+				axios  
+		          .post('customer/add',this.user)
+		          .then(response => (alert(response.data)))
 		          
+		          }
+		
 		          
 			
-		} 
+		 
 	}
 ,mounted(){}
 })
