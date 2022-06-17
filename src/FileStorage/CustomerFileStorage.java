@@ -107,7 +107,20 @@ public class CustomerFileStorage {
 	public Customer addCustomer(Customer customer)
 	{
 		customerList = readCustomers();
-		customerList.add(customer);
+		boolean nameReg = false;
+		boolean surnameReg = false;
+		boolean usernameReg = false;
+		if(customer.getName().matches("[A-Z][a-z]+"))nameReg = true;
+		if(customer.getSurname().matches("[A-Z][a-z]+"))surnameReg = true;
+		if(customer.getUsername().matches("[A-Z][a-z]+[1-9]*"))usernameReg = true;
+		if(nameReg == true && surnameReg == true && usernameReg == true)
+		{
+			customerList.add(customer);
+		}
+		else
+		{
+			System.out.println("Nisu dobro uneti podaci");
+		}
 		addCustomerInFile();
 		return customer;
 	}

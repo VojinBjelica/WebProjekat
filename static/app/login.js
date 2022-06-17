@@ -25,7 +25,7 @@ Vue.component("login", {
 </tr>
 <tr>
 <td colspan="2">
-<input v-model="user.username" type="text" />
+<input id="username" v-model="user.username" v-on:change="validateUsername" type="text" />
 </td>
 </tr>
 <tr>
@@ -35,7 +35,7 @@ Vue.component("login", {
 </tr>
 <tr>
 <td colspan="2">
-<input v-model="user.password" type="text" />
+<input v-model="user.password" type="password" />
 </td>
 </tr>
 <tr>
@@ -60,7 +60,19 @@ Vue.component("login", {
 				axios  
 		          .get('customer/logout',this.user)
 		          .then(response => (alert(response.data)))
-		          }
+		          },
+		   validateUsername : function() {
+			let z = document.getElementById('username');
+			let regexxx = new RegExp('[A-Z][a-z]+[1-9]*');
+			if(regexxx.test(z) != true)
+			{
+				alert("Nije dobro unet username!");
+			}
+				
+			
+				
+		}
+		
 		          },
 mounted(){}
 
