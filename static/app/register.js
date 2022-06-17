@@ -2,7 +2,7 @@ Vue.component("register", {
 	data: function () {
 		    return {
 		      
-		      user:{name:null,surname:null,username:null,password:null,gender:null}
+		      user:{name:null,surname:null,username:null,password:null,gender:null,dateOfBirth:null}
 		   
 		    }
 	},
@@ -60,7 +60,7 @@ Vue.component("register", {
 <p>Date:</p>
 </td>
 <td>
-<input  type="date" />
+<input v-model="user.dateOfBirth" type="date" />
 </td>
 </tr>
 <tr>

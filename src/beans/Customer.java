@@ -1,6 +1,6 @@
 package beans;
 
-import java.time.LocalDate;
+import java.util.Date;
 
 public class Customer extends User {
 	
@@ -10,7 +10,7 @@ public class Customer extends User {
 	{
 		super();
 	}
-	public Customer(String username, String password, String name, String surname, LocalDate dateOfBirth, GenderEnum gender) {
+	public Customer(String username, String password, String name, String surname, Date dateOfBirth, GenderEnum gender) {
 		super(username,password,name,surname,dateOfBirth,gender);
 		this.role = "Customer";
 	}

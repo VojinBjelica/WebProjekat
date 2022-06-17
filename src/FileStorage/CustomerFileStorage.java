@@ -6,8 +6,12 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.Locale;
 import java.util.StringTokenizer;
 
 import beans.Customer;
@@ -23,7 +27,7 @@ public class CustomerFileStorage {
             File file = new File("./customers.txt");
             System.out.println(file.getCanonicalPath());
             in = new BufferedReader(new FileReader(file));
-            String line, username = "", password = "", name = "",surname = "",gender = "";
+            String line, username = "", password = "", name = "",surname = "",gender = "",date = "";
             StringTokenizer st;
             try {
                 while ((line = in.readLine()) != null) {
@@ -37,11 +41,19 @@ public class CustomerFileStorage {
                         name = st.nextToken().trim();
                         surname = st.nextToken().trim();
                         gender = st.nextToken().trim();
-                    }
+                        date = st.nextToken().trim();             
+                        }
+                    String[] dateSep = date.split("-",5);
+                    String year = dateSep[0];
+                    String month = dateSep[1];
+                    String day = dateSep[2];
+                    SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+                    Date dt = formatter.parse(date);
                     GenderEnum gen = GenderEnum.Male;
                     if(gender.equals("Male")) gen = GenderEnum.Male;
                     else if(gender.equals("Female")) gen = GenderEnum.Female;
-                    Customer customer = new Customer(username,password,name,surname, LocalDate.of(2000,5,15),gen);
+                    Customer customer = new Customer(username,password,name,surname, dt,gen);
+                    System.out.println(customer.getDateOfBirth());
                     customers.add(customer);
                     customerList = customers;
                 }
@@ -87,6 +99,8 @@ public class CustomerFileStorage {
             outputString += "Male" + ";";
             else if(customer.getGender() == GenderEnum.Female)
             outputString += "Female" + ";";
+            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+            outputString += formatter.format(customer.getDateOfBirth());
             output.println(outputString);
         }
         } catch (IOException e) {

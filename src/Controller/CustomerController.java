@@ -2,13 +2,18 @@ package Controller;
 
 import static spark.Spark.post;
 
+import java.text.DateFormat;
+import java.time.LocalDate;
 import java.util.ArrayList;
 
+import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import Service.CustomerService;
 import beans.Customer;
+import beans.CustomerAdapter;
+import beans.LocalDateAdapter;
 
 public class CustomerController {
 	
@@ -18,8 +23,19 @@ public class CustomerController {
 	public CustomerController()
 	{
 		cs = new CustomerService();
-		g = new Gson();
+		g = new GsonBuilder()
+                .setPrettyPrinting()
+                .setDateFormat("yyyy-MM-dd")
+                //.setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES)
+                //.registerTypeAdapter(Customer.class, new CustomerAdapter())
+                //.create();
+				//.setPrettyPrinting()
+		        //.registerTypeAdapter(LocalDate.class, new LocalDateAdapter())
+		        .create();
+
 	}
+	
+	
 	
 	public static void writeCustomers()
 	{
@@ -43,7 +59,6 @@ public class CustomerController {
 			System.out.println(payload);
 			Customer pd = g.fromJson(payload, Customer.class);
 			cs.addCustomer(pd);
-			
 			return "OK";
 		});
 	}

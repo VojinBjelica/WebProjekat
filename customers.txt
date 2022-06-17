@@ -1,4 +1,2 @@
-sima123;sima123;Sima;Simic;Male;
-awd;awd;awd;awd;Male;
-joca123;joca123;Jovan;Jovic;Male;
-pera123;pera123;Petar;Peric;Male;
+awd;awd;awd;awd;Male;2005-05-05
+awd;awd;awd;awd;Male;2022-06-23
