@@ -16,6 +16,7 @@ import java.util.StringTokenizer;
 
 import beans.Customer;
 import beans.GenderEnum;
+import beans.User;
 
 public class CustomerFileStorage {
 	
@@ -25,7 +26,6 @@ public class CustomerFileStorage {
         BufferedReader in = null;
         try {
             File file = new File("./customers.txt");
-            System.out.println(file.getCanonicalPath());
             in = new BufferedReader(new FileReader(file));
             String line, username = "", password = "", name = "",surname = "",gender = "",date = "";
             StringTokenizer st;
@@ -43,17 +43,12 @@ public class CustomerFileStorage {
                         gender = st.nextToken().trim();
                         date = st.nextToken().trim();             
                         }
-                    String[] dateSep = date.split("-",5);
-                    String year = dateSep[0];
-                    String month = dateSep[1];
-                    String day = dateSep[2];
                     SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
                     Date dt = formatter.parse(date);
                     GenderEnum gen = GenderEnum.Male;
                     if(gender.equals("Male")) gen = GenderEnum.Male;
                     else if(gender.equals("Female")) gen = GenderEnum.Female;
                     Customer customer = new Customer(username,password,name,surname, dt,gen);
-                    System.out.println(customer.getDateOfBirth());
                     customers.add(customer);
                     customerList = customers;
                 }
@@ -115,6 +110,33 @@ public class CustomerFileStorage {
 		customerList.add(customer);
 		addCustomerInFile();
 		return customer;
+	}
+	
+	public Customer loginUser(Customer customer)
+	{
+		ArrayList<Customer> customerList = readCustomers();
+		Customer cust = null;
+		for(Customer c : customerList)
+		{
+			if(c.getUsername().equals(customer.getUsername()) && c.getPassword().equals(customer.getPassword()))
+			{
+				cust = c;
+			}
+		}
+		return cust;
+	}
+	public Customer findCustomerByUsernameAndPassword(String username,String password)
+	{
+		ArrayList<Customer> customerList = readCustomers();
+		Customer cust = null;
+		for(Customer c : customerList)
+		{
+			if(c.getUsername().equals(username) && c.getPassword().equals(password))
+			{
+				cust = c;
+			}
+		}
+		return cust;
 	}
 	
 

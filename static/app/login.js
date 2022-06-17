@@ -2,18 +2,20 @@ Vue.component("login", {
 	data: function () {
 		    return {
 		      RegisterTitle:"Register",
-		      username:null,
-		      password:null,
+		       user:{name:null,surname:null,username:null,password:null,gender:null,dateOfBirth:null},
 		      total:0
 		    }
 	},
 	template: ` 
+	
 <div style="background-color:gray;position: fixed;
   left:40%;
   top:25%;
   width:25%;
   height:45%;
   text-align:center;">
+  
+<input type="button" v-on:click="logoutUser()" style="margin-left:280px;" value="Logout">
 <h2>Login</h2>
 <table style="margin-left:auto;margin-right:auto;" >
 <tr>
@@ -23,7 +25,7 @@ Vue.component("login", {
 </tr>
 <tr>
 <td colspan="2">
-<input type="text" />
+<input v-model="user.username" type="text" />
 </td>
 </tr>
 <tr>
@@ -33,18 +35,33 @@ Vue.component("login", {
 </tr>
 <tr>
 <td colspan="2">
-<input type="text" />
+<input v-model="user.password" type="text" />
 </td>
 </tr>
 <tr>
 <td>
-<input type="button" value="Login"/>
+<input v-on:click="loginUser()" type="button" value="Login"/>
 </td>
 <td>
-<a href="#/register"> <input v-on:click="writeCustomers()"  type="button" value="Register"/></a>
+<a href="#/register"> <input  type="button" value="Register"/></a>
 </td>
 </tr>
 </table>
 </div> `
-,mounted(){}
+,methods : {
+		loginUser : function () {
+			alert("Usao u login")
+				axios  
+		          .post('customer/login',this.user)
+		          .then(response => (alert(response.data)))
+		          },
+		   logoutUser : function () {
+			alert("Usao u logout")
+				axios  
+		          .get('customer/logout',this.user)
+		          .then(response => (alert(response.data)))
+		          }
+		          },
+mounted(){}
+
 });

@@ -65,7 +65,7 @@ Vue.component("register", {
 </tr>
 <tr>
 <td>
-<input type="button" v-on:click="writeCustomers()" value="Login"/>
+<a href="#/" ><input type="button" v-on:click="writeCustomers()" value="Login"/></a>
 </td>
 <td>
 <input  type="button" v-on:click="addCustomer()" value="Register"/>
