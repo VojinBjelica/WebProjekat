@@ -62,8 +62,8 @@ Vue.component("login", {
 		          .then(response => (alert(response.data)))
 		          },
 		   validateUsername : function() {
-			let z = document.getElementById('username');
-			let regexxx = new RegExp('[A-Z][a-z]+[1-9]*');
+			let z = document.getElementById('username').value;
+			let regexxx = new RegExp('[A-Z]*[a-z]*[1-9]*');
 			if(regexxx.test(z) != true)
 			{
 				alert("Nije dobro unet username!");

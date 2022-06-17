@@ -53,7 +53,10 @@ Vue.component("register", {
 <p>Gender:</p>
 </td>
 <td>
-<input v-model="user.gender" type="text" />
+<select v-model="user.gender">
+<option>Male</option>
+<option>Female</option>
+</select>
 </td>
 </tr>
 <tr>
@@ -91,23 +94,32 @@ Vue.component("register", {
 		          
 		          },
 		  validateName : function() {
-			let x = document.getElementById('name');
+			var x = document.getElementById('name').value;
 			let regex = new RegExp('[A-Z][a-z]+');
-			alert(regex.test(x));
+			if(!regex.test(x))
+			{
+				alert("Nije dobro uneto ime");
+			}
 			
 				
 		},
 		 validateSurname : function() {
-			let y = document.getElementById('surname');
+			let y = document.getElementById('surname').value;
 			let regexx = new RegExp('[A-Z][a-z]+');
-			alert(regexx.test(y));
+			if(!regexx.test(y))
+			{
+				alert("Nije dobro uneto prezime");
+			}
 			
 				
 		},
 		 validateUsername : function() {
-			let z = document.getElementById('username');
-			let regexxx = new RegExp('[A-Z][a-z]+[1-9]*');
-			alert(regexxx.test(z));
+			let z = document.getElementById('username').value;
+			let regexxx = new RegExp('[A-Z]*[a-z]*[1-9]*');
+			if(!regexxx.test(z))
+			{
+				alert("Nije dobro unet username");
+			}
 			
 				
 		}
