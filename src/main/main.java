@@ -26,14 +26,11 @@ public class main {
 		new CustomerController();
 		CustomerController.writeCustomers();
 		CustomerController.addCustomer();
-<<<<<<< HEAD
 		CustomerController.loginCustomer();
 		CustomerController.logoutCustomer();
-=======
 		
 		new SportObjectController();
 		SportObjectController.readSportObjects();
->>>>>>> 3ff221d6b50c168d53bccc0e7ce991247f471a13
 		// TODO Auto-generated method stub
 
 	}
