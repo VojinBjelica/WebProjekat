@@ -7,6 +7,7 @@ import static spark.Spark.staticFiles;
 import java.io.File;
 
 import Controller.CustomerController;
+import Controller.SportObjectController;
 
 public class main {
 
@@ -21,6 +22,9 @@ public class main {
 		new CustomerController();
 		CustomerController.writeCustomers();
 		CustomerController.addCustomer();
+		
+		new SportObjectController();
+		SportObjectController.readSportObjects();
 		// TODO Auto-generated method stub
 
 	}

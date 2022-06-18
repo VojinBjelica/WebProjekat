@@ -27,6 +27,20 @@ public class SportObject {
 		this.avarageMark = avarageMark;
 		this.workHour = workHour;
 	}
+	
+	//Skraceni privremeni konstruktor za SportObjectFileStorage
+	public SportObject(String objectName, ObjectTypeEnum objectType, String objectOffer, String workHour, double avarageMark) {
+		super();
+		this.objectName = objectName;
+		this.objectType = objectType;
+		this.objectOffer = objectOffer;
+		this.workHour = workHour;
+		this.avarageMark = avarageMark;
+		this.status = true;
+		this.location = null;
+		this.logo = null;
+	}
+	
 	public String getObjectName() {
 		return objectName;
 	}
