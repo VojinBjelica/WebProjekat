@@ -16,5 +16,12 @@ public class SportObjectService {
 		return sofs.readSportObjects();
 	}
 	
+	public ArrayList<SportObject> searchObjectsByName(String searchInput) {
+		return sofs.searchObjectsByName(searchInput);
+	}
+	
+	public ArrayList<SportObject> filteredList(ArrayList<SportObject> list) {
+		return sofs.filteredList(list);
+	}
 	
 }

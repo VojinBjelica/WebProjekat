@@ -9,14 +9,14 @@ public class SportObject {
 	private String objectOffer; // sauna,grupni/personalni treninzi
 	private boolean status; // radi/ne radi
 	private Location location;
-	private Image logo;
+	private String logo;
 	private double avarageMark;//prosecna ocena
 	private String workHour;// radno vreme
 	public SportObject() {
 		super();
 	}
 	public SportObject(String objectName, ObjectTypeEnum objectType, String objectOffer, boolean status,
-			Location location, Image logo, double avarageMark, String workHour) {
+			Location location, String logo, double avarageMark, String workHour) {
 		super();
 		this.objectName = objectName;
 		this.objectType = objectType;
@@ -28,18 +28,20 @@ public class SportObject {
 		this.workHour = workHour;
 	}
 	
-	//Skraceni privremeni konstruktor za SportObjectFileStorage
-	public SportObject(String objectName, ObjectTypeEnum objectType, String objectOffer, String workHour, double avarageMark) {
+	public SportObject(String objectName, ObjectTypeEnum objectType, String objectOffer, boolean status,
+			Location location, double avarageMark, String workHour) {
 		super();
 		this.objectName = objectName;
 		this.objectType = objectType;
 		this.objectOffer = objectOffer;
-		this.workHour = workHour;
-		this.avarageMark = avarageMark;
-		this.status = true;
-		this.location = null;
+		this.status = status;
+		this.location = location;
 		this.logo = null;
+		this.avarageMark = avarageMark;
+		this.workHour = workHour;
 	}
+	
+	
 	
 	public String getObjectName() {
 		return objectName;
@@ -71,10 +73,10 @@ public class SportObject {
 	public void setLocation(Location location) {
 		this.location = location;
 	}
-	public Image getLogo() {
+	public String getLogo() {
 		return logo;
 	}
-	public void setLogo(Image logo) {
+	public void setLogo(String logo) {
 		this.logo = logo;
 	}
 	public double getAvarageMark() {
