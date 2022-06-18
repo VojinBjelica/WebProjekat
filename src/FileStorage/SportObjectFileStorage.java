@@ -7,26 +7,32 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.StringTokenizer;
 
+import javax.swing.ImageIcon;
+
+import java.awt.Image;
+
+import beans.Address;
 import beans.Customer;
 import beans.GenderEnum;
+import beans.Location;
 import beans.ObjectTypeEnum;
 import beans.SportObject;
 
 public class SportObjectFileStorage {
 	public static ArrayList<SportObject> sportObjectList = new ArrayList<SportObject>();
 	
-	// objectName, objectType, objectOffer, workHour, averageMark
+	// objectName, objectType, objectOffer, workHour, averageMark, longtitude, latitude, streetAndNumber, city, zipCode, status
 	
 	public ArrayList<SportObject> readSportObjects() {
 		
-		System.out.println("Usao u readsportobject");
         ArrayList<SportObject> sportObjects = new ArrayList<SportObject>();
         BufferedReader in = null;
         try {
             File file = new File("./sportObjects.txt");
             System.out.println(file.getCanonicalPath());
             in = new BufferedReader(new FileReader(file));
-            String line, objectName = "", objectType = "", objectOffer = "",workHour = "",avarageMark = "";
+            String line, objectName = "", objectType = "", objectOffer = "",workHour = "",avarageMark = "",
+            		logo="", longitude="", latitude="", streetAndNumber="", city="", zipCode="", status="";
             StringTokenizer st;
             try {
                 while ((line = in.readLine()) != null) {
@@ -41,6 +47,14 @@ public class SportObjectFileStorage {
                     	objectOffer = st.nextToken().trim();
                     	workHour = st.nextToken().trim();
                     	avarageMark = st.nextToken().trim();
+                    	//logo = st.nextToken().trim();
+                    	longitude = st.nextToken().trim();
+                    	latitude = st.nextToken().trim();
+                    	streetAndNumber = st.nextToken().trim();
+                    	city = st.nextToken().trim();
+                    	zipCode = st.nextToken().trim();
+                    	status = st.nextToken().trim();
+                    	
                     }
                     ObjectTypeEnum obType = ObjectTypeEnum.Gym;
                     if (objectType.equals("Gym")) obType = ObjectTypeEnum.Gym;
@@ -48,8 +62,19 @@ public class SportObjectFileStorage {
                     else if (objectType.equals("SportCenter")) obType = ObjectTypeEnum.SportCenter;
                     double avgMark = Double.parseDouble(avarageMark);
                     
+                    Address address = new Address(streetAndNumber, city, zipCode);
+                    Location loc = new Location(longitude, latitude, address);
                     
-                    SportObject sportObject = new SportObject(objectName, obType, objectOffer, workHour, avgMark);
+                    boolean statusBool = true;
+                    if (status.equals("true")) {
+                    	statusBool = true;
+                    } else if (status.equals("false")) {
+                    	statusBool = true;
+                    }
+                    
+                    //Image logoImg;
+                    
+                    SportObject sportObject = new SportObject(objectName, obType, objectOffer, statusBool, loc, avgMark, workHour);
                     sportObjects.add(sportObject);
                     
                     sportObjectList = sportObjects;
@@ -72,5 +97,27 @@ public class SportObjectFileStorage {
         }
         return sportObjects;
     }
+	
+	public ArrayList<SportObject> searchObjectsByName(String searchInput) {
+		ArrayList<SportObject> searchedList = new ArrayList<SportObject>();
+		
+		for (SportObject so : readSportObjects()) {
+			if (so.getObjectName().trim().toLowerCase().contains(searchInput.trim().toLowerCase())) {
+				searchedList.add(so);
+			}
+		}
+		filteredList(searchedList);
+		return searchedList;
+	}
+	
+	public ArrayList<SportObject> filteredList(ArrayList<SportObject> list) {
+		ArrayList<SportObject> filtered = new ArrayList<SportObject>();
+		for (SportObject s : list) {
+			filtered.add(s);
+	        
+		}
+		
+		return filtered;
+	}
 	
 }

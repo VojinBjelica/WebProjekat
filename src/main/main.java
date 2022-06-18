@@ -31,6 +31,8 @@ public class main {
 		
 		new SportObjectController();
 		SportObjectController.readSportObjects();
+		SportObjectController.searchObjectsByName();
+		SportObjectController.filteredList();
 		// TODO Auto-generated method stub
 
 	}
