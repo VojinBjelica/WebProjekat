@@ -28,5 +28,14 @@ public class CustomerService {
 	{
 		return cfs.addCustomer(customer);
 	}
+	public Customer loginUser(Customer customer)
+	{
+		return cfs.loginUser(customer);
+	}
+	public Customer findCustomerByUsernameAndPassword(String username,String password)
+	{
+		return cfs.findCustomerByUsernameAndPassword(username, password);
+	}
+	
 
 }

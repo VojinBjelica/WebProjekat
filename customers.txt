@@ -1,5 +1,16 @@
+<<<<<<< HEAD
+awd;awd;awd;awd;Male;2005-05-05
+awd;awd;awd;awd;Male;2022-06-23
+laza123;laza123;Laza;Lazic;Male;2022-06-22
+joca123;joca123;Jovan;Jovic;Male;2022-06-22
+kelja123;kelja123;Kelja;Keljanovic;Male;2022-06-24
+aaa;aaa;aaaa;aaa;Male;2022-06-22
+mladja123;mladja123;Mladen;Mladenovic;Male;2022-06-29
+Awd;ad;Awd;Awd;Female;2022-06-29
+=======
 sima123;sima123;Sima;Simic;Male;
 awd;awd;awd;awd;Male;
 joca123;joca123;Jovan;Jovic;Male;
 pera123;pera123;Petar;Peric;Male;
 joco111;joco111;joco111;joco111;Male;
+>>>>>>> 3ff221d6b50c168d53bccc0e7ce991247f471a13

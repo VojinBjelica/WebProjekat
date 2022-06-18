@@ -1,6 +1,6 @@
 package beans;
 
-import java.time.LocalDate;
+import java.util.Date;
 
 public class User {
 	
@@ -8,7 +8,7 @@ public class User {
 	private String password;
 	private String name;
 	private String surname;
-	private LocalDate dateOfBirth;
+	private Date dateOfBirth;
 	private String trainingHistory;
 	private int dues;
 	private String sportObject;
@@ -19,7 +19,7 @@ public class User {
 	public User() {
 		super();
 	}
-	public User(String username, String password, String name, String surname, LocalDate dateOfBirth,
+	public User(String username, String password, String name, String surname, Date dateOfBirth,
 			String trainingHistory, int dues, String sportObject, String visitedObjects, int collectedPoints,
 			String customerType, GenderEnum gender) {
 		super();
@@ -36,7 +36,7 @@ public class User {
 		this.customerType = customerType;
 		this.gender = gender;
 	}
-	public User(String username, String password, String name, String surname, LocalDate dateOfBirth, GenderEnum gender) {
+	public User(String username, String password, String name, String surname, Date dateOfBirth, GenderEnum gender) {
 		super();
 		this.username = username;
 		this.password = password;
@@ -69,10 +69,10 @@ public class User {
 	public void setSurname(String surname) {
 		this.surname = surname;
 	}
-	public LocalDate getDateOfBirth() {
+	public Date getDateOfBirth() {
 		return dateOfBirth;
 	}
-	public void setDateOfBirth(LocalDate dateOfBirth) {
+	public void setDateOfBirth(Date dateOfBirth) {
 		this.dateOfBirth = dateOfBirth;
 	}
 	public String getTrainingHistory() {
