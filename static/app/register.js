@@ -97,7 +97,7 @@ Vue.component("register", {
 			let regex = new RegExp('[A-Z][a-z]+');
 			if(!regex.test(x))
 			{
-				alert("Nije dobro uneto ime");
+				alert("Invalid name");
 			}
 			
 				
@@ -108,36 +108,36 @@ Vue.component("register", {
 			let regexx = new RegExp('[A-Z][a-z]+');
 			if(!regexx.test(y))
 			{
-				alert("Nije dobro uneto prezime");
+				alert("Invalid username");
 			}
 			
 				
 		},
 		 validateText : function() {
 			var x = document.getElementById('name').value;
-			if(x == "")alert("Popuniti polje ime");
+			if(x == "")alert("Fill name input");
 			let y = document.getElementById('surname').value;
-			if(y == "")alert("Popuniti polje prezime");
+			if(y == "")alert("Fill surname input");
 			let z = document.getElementById('username').value;
-			if(z == "")alert("Popuniti polje username");
+			if(z == "")alert("Fill username input");
 			
 				
 		},
 		duplicateUsername : function()
 		{
 			let z = document.getElementById('username').value;
-			if(z == "")alert("Popuniti polje username");
+			if(z == "")alert("Fill username input");
 			for (const s in this.list)
 			{
 				if(this.list[s].username.toLowerCase() == z)
 				{
-					alert("Username je vec zauzet");
+					alert("Username is already taken");
 				}
 			}
 			let regexxx = new RegExp('[A-Z]*[a-z]*[1-9]*');
 			if(!regexxx.test(z))
 			{
-				alert("Nije dobro unet username");
+				alert("Invalid username");
 			}
 		}	 
 	}

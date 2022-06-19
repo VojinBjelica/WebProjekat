@@ -81,7 +81,7 @@ public class CustomerController {
         String id = UUID.randomUUID().toString();
         res.cookie(username, id, 3600, false, true);
         System.out.println("User cookie:"+  req.cookie(username));
-        System.out.println("Dodeljen cookie");
+        System.out.println("Added cookie");
 		}
 		else
 		{
@@ -122,9 +122,9 @@ public class CustomerController {
 			getCookie(req,custo.getUsername());
 			g.toJson(user);
 			
-			return "Success login";
+			return "";
 			}
-			return "Unsuccess login";
+			return "login";
 			
 			
 				

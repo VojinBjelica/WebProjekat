@@ -1,6 +1,7 @@
 Vue.component("login", {
 	data: function () {
 		    return {
+			flag:"",
 		      RegisterTitle:"Register",
 		       user:{name:null,surname:null,username:null,password:null,gender:null,dateOfBirth:null},
 		      total:0
@@ -15,7 +16,7 @@ Vue.component("login", {
   height:45%;
   text-align:center;">
   
-<input type="button" v-on:click="logoutUser()" style="margin-left:280px;" value="Logout">
+<a href="#/"><input type="button" v-on:click="logoutUser()" style="margin-left:280px;" value="Logout"></a>
 <h2>Login</h2>
 <table style="margin-left:auto;margin-right:auto;" >
 <tr>
@@ -40,7 +41,7 @@ Vue.component("login", {
 </tr>
 <tr>
 <td>
-<a href="#/"><input v-on:click="loginUser()" type="button" value="Login"/></a>
+<input v-on:click="loginUser();" type="button" value="Login"/>
 </td>
 <td>
 <a href="#/register"> <input  type="button" value="Register"/></a>
@@ -52,27 +53,49 @@ Vue.component("login", {
 		loginUser : function () {
 				axios  
 		          .post('customer/login',this.user)
-		          .then(response => (alert(response.data)))
+		          .then(response => (this.check(response.data)))
+        
+		        
 		          
 		          },
 		   logoutUser : function () {
 				axios  
 		          .get('customer/logout',this.user)
-		          .then(response => (alert(response.data)))
+		          .then(response => (response.data))
 		          },
 		   validateUsername : function() {
 			let z = document.getElementById('username').value;
 			let regexxx = new RegExp('[A-Z]*[a-z]*[1-9]*');
 			if(regexxx.test(z) != true)
 			{
-				alert("Nije dobro unet username!");
+				alert("Invalid username!");
 			}
+			
 				
 			
 				
+		},
+		popup : function()
+			{
+				alert(this.flag);
+				if(this.flag == "login")alert("Your account doesn't exist");
+			},
+		check : function(data)
+		{
+			this.flag = data;
+			if(data == "")
+			{
+				router.push(`/`);
+				alert("Login success");
+			}
+			else
+			{
+				router.push(`/login`);
+				alert("Login unsuccess");
+			} 
+			
 		}
-		
-		          },
-mounted(){}
+}
+,mounted(){}
 
-});
+})
