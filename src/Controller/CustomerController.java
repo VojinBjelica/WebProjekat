@@ -51,6 +51,12 @@ public class CustomerController {
 			return "OK";
 		});
 	}
+	public static void initList() {
+		get("customer/listinit", (req, res) -> {
+			return g.toJson(cs.readUsers());
+		});
+	}
+
 	public static void addCustomerInFile()
 	{
 		post("customer/addInFile", (req, res) -> {
@@ -63,7 +69,6 @@ public class CustomerController {
 	{
 		post("customer/add", (req, res) -> {
 			String payload = req.body();
-			System.out.println(payload);
 			Customer pd = g.fromJson(payload, Customer.class);
 			cs.addCustomer(pd);
 			return "OK";
@@ -99,12 +104,12 @@ public class CustomerController {
 		post("customer/login", (req, res) -> {
 			res.type("application/json");
 			String payload = req.body();
-			Customer u = g.fromJson(payload, Customer.class);
-			Customer cust = cs.loginUser(u);
+			User u = g.fromJson(payload, User.class);
+			User cust = cs.loginUser(u);
 			if(cust != null)
 			{
 			Session ss = req.session(true);
-			Customer user = ss.attribute("user");
+			User user = ss.attribute("user");
 			if (user == null) {
 				user = u;
 				ss.attribute("user", user);
@@ -135,8 +140,8 @@ public class CustomerController {
 		get("customer/logout", (req, res) -> {
 			res.type("application/json");
 			Session ss = req.session(true);
-			Customer user = ss.attribute("user");
-			Customer custo = cs.findCustomerByUsernameAndPassword(user.getUsername(), user.getPassword());
+			User user = ss.attribute("user");
+			User custo = cs.findCustomerByUsernameAndPassword(user.getUsername(), user.getPassword());
 			
 			System.out.println("Izlogovan:"  + custo.getName() + " " + custo.getSurname());
 			if (user != null) {

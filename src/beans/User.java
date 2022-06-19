@@ -9,6 +9,7 @@ public class User {
 	private String name;
 	private String surname;
 	private Date dateOfBirth;
+	private RoleEnum role;
 	private String trainingHistory;
 	private int dues;
 	private String sportObject;
@@ -44,6 +45,16 @@ public class User {
 		this.surname = surname;
 		this.dateOfBirth = dateOfBirth;
 		this.gender = gender;
+	}
+	public User(String username, String password, String name, String surname, Date dateOfBirth, GenderEnum gender,RoleEnum role) {
+		super();
+		this.username = username;
+		this.password = password;
+		this.name = name;
+		this.surname = surname;
+		this.dateOfBirth = dateOfBirth;
+		this.gender = gender;
+		this.role = role;
 	}
 	public String getUsername() {
 		return username;

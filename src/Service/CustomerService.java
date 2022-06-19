@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import FileStorage.CustomerFileStorage;
 import beans.Customer;
+import beans.User;
 
 public class CustomerService {
 	
@@ -20,6 +21,9 @@ public class CustomerService {
 	{
 		cfs.writeCustomers();
 	}
+	public ArrayList<User> readUsers() {
+		return cfs.readUsers();
+	}
 	public boolean addCustomerInFile()
 	{
 		return cfs.addCustomerInFile();
@@ -28,7 +32,7 @@ public class CustomerService {
 	{
 		return cfs.addCustomer(customer);
 	}
-	public Customer loginUser(Customer customer)
+	public User loginUser(User customer)
 	{
 		return cfs.loginUser(customer);
 	}

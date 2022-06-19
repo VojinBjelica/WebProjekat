@@ -40,7 +40,7 @@ Vue.component("login", {
 </tr>
 <tr>
 <td>
-<input v-on:click="loginUser()" type="button" value="Login"/>
+<a href="#/"><input v-on:click="loginUser()" type="button" value="Login"/></a>
 </td>
 <td>
 <a href="#/register"> <input  type="button" value="Register"/></a>
@@ -50,13 +50,12 @@ Vue.component("login", {
 </div> `
 ,methods : {
 		loginUser : function () {
-			alert("Usao u login")
 				axios  
 		          .post('customer/login',this.user)
 		          .then(response => (alert(response.data)))
+		          
 		          },
 		   logoutUser : function () {
-			alert("Usao u logout")
 				axios  
 		          .get('customer/logout',this.user)
 		          .then(response => (alert(response.data)))
