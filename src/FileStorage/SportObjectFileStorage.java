@@ -41,13 +41,12 @@ public class SportObjectFileStorage {
                         continue;
                     st = new StringTokenizer(line, ";");
                     while (st.hasMoreTokens()) {
-                    	// Za sad pravim skraceni oblik, pa kasnije da skontam kako da cijeli proslijedim
                     	objectName = st.nextToken().trim();
                     	objectType = st.nextToken().trim();
                     	objectOffer = st.nextToken().trim();
                     	workHour = st.nextToken().trim();
                     	avarageMark = st.nextToken().trim();
-                    	//logo = st.nextToken().trim();
+                    	logo = st.nextToken().trim();
                     	longitude = st.nextToken().trim();
                     	latitude = st.nextToken().trim();
                     	streetAndNumber = st.nextToken().trim();
@@ -69,13 +68,18 @@ public class SportObjectFileStorage {
                     if (status.equals("true")) {
                     	statusBool = true;
                     } else if (status.equals("false")) {
-                    	statusBool = true;
+                    	statusBool = false;
                     }
                     
-                    //Image logoImg;
                     
-                    SportObject sportObject = new SportObject(objectName, obType, objectOffer, statusBool, loc, avgMark, workHour);
-                    sportObjects.add(sportObject);
+                    
+                    SportObject sportObject = new SportObject(objectName, obType, objectOffer, statusBool, loc, logo, avgMark, workHour);
+                    if (sportObject.isStatus()) {
+                    	sportObjects.add(0, sportObject);
+                    } else {
+                    	sportObjects.add(sportObject);
+                    }
+                    
                     
                     sportObjectList = sportObjects;
                     
