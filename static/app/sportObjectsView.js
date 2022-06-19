@@ -18,6 +18,7 @@ Vue.component("sportObjectsView", {
 	    			<th style="min-width:50px">Work hours</th>
 	    			<th style="min-width:50px">Offer</th>
 	    			<th style="min-width:50px">Average mark</th>
+	    			<th style="min-width:50px">Status</th>
 	    		</tr>
 	    			
 	    		<tr class="data" v-for="sObject in sportObjectList">
@@ -25,10 +26,11 @@ Vue.component("sportObjectsView", {
 	    			<td >{{sObject.objectType}}</td>
 	    			<td >{{sObject.location.longitude + ', ' + sObject.location.latitude + ', ' + sObject.location.address.streetAndNumber + ', '
 	    			+ sObject.location.address.city + ', ' + sObject.location.address.zipCode}}</td>
-	    			<td >{{sObject.logo}}</td>
+	    			<td ><img v-bind:src="sObject.logo" style="width:100px; height:100px;"></img></td>
 	    			<td >{{sObject.workHour}}</td>
 	    			<td >{{sObject.objectOffer}}</td>
 	    			<td >{{sObject.avarageMark}}</td>
+	    			<td ><span v-if="sObject.status == true">Open</span><span v-else>Closed</span></td>
 	    		</tr>
 	    	</table>
 	    	<div>
@@ -82,11 +84,7 @@ Vue.component("sportObjectsView", {
 			var searchTypeInput = document.getElementById("searchType").value;
 			var searchLocationInput = document.getElementById("searchLocation").value;
 			var searchGradeInput = document.getElementById("searchGrade").value;
-			/*for (let i in table.rows) {
-				let row = table.rows[i];
-				let nameCol = row[0];
-				if nameCol.value.
-			}*/
+			
 			
 			
 			var tr = table.getElementsByClassName("data");

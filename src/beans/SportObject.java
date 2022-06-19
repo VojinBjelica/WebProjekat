@@ -28,18 +28,7 @@ public class SportObject {
 		this.workHour = workHour;
 	}
 	
-	public SportObject(String objectName, ObjectTypeEnum objectType, String objectOffer, boolean status,
-			Location location, double avarageMark, String workHour) {
-		super();
-		this.objectName = objectName;
-		this.objectType = objectType;
-		this.objectOffer = objectOffer;
-		this.status = status;
-		this.location = location;
-		this.logo = null;
-		this.avarageMark = avarageMark;
-		this.workHour = workHour;
-	}
+	
 	
 	
 	
