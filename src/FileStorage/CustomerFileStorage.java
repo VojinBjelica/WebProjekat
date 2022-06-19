@@ -213,7 +213,7 @@ public class CustomerFileStorage {
 		}
 		else
 		{
-			System.out.println("Nisu dobro uneti podaci");
+			System.out.println("Invalid data");
 		}
 		addCustomerInFile();
 		}
