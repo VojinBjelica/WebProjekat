@@ -1,0 +1,10 @@
+awd;awd;awd;awd;Male;2005-05-05;Customer
+awd;awd;awd;awd;Male;2022-06-23;Customer
+laza123;laza123;Laza;Lazic;Male;2022-06-22;Customer
+joca123;joca123;Jovan;Jovic;Male;2022-06-22;Customer
+kelja123;kelja123;Kelja;Keljanovic;Male;2022-06-24;Customer
+aaa;aaa;aaaa;aaa;Male;2022-06-22;Customer
+mladja123;mladja123;Mladen;Mladenovic;Male;2022-06-29;Customer
+Awd;ad;Awd;Awd;Female;2022-06-29;Customer
+laza12345;laza123;Laza;Lazic;Male;2022-12-31;Customer
+misa123;misa123;Milos;Milosevic;Male;2022-06-21;Customer

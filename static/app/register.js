@@ -1,7 +1,7 @@
 Vue.component("register", {
 	data: function () {
 		    return {
-		      
+		      list:null,
 		      user:{name:null,surname:null,username:null,password:null,gender:null,dateOfBirth:null}
 		   
 		    }
@@ -21,7 +21,7 @@ Vue.component("register", {
 <p>Name:</p>
 </td>
 <td>
-<input id="name" v-model="user.name" v-on:change="validateName" type="text" />
+<input id="name" v-model="user.name" v-on:blur="validateName" type="text" />
 </td>
 </tr>
 <tr>
@@ -29,7 +29,7 @@ Vue.component("register", {
 <p>Surname:</p>
 </td>
 <td>
-<input id="surname" v-model="user.surname" v-on:change="validateSurname" type="text" />
+<input id="surname" v-model="user.surname" v-on:blur="validateSurname" type="text" />
 </td>
 </tr>
 <tr>
@@ -37,7 +37,7 @@ Vue.component("register", {
 <p>Username:</p>
 </td>
 <td>
-<input id="username" v-model="user.username" v-on:change="validateUsername" type="text" />
+<input id="username" v-model="user.username" v-on:blur="duplicateUsername" type="text" />
 </td>
 </tr>
 <tr>
@@ -69,10 +69,10 @@ Vue.component("register", {
 </tr>
 <tr>
 <td>
-<a href="#/" ><input type="button" v-on:click="writeCustomers()" value="Login"/></a>
+<a href="#/login" ><input type="button" value="Login"/></a>
 </td>
 <td>
-<input  type="button" v-on:click="addCustomer()" value="Register"/>
+<input  type="button" v-on:click="validateText();duplicateUsername();addCustomer();" value="Register"/>
 </td>
 </tr>
 </table>
@@ -81,20 +81,19 @@ Vue.component("register", {
 , 
 	methods : {
 		writeCustomers : function () {
-			alert("Usao");
 				axios  
 		          .post('customer/write',this.user)
-		          .then(response => (alert(response.data)))
+		          .then(response => (response.data))
 		          },
 		addCustomer : function () {
-			alert("Usao u add");
 				axios  
 		          .post('customer/add',this.user)
-		          .then(response => (alert(response.data)))
+		          .then(response => alert((response.data)))
 		          
 		          },
 		  validateName : function() {
 			var x = document.getElementById('name').value;
+			if(x == "")alert("Popuniti polje ime");
 			let regex = new RegExp('[A-Z][a-z]+');
 			if(!regex.test(x))
 			{
@@ -105,6 +104,7 @@ Vue.component("register", {
 		},
 		 validateSurname : function() {
 			let y = document.getElementById('surname').value;
+			if(y == "")alert("Popuniti polje prezime");
 			let regexx = new RegExp('[A-Z][a-z]+');
 			if(!regexx.test(y))
 			{
@@ -113,22 +113,38 @@ Vue.component("register", {
 			
 				
 		},
-		 validateUsername : function() {
+		 validateText : function() {
+			var x = document.getElementById('name').value;
+			if(x == "")alert("Popuniti polje ime");
+			let y = document.getElementById('surname').value;
+			if(y == "")alert("Popuniti polje prezime");
 			let z = document.getElementById('username').value;
+			if(z == "")alert("Popuniti polje username");
+			
+				
+		},
+		duplicateUsername : function()
+		{
+			let z = document.getElementById('username').value;
+			if(z == "")alert("Popuniti polje username");
+			for (const s in this.list)
+			{
+				if(this.list[s].username.toLowerCase() == z)
+				{
+					alert("Username je vec zauzet");
+				}
+			}
 			let regexxx = new RegExp('[A-Z]*[a-z]*[1-9]*');
 			if(!regexxx.test(z))
 			{
 				alert("Nije dobro unet username");
 			}
-			
-				
-		}
-		
-		
-		
-		          
-			
-		 
+		}	 
 	}
-,mounted(){}
+	
+,mounted(){
+		axios
+			.get('customer/listinit', this.list)
+			.then(response => (this.list = response.data));
+	}
 })

@@ -28,6 +28,7 @@ public class main {
 		CustomerController.addCustomer();
 		CustomerController.loginCustomer();
 		CustomerController.logoutCustomer();
+		CustomerController.initList();
 		
 		new SportObjectController();
 		SportObjectController.readSportObjects();
