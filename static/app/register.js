@@ -72,7 +72,7 @@ Vue.component("register", {
 <a href="#/login" ><input type="button" value="Login"/></a>
 </td>
 <td>
-<input  type="button" v-on:click="validateText();duplicateUsername();addCustomer();" value="Register"/>
+<a href="#/login" ><input  type="button" v-on:click="validateText();duplicateUsername();addCustomer();" value="Register"/></a>
 </td>
 </tr>
 </table>

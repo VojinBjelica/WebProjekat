@@ -8,3 +8,6 @@ mladja123;mladja123;Mladen;Mladenovic;Male;2022-06-29;Customer
 Awd;ad;Awd;Awd;Female;2022-06-29;Customer
 laza12345;laza123;Laza;Lazic;Male;2022-12-31;Customer
 misa123;misa123;Milos;Milosevic;Male;2022-06-21;Customer
+nidzo;nidzo;Nikola;Markovic;Male;2022-06-02;Customer
+milooo;milooo;Milovan;Markovic;Male;2022-06-03;Customer
+Mijov;mijov;Miroslav;Jovanovic;Male;2022-06-26;Customer

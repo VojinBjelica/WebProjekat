@@ -36,6 +36,7 @@ public class main {
 		SportObjectController.readSportObjects();
 		SportObjectController.searchObjectsByName();
 		SportObjectController.filteredList();
+		SportObjectController.logoutCustomer();
 		// TODO Auto-generated method stub
 
 	}
