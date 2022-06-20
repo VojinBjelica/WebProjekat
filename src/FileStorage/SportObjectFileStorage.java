@@ -124,4 +124,8 @@ public class SportObjectFileStorage {
 		return filtered;
 	}
 	
+	public String hide(String pass) {
+		return pass;
+	}
+	
 }

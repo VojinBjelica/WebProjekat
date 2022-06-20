@@ -16,7 +16,7 @@ Vue.component("login", {
   height:45%;
   text-align:center;">
   
-<a href="#/"><input type="button" v-on:click="logoutUser()" style="margin-left:280px;" value="Logout"></a>
+
 <h2>Login</h2>
 <table style="margin-left:auto;margin-right:auto;" >
 <tr>
@@ -83,7 +83,8 @@ Vue.component("login", {
 		check : function(data)
 		{
 			this.flag = data;
-			if(data == "")
+			alert("Data: " + data);
+			if(data == "logged")
 			{
 				router.push(`/`);
 				alert("Login success");

@@ -24,4 +24,8 @@ public class SportObjectService {
 		return sofs.filteredList(list);
 	}
 	
+	public String hide(String pass) {
+		return sofs.hide(pass);
+	}
+	
 }

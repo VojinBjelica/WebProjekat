@@ -104,6 +104,7 @@ public class CustomerController {
 		post("customer/login", (req, res) -> {
 			res.type("application/json");
 			String payload = req.body();
+			String s = "";
 			User u = g.fromJson(payload, User.class);
 			User cust = cs.loginUser(u);
 			if(cust != null)
@@ -121,10 +122,13 @@ public class CustomerController {
 			setCookie(res,req,custo.getUsername());
 			getCookie(req,custo.getUsername());
 			g.toJson(user);
-			
-			return "";
+			s = "logged";
+			SportObjectController.hide(s);
+			return s;
 			}
-			return "login";
+			s="login";
+			SportObjectController.hide(s);
+			return s;
 			
 			
 				
