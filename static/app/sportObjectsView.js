@@ -104,7 +104,7 @@ Vue.component("sportObjectsView", {
 		},
 		hideButton: function(check) {
 			this.hideFlag = check;
-			alert("Check:" + check);
+			
 			if (this.hideFlag == "logged") {
 				document.getElementById("btn-login").disabled= true;
 				document.getElementById("btn-register").disabled = true;

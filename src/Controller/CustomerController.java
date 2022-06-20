@@ -145,9 +145,13 @@ public class CustomerController {
 			res.type("application/json");
 			Session ss = req.session(true);
 			User user = ss.attribute("user");
-			User custo = cs.findCustomerByUsernameAndPassword(user.getUsername(), user.getPassword());
+			User custo = null;
+			if (user != null) {
+				custo = cs.findCustomerByUsernameAndPassword(user.getUsername(), user.getPassword());
+				System.out.println("Izlogovan:"  + custo.getName() + " " + custo.getSurname());
+
+			}
 			
-			System.out.println("Izlogovan:"  + custo.getName() + " " + custo.getSurname());
 			if (user != null) {
 				ss.invalidate();
 			}

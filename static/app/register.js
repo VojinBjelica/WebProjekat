@@ -88,7 +88,7 @@ Vue.component("register", {
 		addCustomer : function () {
 				axios  
 		          .post('customer/add',this.user)
-		          .then(response => alert((response.data)))
+		          .then(response => (response.data))
 		          
 		          },
 		  validateName : function() {

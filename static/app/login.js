@@ -83,7 +83,7 @@ Vue.component("login", {
 		check : function(data)
 		{
 			this.flag = data;
-			alert("Data: " + data);
+			
 			if(data == "logged")
 			{
 				router.push(`/`);
