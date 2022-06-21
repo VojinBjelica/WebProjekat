@@ -16,6 +16,8 @@ import Service.CustomerService;
 import beans.Customer;
 import beans.CustomerAdapter;
 import beans.LocalDateAdapter;
+import beans.Manager;
+import beans.RoleEnum;
 import beans.User;
 import spark.Request;
 import spark.Response;
@@ -26,6 +28,8 @@ public class CustomerController {
 	
 	public static CustomerService cs;
 	public static Gson g;
+	public static String temp;
+	public static String temptwo;
 	
 	public CustomerController()
 	{
@@ -39,6 +43,8 @@ public class CustomerController {
 				//.setPrettyPrinting()
 		        //.registerTypeAdapter(LocalDate.class, new LocalDateAdapter())
 		        .create();
+		temp = "Customer";
+		temptwo = "";
 
 	}
 	
@@ -74,6 +80,20 @@ public class CustomerController {
 			return "OK";
 		});
 	}
+	public static void addUser()
+	{
+		post("customer/add", (req, res) -> {
+			String payload = req.body();
+			User pd = g.fromJson(payload, User.class);
+			Manager manager = new Manager(pd.getUsername(),pd.getPassword(),pd.getName(),pd.getSurname(),pd.getDateOfBirth(),pd.getGender(),RoleEnum.Manager);
+			Customer customer = new Customer(pd.getUsername(),pd.getPassword(),pd.getName(),pd.getSurname(),pd.getDateOfBirth(),pd.getGender(),RoleEnum.Customer);
+			if(pd.getRole() == RoleEnum.Manager)
+				cs.addManagers(manager);
+			else if(pd.getRole() == RoleEnum.Customer)
+				cs.addCustomer(customer);
+			return "OK";
+		});
+	}
 	public static void setCookie(Response res,Request req,String username) {
 		String cookie = hasCookie(req,username);
 		if(cookie == null)
@@ -99,6 +119,19 @@ public class CustomerController {
 	
 	        String cookie = req.cookie(username);
     }
+	public static void hidee() {
+		post("customer/hidecombo", (req, res) -> {
+			
+			String payload = req.body();
+			String  pd = g.fromJson(payload, String.class);
+
+			System.out.println(temp + "roleeeee");
+			pd = temp;
+			System.out.println(temp + "role");
+			g.toJson(pd);
+			return pd;
+		});
+	}
 	public static void loginCustomer()
 	{
 		post("customer/login", (req, res) -> {
@@ -115,19 +148,35 @@ public class CustomerController {
 				user = u;
 				ss.attribute("user", user);
 			}
-			Customer custo = cs.findCustomerByUsernameAndPassword(user.getUsername(), user.getPassword());
+			
+			User custo = cs.findCustomerByUsernameAndPassword(user.getUsername(), user.getPassword());
 			System.out.println("Login user: " + custo.getName() + " " + custo.getSurname());
+			System.out.println("Role:"+ custo.getRole());
+			String role = "";
+			if(custo.getRole() == RoleEnum.Administrator)
+				{
+				role = "Administrator";
+				}
+			else if(custo.getRole() == RoleEnum.Coach)role = "Coach";
+			else if(custo.getRole() == RoleEnum.Manager)role = "Manager";
+			else role = "Customer";
 			
 			//System.out.println(user.getPassword() + " " + user.getUsername());
 			setCookie(res,req,custo.getUsername());
 			getCookie(req,custo.getUsername());
 			g.toJson(user);
+			temp = role;
+			temptwo = role;
 			s = "logged";
-			SportObjectController.hide(s);
-			return s;
+			System.out.println(role + " role za hide");
+			CustomerController.hidee();
+			SportObjectController.getTemp(s + " "+temp);
+			return role;
 			}
 			s="login";
-			SportObjectController.hide(s);
+			temp = "Customer";
+			CustomerController.hidee();
+			SportObjectController.getTemp(s + " "+temp);
 			return s;
 			
 			
@@ -136,7 +185,7 @@ public class CustomerController {
 		});
 	}
 	
-		
+	
 	
 	
 	public static void logoutCustomer()
@@ -145,6 +194,7 @@ public class CustomerController {
 			res.type("application/json");
 			Session ss = req.session(true);
 			User user = ss.attribute("user");
+			temp = "Customer";
 			User custo = null;
 			if (user != null) {
 				custo = cs.findCustomerByUsernameAndPassword(user.getUsername(), user.getPassword());

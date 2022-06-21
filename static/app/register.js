@@ -1,15 +1,16 @@
 Vue.component("register", {
 	data: function () {
 		    return {
+			  hideFlag:null,
 		      list:null,
-		      user:{name:null,surname:null,username:null,password:null,gender:null,dateOfBirth:null}
+		      user:{name:null,surname:null,username:null,password:null,gender:null,dateOfBirth:null,role:null}
 		   
 		    }
 	},
 	template: ` 
 <div style="background-color:gray;position: fixed;
   left:40%;
-  top:25%;
+  top:15%;
   width:25%;
   height:70%;
   text-align:center;">
@@ -67,6 +68,28 @@ Vue.component("register", {
 <input v-model="user.dateOfBirth" type="date" />
 </td>
 </tr>
+<tr id="roleid">
+<td>
+<p>Role:</p>
+</td>
+<td>
+<select v-model="user.role" >
+<option value="Customer">Customer</option>
+<option value = "Manager">Manager</option>
+<option value = "Coach">Coach</option>
+</select>
+</td>
+</tr>
+<tr id="roleiddva">
+<td>
+<p>Role:</p>
+</td>
+<td>
+<select v-model="user.role" >
+<option value="Customerr">Customer</option>
+</select>
+</td>
+</tr>
 <tr>
 <td>
 <a href="#/login" ><input type="button" value="Login"/></a>
@@ -91,6 +114,26 @@ Vue.component("register", {
 		          .then(response => (response.data))
 		          
 		          },
+		  hideCheck: function() {
+			
+			axios 
+				.post('customer/hidecombo', this.hideFlag)
+				.then(response =>  this.hideButton(response.data))
+		},
+		hideButton: function(check) {
+			this.hideFlag = check;
+			alert("Usao hide button");
+			alert(this.hideFlag);
+			
+			if (this.hideFlag == "Administrator" || this.hideFlag == "Coach" || this.hideFlag == "Manager" ) {
+					document.getElementById("roleid").style.display = "";
+					document.getElementById("roleiddva").style.display = "none";
+				}
+			else if (this.hideFlag == "Customer") {
+				document.getElementById("roleid").style.display = "none";
+				document.getElementById("roleiddva").style.display = "";
+			}
+				},
 		  validateName : function() {
 			var x = document.getElementById('name').value;
 			if(x == "")alert("Popuniti polje ime");
@@ -102,6 +145,7 @@ Vue.component("register", {
 			
 				
 		},
+		
 		 validateSurname : function() {
 			let y = document.getElementById('surname').value;
 			if(y == "")alert("Popuniti polje prezime");
@@ -143,6 +187,9 @@ Vue.component("register", {
 	}
 	
 ,mounted(){
+	document.getElementById("roleid").style.display = "none";
+	document.getElementById("roleiddva").style.display = "";
+	this.hideCheck();
 		axios
 			.get('customer/listinit', this.list)
 			.then(response => (this.list = response.data));

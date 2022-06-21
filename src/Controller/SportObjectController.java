@@ -20,6 +20,7 @@ public class SportObjectController {
 	public static CustomerService cs;
 	public static Gson g;
 	public static SportObject tempObject;
+	public static String temp;
 	
 	public static ArrayList<SportObject> objList;
 	
@@ -29,6 +30,7 @@ public class SportObjectController {
 		g = new Gson();
 		objList = new ArrayList<SportObject>();
 		tempObject = new SportObject();
+		temp = "";
 	}
 	
 	public static void readSportObjects() {
@@ -65,13 +67,17 @@ public class SportObjectController {
 			return g.toJson(sos.filteredList(objList));
 		});
 	}
-	
-	public static void hide(String str) {
+	public static void getTemp(String tmp)
+	{
+		temp = tmp;
+		hide();
+	}
+	public static void hide() {
 		post("sportObjects/hide", (req, res) -> {
-			
+			System.out.println("Bitan str: " + temp);
 			String payload = req.body();
 			String  pd = g.fromJson(payload, String.class);
-			pd = str;
+			pd = temp;
 			g.toJson(pd);
 			return pd;
 		});

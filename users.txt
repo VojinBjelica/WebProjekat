@@ -14,3 +14,5 @@ Mijov;mijov;Miroslav;Jovanovic;Male;2022-06-26;Customer
 stefi;stefi;Stefan;Uljarevic;Male;2006-07-18;Customer
 saki;saki;Sara;Milankovic;Female;2022-06-07;Customer
 milan123;milan123;Milan;Markovic;Male;2022-06-01;Customer
+mica123;mica123;Mica;Micic;Male;2022-06-29;Customer
+leksa;leksa;Jovan;Aleksic;Male;2022-06-29;Administrator

@@ -9,7 +9,7 @@ public class Coach extends User {
 		this.role = "Coach";
 	}
 
-	public String getRole() {
+	public String getRolee() {
 		return role;
 	}
 

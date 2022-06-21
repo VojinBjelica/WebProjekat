@@ -128,6 +128,13 @@ public class User {
 	public void setGender(GenderEnum gender) {
 		this.gender = gender;
 	}
+	public RoleEnum getRole() {
+		return role;
+	}
+	public void setRole(RoleEnum role) {
+		this.role = role;
+	}
+	
 	
 	
 	

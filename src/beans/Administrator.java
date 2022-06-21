@@ -2,19 +2,19 @@ package beans;
 
 public class Administrator extends User {
 	
-	private String role;
+	private String rolee;
 
 	public Administrator() {
 		super();
-		this.role = "Administrator";
+		this.rolee = "Administrator";
 	}
 
-	public String getRole() {
-		return role;
+	public String getRolee() {
+		return rolee;
 	}
 
 	public void setRole(String role) {
-		this.role = role;
+		this.rolee = role;
 	}
 
 }

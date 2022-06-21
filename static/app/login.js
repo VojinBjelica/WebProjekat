@@ -84,7 +84,7 @@ Vue.component("login", {
 		{
 			this.flag = data;
 			
-			if(data == "logged")
+			if(data == "Administrator" || data == "Coach" || data == "Manager" ||data == "Customer" )
 			{
 				router.push(`/`);
 				alert("Login success");
