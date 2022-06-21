@@ -106,7 +106,7 @@ Vue.component("sportObjectsView", {
 			this.hideFlag = check;
 			alert(this.hideFlag + " iz objecta");
 			const myArray = this.hideFlag.split(" ");
-
+			alert
 			if (myArray[0] == "logged") {
 				document.getElementById("btn-login").disabled= true;
 				if(myArray[1] == "Administrator")
