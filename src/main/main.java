@@ -27,7 +27,7 @@ public class main {
 		});
 		new CustomerController();
 		CustomerController.writeCustomers();
-		CustomerController.addCustomer();
+		CustomerController.addUser();
 		CustomerController.loginCustomer();
 		CustomerController.logoutCustomer();
 		CustomerController.initList();

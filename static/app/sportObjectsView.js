@@ -104,26 +104,40 @@ Vue.component("sportObjectsView", {
 		},
 		hideButton: function(check) {
 			this.hideFlag = check;
-			
-			if (this.hideFlag == "logged") {
+			alert(this.hideFlag + " iz objecta");
+			const myArray = this.hideFlag.split(" ");
+
+			if (myArray[0] == "logged") {
 				document.getElementById("btn-login").disabled= true;
+				if(myArray[1] == "Administrator")
+				{
+					alert("pali register");
+					
+				document.getElementById("btn-register").disabled = false;
+				}
+				else
+				{
+					
 				document.getElementById("btn-register").disabled = true;
+				}
 				document.getElementById("btn-logout").disabled = false;
-			} else if (this.hideFlag=""){
+			} else if (myArray[0]=""){
 				document.getElementById("btn-logout").disabled = true;
 			}
 			else {
 				document.getElementById("btn-logout").disabled = true;
 				document.getElementById("btn-login").disabled= false;
 				document.getElementById("btn-register").disabled = false;
+				
 			}
 		},
+		
 		
 		hideCheck: function() {
 			
 			axios 
 				.post('sportObjects/hide', this.hideFlag)
-				.then(response =>  this.hideButton(response.data))
+				.then(response => this.hideButton(response.data))
 		},
 		
 		searchName: function() {

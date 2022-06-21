@@ -14,8 +14,12 @@ public class Customer extends User {
 		super(username,password,name,surname,dateOfBirth,gender);
 		this.roles = "Customer";
 	}
+	public Customer(String username, String password, String name, String surname, Date dateOfBirth, GenderEnum gender,RoleEnum role) {
+		super(username,password,name,surname,dateOfBirth,gender,role);
+		this.roles = "Customer";
+	}
 
-	public String getRole() {
+	public String getRolee() {
 		return roles;
 	}
 
