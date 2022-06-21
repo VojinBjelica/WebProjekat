@@ -19,6 +19,7 @@ public class SportObjectController {
 	public static SportObjectService sos;
 	public static CustomerService cs;
 	public static Gson g;
+	public static SportObject tempObject;
 	
 	public static ArrayList<SportObject> objList;
 	
@@ -27,6 +28,7 @@ public class SportObjectController {
 		cs = new CustomerService();
 		g = new Gson();
 		objList = new ArrayList<SportObject>();
+		tempObject = new SportObject();
 	}
 	
 	public static void readSportObjects() {
@@ -65,7 +67,7 @@ public class SportObjectController {
 	}
 	
 	public static void hide(String str) {
-			post("sportObjects/hide", (req, res) -> {
+		post("sportObjects/hide", (req, res) -> {
 			
 			String payload = req.body();
 			String  pd = g.fromJson(payload, String.class);
@@ -88,6 +90,32 @@ public class SportObjectController {
 				ss.invalidate();
 			}
 			return true;
+		});
+	}
+	
+	/*public static void getSportObjectByName() {
+		post("sportObject/showOne", (req, res) -> {
+			String payload = req.body();
+			String pd = g.fromJson(payload, String.class);
+			System.out.println("Selected sport object: " + pd);
+			return g.toJson(sos.getSportObjectByName(pd));
+		});
+	}*/
+	
+	public static void getSelectedObject() {
+		post("sportObject/getOne", (req, res) -> {
+			String payload = req.body();
+			SportObject so = g.fromJson(payload, SportObject.class);
+			System.out.println("Selected object name: " + so.getObjectName());
+			tempObject = so;
+			return "OK";
+		});
+	}
+	
+	public static void showSelectedObject() {
+		post("sportObject/showOne", (req, res) -> {
+			System.out.println("temp obj:" + tempObject.getObjectName());
+			return g.toJson(tempObject);
 		});
 	}
 	
