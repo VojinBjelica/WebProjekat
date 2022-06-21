@@ -27,7 +27,7 @@ Vue.component("sportObjectsView", {
 	    				<th style="min-width:50px">Status</th>
 	    			</tr>
 	    			
-	    			<tr class="data" v-for="sObject in sportObjectList">
+	    			<tr class="data" v-for="sObject in sportObjectList" v-on:click="showSelectedObject(sObject)">
 	    				<td >{{sObject.objectName}}</td>
 	    				<td >{{sObject.objectType}}</td>
 	    				<td >{{sObject.location.longitude + ', ' + sObject.location.latitude + ', ' + sObject.location.address.streetAndNumber + ', '
@@ -419,8 +419,16 @@ Vue.component("sportObjectsView", {
 					tr[s].style.display = "none";
 				}
 			}
-		}
+		},
 		
+		//Ne koristim jos
+		showSelectedObject : function (sObject) {
+			axios
+				.post('sportObject/getOne', sObject)
+				.then(response => response.data)
+				
+			router.go(`/oneSportObject`);
+		}
 		
 	}
 	

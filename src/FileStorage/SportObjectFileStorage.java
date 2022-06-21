@@ -128,4 +128,16 @@ public class SportObjectFileStorage {
 		return pass;
 	}
 	
+	//Klikom na tabelu se proslijedi ime objekta i preko njega nadje sportski objekat
+	public SportObject getSportObjectByName(String name) {
+		ArrayList<SportObject> list = readSportObjects();
+		SportObject sObject = null;
+		for (SportObject so : list) {
+			if (so.getObjectName().equals(name)) {
+				sObject = so;
+			}
+		}
+		return sObject;
+	}
+	
 }

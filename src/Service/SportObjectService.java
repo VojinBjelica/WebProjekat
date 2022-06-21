@@ -28,4 +28,8 @@ public class SportObjectService {
 		return sofs.hide(pass);
 	}
 	
+	public SportObject getSportObjectByName(String name) {
+		return sofs.getSportObjectByName(name);
+	}
+	
 }
