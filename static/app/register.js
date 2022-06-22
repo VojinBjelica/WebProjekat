@@ -14,7 +14,7 @@ Vue.component("register", {
   width:25%;
   height:70%;
   text-align:center;">
-<h2>Register</h2>
+<h2 class="h2">Register</h2>
 <form name="myForm">
 <table style="margin-left:auto;margin-right:auto;" >
 <tr>
@@ -22,7 +22,7 @@ Vue.component("register", {
 <p>Name:</p>
 </td>
 <td>
-<input id="name" v-model="user.name" v-on:blur="validateName" type="text" />
+<input id="name" class="form-control" v-model="user.name" v-on:blur="validateName" type="text" />
 </td>
 </tr>
 <tr>
@@ -30,7 +30,7 @@ Vue.component("register", {
 <p>Surname:</p>
 </td>
 <td>
-<input id="surname" v-model="user.surname" v-on:blur="validateSurname" type="text" />
+<input id="surname" class="form-control" v-model="user.surname" v-on:blur="validateSurname" type="text" />
 </td>
 </tr>
 <tr>
@@ -38,7 +38,7 @@ Vue.component("register", {
 <p>Username:</p>
 </td>
 <td>
-<input id="username" v-model="user.username" v-on:blur="duplicateUsername" type="text" />
+<input id="username" class="form-control" v-model="user.username" v-on:blur="duplicateUsername" type="text" />
 </td>
 </tr>
 <tr>
@@ -46,7 +46,7 @@ Vue.component("register", {
 <p>Password:</p>
 </td>
 <td>
-<input v-model="user.password" type="password" />
+<input v-model="user.password" class="form-control" type="password" />
 </td>
 </tr>
 <tr>
@@ -54,7 +54,7 @@ Vue.component("register", {
 <p>Gender:</p>
 </td>
 <td>
-<select v-model="user.gender">
+<select v-model="user.gender" class="form-select" >
 <option>Male</option>
 <option>Female</option>
 </select>
@@ -65,7 +65,7 @@ Vue.component("register", {
 <p>Date:</p>
 </td>
 <td>
-<input v-model="user.dateOfBirth" type="date" />
+<input v-model="user.dateOfBirth" class="form-control" type="date" />
 </td>
 </tr>
 <tr id="roleid">
@@ -73,7 +73,7 @@ Vue.component("register", {
 <p>Role:</p>
 </td>
 <td>
-<select v-model="user.role" >
+<select v-model="user.role" class="form-select" >
 <option value="Customer">Customer</option>
 <option value = "Manager">Manager</option>
 <option value = "Coach">Coach</option>
@@ -85,17 +85,17 @@ Vue.component("register", {
 <p>Role:</p>
 </td>
 <td>
-<select v-model="user.role" >
+<select v-model="user.role" class="form-select" >
 <option value="Customerr">Customer</option>
 </select>
 </td>
 </tr>
 <tr>
 <td>
-<a href="#/login" ><input type="button" value="Login"/></a>
+<a href="#/login" ><input type="button"  class="btn btn-success" value="Login"/></a>
 </td>
 <td>
-<a href="#/login" ><input  type="button" v-on:click="validateText();duplicateUsername();addCustomer();" value="Register"/></a>
+<a href="#/login" ><input  type="button"  class="btn btn-success" v-on:click="validateText();duplicateUsername();addCustomer();" value="Register"/></a>
 </td>
 </tr>
 </table>
