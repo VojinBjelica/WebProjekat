@@ -41,7 +41,6 @@ html, body {
 }
 
 .header-wrapper {
-	font-size: 26px;
 	display:flex;
 	justify-content:center;
 	margin-top:40px;
@@ -51,19 +50,20 @@ html, body {
 #soTable {
 	display:block;
 	height:500px;
+	width: 1000px;
 	border: 2px solid;
-	border-collapse: collapse;
-	overflow-y: scroll;
+	border-collapse: collapse; 
+	overflow-y: scroll; 
 }
 
 #soTable td {
-	text-align: center;
-	border: 2px solid;
+	 text-align: center;
+	 border: 2px solid; 
 }
 
 #soTable th {
-	border: 2px solid;
-	text-align: center;
+	 border: 2px solid;
+	text-align: center; 
 }
 
 
@@ -73,12 +73,16 @@ html, body {
 
 .login-btn {
 	margin-right: 1%;	
-	width: 80px;
+	/* width: 80px; */
 }
 
 .register-btn {
 	margin-right: 1%;
-	width: 80px;
+	/* width: 80px; */
+}
+
+#searchType {
+	height: 40px;
 }
 
 

@@ -7,16 +7,16 @@ Vue.component("sportObjectsView", {
 		}
 	},
 	template: `  
-    	<div class="home-page" style="background-color:gray; margin-bottom:100px;">
+    	<div class="home-page" style="background-color:lightgrey; margin-bottom:100px;">
     		<div class="header-wrapper">
     			<h3 style="margin:auto">Sport object view</h3>
     			<button v-on:click="goToLogin()" class="login-btn" id="btn-login" >Login</button>
     			<button v-on:click="goToRegister();" class="register-btn" id="btn-register">Register</button>
-    			<button v-on:click="logoutUser();" id="btn-logout" style="margin-right:5%; width:80px">Log out</button>
+    			<button v-on:click="logoutUser();" id="btn-logout" style="margin-right:5%">Log out</button>
     		</div>
     		<div class="sport-objects-view">
-    			<table id="soTable" border="1" style="margin:auto">
-	    			<tr bgcolor="lightgrey">
+    			<table id="soTable"  style="margin:auto">
+	    			<tr bgcolor="grey">
 	    				<th style="min-width:50px">Name <button v-on:click="sortNameFunction()" >&uarr;</button> <button v-on:click="sortNameDown()" >&darr;</button></th>
 	    				<th style="min-width:50px">Type</th>
 	    				<th style="min-width:50px">Location <button v-on:click="sortLocationFunction()" >&uarr;</button> <button v-on:click="sortLocationDown()" >&darr;</button></th>
@@ -24,7 +24,7 @@ Vue.component("sportObjectsView", {
 	    				<th style="min-width:50px">Work hours</th>
 	    				<th style="min-width:50px">Offer</th>
 	    				<th style="min-width:50px">Average mark <button v-on:click="sortAvgMarkFunction()" >&uarr;</button> <button v-on:click="sortAvgMarkDown()" >&darr;</button></th>
-	    				<th style="min-width:50px">Status</th>
+	    				<th style="min-width:100px">Status</th>
 	    			</tr>
 	    			
 	    			<tr class="data" v-for="sObject in sportObjectList" v-on:click="showSelectedObject(sObject)">
@@ -36,39 +36,39 @@ Vue.component("sportObjectsView", {
 	    				<td >{{sObject.workHour}}</td>
 	    				<td >{{sObject.objectOffer}}</td>
 	    				<td >{{sObject.avarageMark}}</td>
-	    				<td ><span v-if="sObject.status == true">Open</span><span v-else>Closed</span></td>
+	    				<td ><span class="badge rounded-pill bg-success"" v-if="sObject.status == true">Open</span><span class="badge rounded-pill bg-danger" v-else>Closed</span></td>
 	    			</tr>
 	    		</table>
 	    		<div class="objects-search">
-	    			<div>
-	    				<p>Search by name: </p>
-	    				<input id="searchName"  type="text" placeholder="Search...">
+	    			<div class="container">
+	    				<p style="margin-top:10px">Search by name: </p>
+	    				<input id="searchName" class="form-control"  type="text" placeholder="Search...">
 	    				
 	    			</div>
-	    			<div>
-	    				<p>Search by type: </p>
-	    				<select id="searchType">
+	    			<div class="container">
+	    				<p style="margin-top:10px">Search by type: </p>
+	    				<select id="searchType" class="form-select">
 	    					<option></option>
 	    					<option value="Gym">Gym</option>
 	    					<option value="Pool">Pool</option>
 	    					<option value="SportCenter">Sport center</option>
 	    				</select>
 	    			</div>
-	    			<div>
-	    				<p>Search by location: </p>
-	    				<input id="searchLocation"  type="text" placeholder="Search...">
+	    			<div class="container">
+	    				<p style="margin-top:10px">Search by location: </p>
+	    				<input id="searchLocation" class="form-control"  type="text" placeholder="Search...">
 	    			</div>
-	    			<div>
-	    				<p>Search by average grade: </p>
-	    				<input id="searchGrade"  type="text" placeholder="Search...">
+	    			<div class="container">
+	    				<p style="margin-top:10px"	>Search by average grade: </p>
+	    				<input id="searchGrade" class="form-control"  type="text" placeholder="Search...">
 	    			</div>
-	    			<div style="margin-top:10px;">
+	    			<div style="margin-top:10px;" class="container">
 	    				<input type="checkbox" id="checkbox-ignore" name="ignore-closed" value="checked">
 	    				<label for="ignore-closed">Show open only</label>
 	    			</div>
 	    			<div class="search-btn-wrapper">
 	    				
-	    				<button type="submit" v-on:click="searchName()">Search</button>
+	    				<button type="submit" class="btn btn-secondary" v-on:click="searchName()">Search</button>
 	    			</div>
 	    		</div>
 	    	</div>
@@ -104,26 +104,40 @@ Vue.component("sportObjectsView", {
 		},
 		hideButton: function(check) {
 			this.hideFlag = check;
-			
-			if (this.hideFlag == "logged") {
+			alert(this.hideFlag + " iz objecta");
+			const myArray = this.hideFlag.split(" ");
+			alert
+			if (myArray[0] == "logged") {
 				document.getElementById("btn-login").disabled= true;
+				if(myArray[1] == "Administrator")
+				{
+					alert("pali register");
+					
+				document.getElementById("btn-register").disabled = false;
+				}
+				else
+				{
+					
 				document.getElementById("btn-register").disabled = true;
+				}
 				document.getElementById("btn-logout").disabled = false;
-			} else if (this.hideFlag=""){
+			} else if (myArray[0]=""){
 				document.getElementById("btn-logout").disabled = true;
 			}
 			else {
 				document.getElementById("btn-logout").disabled = true;
 				document.getElementById("btn-login").disabled= false;
 				document.getElementById("btn-register").disabled = false;
+				
 			}
 		},
+		
 		
 		hideCheck: function() {
 			
 			axios 
 				.post('sportObjects/hide', this.hideFlag)
-				.then(response =>  this.hideButton(response.data))
+				.then(response => this.hideButton(response.data))
 		},
 		
 		searchName: function() {
@@ -423,11 +437,13 @@ Vue.component("sportObjectsView", {
 		
 		//Ne koristim jos
 		showSelectedObject : function (sObject) {
+			alert("Usao u prikaz selektovanog");
 			axios
 				.post('sportObject/getOne', sObject)
 				.then(response => response.data)
 				
-			router.go(`/oneSportObject`);
+			router.push(`/oneSportObject`);
+			router.go(0);
 		}
 		
 	}
