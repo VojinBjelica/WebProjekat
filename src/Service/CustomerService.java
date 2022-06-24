@@ -22,6 +22,10 @@ public class CustomerService {
 	{
 		return cfs.readManagers("managers");
 	}
+	public User editProfile(User user,User usertwo)
+	{
+		return cfs.editProfile(user,usertwo);
+	}
 	public void writeCustomers()
 	{
 		cfs.writeCustomers();

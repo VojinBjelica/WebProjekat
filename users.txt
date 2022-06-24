@@ -1,5 +1,5 @@
-awd;awd;awd;awd;Male;2005-05-05;Customer
-awd;awd;awd;awd;Male;2022-06-23;Customer
+awd;awd;Laza;Lazic;Male;2022-06-21;Customer
+awd;awd;Laza;Lazic;Male;2022-06-21;Customer
 laza123;laza123;Laza;Lazic;Male;2022-06-22;Customer
 joca123;joca123;Jovan;Jovic;Male;2022-06-22;Customer
 kelja123;kelja123;Kelja;Keljanovic;Male;2022-06-24;Customer
@@ -12,7 +12,8 @@ nidzo;nidzo;Nikola;Markovic;Male;2022-06-02;Customer
 milooo;milooo;Milovan;Markovic;Male;2022-06-03;Customer
 Mijov;mijov;Miroslav;Jovanovic;Male;2022-06-26;Customer
 stefi;stefi;Stefan;Uljarevic;Male;2006-07-18;Customer
-saki;saki;Sara;Milankovic;Female;2022-06-07;Customer
+saki;saki123;Sara;Milenkovic;Female;2022-06-22;Customer
 milan123;milan123;Milan;Markovic;Male;2022-06-01;Customer
-mica123;mica123;Mica;Micic;Male;2022-06-29;Customer
-leksa;leksa;Jovan;Aleksic;Male;2022-06-29;Administrator
+mica123;mica123;Peca;Pecic;Male;2022-06-14;Customer
+iva123;iva123;Ivan;Ivanovic;Male;2022-06-21;Customer
+laza;laza;Laza;Lazarevic;Male;2022-06-21;Administrator

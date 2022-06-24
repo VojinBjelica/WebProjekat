@@ -31,6 +31,7 @@ public class main {
 		CustomerController.loginCustomer();
 		CustomerController.logoutCustomer();
 		CustomerController.initList();
+		CustomerController.editProfile();
 		
 		new SportObjectController();
 		SportObjectController.readSportObjects();

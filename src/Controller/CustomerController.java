@@ -74,9 +74,21 @@ public class CustomerController {
 	public static void addCustomer()
 	{
 		post("customer/add", (req, res) -> {
+			System.out.println("Usao u add");
 			String payload = req.body();
 			Customer pd = g.fromJson(payload, Customer.class);
 			cs.addCustomer(pd);
+			return "OK";
+		});
+	}
+	public static void editProfile()
+	{
+		post("customer/editprofile", (req, res) -> {
+			String payload = req.body();
+			Session ss = req.session(true);
+			User user = ss.attribute("user");
+			User pd = g.fromJson(payload, User.class);
+			cs.editProfile(user,pd);
 			return "OK";
 		});
 	}
@@ -84,13 +96,17 @@ public class CustomerController {
 	{
 		post("customer/add", (req, res) -> {
 			String payload = req.body();
+			System.out.println("Usao u add user");
 			User pd = g.fromJson(payload, User.class);
+			System.out.println("Uloga:" + pd.getRole());
 			Manager manager = new Manager(pd.getUsername(),pd.getPassword(),pd.getName(),pd.getSurname(),pd.getDateOfBirth(),pd.getGender(),RoleEnum.Manager);
 			Customer customer = new Customer(pd.getUsername(),pd.getPassword(),pd.getName(),pd.getSurname(),pd.getDateOfBirth(),pd.getGender(),RoleEnum.Customer);
 			if(pd.getRole() == RoleEnum.Manager)
 				cs.addManagers(manager);
 			else if(pd.getRole() == RoleEnum.Customer)
+			{
 				cs.addCustomer(customer);
+			}
 			return "OK";
 		});
 	}
