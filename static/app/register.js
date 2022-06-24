@@ -1,6 +1,7 @@
 Vue.component("register", {
 	data: function () {
 		    return {
+			  temp:null,
 			  hideFlag:null,
 		      list:null,
 		      user:{name:null,surname:null,username:null,password:null,gender:null,dateOfBirth:null,role:null}
@@ -74,22 +75,13 @@ Vue.component("register", {
 </td>
 <td>
 <select v-model="user.role" class="form-select" >
-<option value="Customer">Customer</option>
-<option value = "Manager">Manager</option>
-<option value = "Coach">Coach</option>
+<option  value="Customer">Customer</option>
+<option :disabled="this.temp" value = "Manager">Manager</option>
+<option :disabled="this.temp" value = "Coach">Coach</option>
 </select>
 </td>
 </tr>
-<tr id="roleiddva">
-<td>
-<p>Role:</p>
-</td>
-<td>
-<select v-model="user.role" class="form-select" >
-<option value="Customerr">Customer</option>
-</select>
-</td>
-</tr>
+
 <tr>
 <td>
 <a href="#/login" ><input type="button"  class="btn btn-success" value="Login"/></a>
@@ -111,10 +103,10 @@ Vue.component("register", {
 		addCustomer : function () {
 				axios  
 		          .post('customer/add',this.user)
-		          .then(response => (response.data))
+		          .then(response => alert(response.data))
 		          
 		          },
-		  hideCheck: function() {
+		hideCheck: function() {
 			
 			axios 
 				.post('customer/hidecombo', this.hideFlag)
@@ -126,12 +118,12 @@ Vue.component("register", {
 			alert(this.hideFlag);
 			
 			if (this.hideFlag == "Administrator" || this.hideFlag == "Coach" || this.hideFlag == "Manager" ) {
-					document.getElementById("roleid").style.display = "";
-					document.getElementById("roleiddva").style.display = "none";
+				this.temp = false;
+		
 				}
 			else if (this.hideFlag == "Customer") {
-				document.getElementById("roleid").style.display = "none";
-				document.getElementById("roleiddva").style.display = "";
+				
+				this.temp = true;
 			}
 				},
 		  validateName : function() {
@@ -187,8 +179,7 @@ Vue.component("register", {
 	}
 	
 ,mounted(){
-	document.getElementById("roleid").style.display = "none";
-	document.getElementById("roleiddva").style.display = "";
+	this.temp = true;
 	this.hideCheck();
 		axios
 			.get('customer/listinit', this.list)

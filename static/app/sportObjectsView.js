@@ -13,6 +13,8 @@ Vue.component("sportObjectsView", {
     			<button v-on:click="goToLogin()" class="login-btn" id="btn-login" >Login</button>
     			<button v-on:click="goToRegister();" class="register-btn" id="btn-register">Register</button>
     			<button v-on:click="logoutUser();" id="btn-logout" style="margin-right:5%">Log out</button>
+    			<button v-on:click="goToEditProfile()" class="login-btn" id="btn-editprofile" >Edit profile</button>
+    			
     		</div>
     		<div class="sport-objects-view">
     			<table id="soTable"  style="margin:auto">
@@ -79,6 +81,7 @@ Vue.component("sportObjectsView", {
     	`,
 	mounted(){
 		document.getElementById("btn-logout").disabled = true;
+		document.getElementById("btn-editprofile").disabled= true;
 		this.hideCheck();
 		axios
 			.get('sportObjects/read', this.sportObjectList)
@@ -109,9 +112,10 @@ Vue.component("sportObjectsView", {
 			this.hideFlag = check;
 			alert(this.hideFlag + " iz objecta");
 			const myArray = this.hideFlag.split(" ");
-			alert
 			if (myArray[0] == "logged") {
 				document.getElementById("btn-login").disabled= true;
+				document.getElementById("btn-editprofile").disabled= false;
+				
 				if(myArray[1] == "Administrator")
 				{
 					alert("pali register");
@@ -129,6 +133,7 @@ Vue.component("sportObjectsView", {
 			}
 			else {
 				document.getElementById("btn-logout").disabled = true;
+				document.getElementById("btn-editprofile").disabled= true;
 				document.getElementById("btn-login").disabled= false;
 				document.getElementById("btn-register").disabled = false;
 				
@@ -269,6 +274,9 @@ Vue.component("sportObjectsView", {
 		
 		goToLogin : function() {
 			router.push(`/login`);
+		},
+		goToEditProfile : function() {
+			router.push(`/editprofile`);
 		},
 		
 		goToRegister : function() {

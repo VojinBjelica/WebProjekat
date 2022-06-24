@@ -3,6 +3,7 @@ const Register = { template: '<register></register>' }
 const SportObjectsView = { template: '<sportObjectsView></sportObjectsView>' }
 const OneSportObject = { template: '<oneSportObject></oneSportObject>' }
 const AddSportObject = { template: '<addSportObject></addSportObject>'}
+const EditProfile = { template: '<editprofile></editprofile>'}
 
 const router = new VueRouter({
 	  mode: 'hash',
@@ -11,7 +12,8 @@ const router = new VueRouter({
 	    { path: '/register', component: Register},
 	    { path: '/', component: SportObjectsView},
 	    { path: '/oneSportObject', component: OneSportObject },
-	    { path: '/addSportObject', component: AddSportObject }
+	    { path: '/addSportObject', component: AddSportObject },
+	    { path: '/editprofile', component: EditProfile }
 	  ]
 });
 

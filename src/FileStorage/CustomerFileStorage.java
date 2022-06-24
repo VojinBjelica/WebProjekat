@@ -239,6 +239,36 @@ public class CustomerFileStorage {
         }
         return true;
     }
+	public boolean addUsersInFile() 
+    {
+		
+        FileWriter fileWriter;
+        try {
+            fileWriter = new FileWriter("./users.txt");
+        PrintWriter output = new PrintWriter(fileWriter, true);
+        for(User customer : userList)
+        {
+            String outputString = "";
+            outputString += customer.getUsername() + ";";
+            outputString += customer.getPassword() + ";";
+            outputString += customer.getName() + ";";
+            outputString += customer.getSurname() + ";";
+            if(customer.getGender() == GenderEnum.Male)
+            outputString += "Male" + ";";
+            else if(customer.getGender() == GenderEnum.Female)
+            outputString += "Female" + ";";
+            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+            outputString += formatter.format(customer.getDateOfBirth());
+            outputString += ";" + customer.getRole();
+            output.println(outputString);
+        }
+        //addCustomersToUsers();
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        return true;
+    }
 	public boolean addCustomersToUsers()
 	{
 		FileWriter fileWriter;
@@ -272,6 +302,7 @@ public class CustomerFileStorage {
 		if(customer.getName() != null && customer.getSurname()!= null  && customer.getUsername() != null)
 		{
 		customerList = readCustomers("customers");
+		System.out.println("Duzina liste customera:" + customerList.size());
 		ArrayList<User> userList = readUsers();
 		boolean usernameDuplicate = true;
 		for(User u : userList)
@@ -290,6 +321,7 @@ public class CustomerFileStorage {
 		if(nameReg == true && surnameReg == true && usernameReg == true && usernameDuplicate == true)
 		{
 			customerList.add(customer);
+			System.out.println("Dodajem:" + customer.getName() + " " + customer.getSurname());
 		}
 		else
 		{
@@ -298,6 +330,26 @@ public class CustomerFileStorage {
 		addCustomerInFile("customers");
 		}
 		return customer;
+	}
+	public User editProfile(User user,User usertwo)
+	{
+		User returnUser = null;
+		userList = readUsers();
+		for(User u : userList)
+		{
+			if(u.getUsername().equals(user.getUsername()))
+			{
+				u.setName(usertwo.getName());
+				u.setSurname(usertwo.getSurname());
+				u.setPassword(usertwo.getPassword());
+				u.setGender(usertwo.getGender());
+				u.setDateOfBirth(usertwo.getDateOfBirth());
+				returnUser = u;
+			}
+		}
+		addUsersInFile();
+		return returnUser;
+      
 	}
 	public Manager addManager(Manager customer)
 	{
@@ -345,6 +397,7 @@ public class CustomerFileStorage {
 		}
 		return cust;
 	}
+	
 	public User findCustomerByUsernameAndPassword(String username,String password)
 	{
 		ArrayList<User> customerList = readUsers();
