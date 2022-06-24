@@ -3,6 +3,9 @@ package FileStorage;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.StringTokenizer;
@@ -138,6 +141,72 @@ public class SportObjectFileStorage {
 			}
 		}
 		return sObject;
+	}
+	
+	public SportObject addSportObject(SportObject sportObject) {
+		if (sportObject.getObjectName() != null && sportObject.getObjectType() != null) {
+			sportObjectList = readSportObjects();
+			System.out.println("Gornja duzina: " + sportObjectList.size() );
+			
+			boolean nameDuplicate = true;
+			for (SportObject so : sportObjectList) {
+				if (so.getObjectName().equals(sportObject.getObjectName())) {
+					nameDuplicate = false;
+				}
+			}
+			boolean nameReg = false;
+			
+			if (sportObject.getObjectName().matches("[a-zA-Z0-9 ]*")) nameReg = true;
+			
+			if (nameReg == true && nameDuplicate == true ) {
+				sportObjectList.add(sportObject);
+			}
+			else {
+				System.out.println("Invalid sport object data");
+			}
+			addSportObjectInFile("sportObjects");
+		}
+		return sportObject;
+	}
+	
+	public boolean addSportObjectInFile(String who) {
+		FileWriter fileWriter;
+		try {
+			fileWriter = new FileWriter("./"+who+".txt");
+			PrintWriter output = new PrintWriter(fileWriter, true);
+			System.out.println("Donja duzina: " + sportObjectList.size() );
+			for (SportObject so : sportObjectList) {
+				String outputString = "";
+				outputString += so.getObjectName() + ";";
+				if (so.getObjectType() == ObjectTypeEnum.Gym) {
+					outputString+="Gym" + ";";
+				}
+				else if (so.getObjectType() == ObjectTypeEnum.Pool) {
+					outputString+="Pool" + ";";
+				}
+				else if (so.getObjectType() == ObjectTypeEnum.SportCenter) {
+					outputString+="SportCenter" + ";";
+				}
+				outputString += so.getObjectOffer() + ";";
+				outputString += so.getWorkHour() + ";";
+				outputString += so.getAvarageMark() + ";";
+				outputString += so.getLogo() + ";";
+				outputString += so.getLocation().getLatitude() + ";";
+				outputString += so.getLocation().getLongitude() + ";";
+				outputString += so.getLocation().getAddress().getStreetAndNumber() + ";";
+				outputString += so.getLocation().getAddress().getCity() + ";";
+				outputString += so.getLocation().getAddress().getZipCode() + ";";
+				if (so.isStatus() == true) {
+					outputString+="true";
+				} else if (so.isStatus() == false) {
+					outputString+="false";
+				}
+				output.println(outputString);
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return true;
 	}
 	
 }
