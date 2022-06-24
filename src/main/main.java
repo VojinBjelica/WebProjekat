@@ -39,6 +39,7 @@ public class main {
 		SportObjectController.logoutCustomer();
 		SportObjectController.getSelectedObject();
 		SportObjectController.showSelectedObject();
+		SportObjectController.addSportObject();
 		// TODO Auto-generated method stub
 
 	}

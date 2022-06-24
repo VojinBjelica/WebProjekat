@@ -35,7 +35,6 @@ public class SportObjectController {
 	
 	public static void readSportObjects() {
 		get("sportObjects/read", (req, res) -> {
-			System.out.println(sos.readSportObjects()); 
 			return g.toJson(sos.readSportObjects());
 		});
 	}
@@ -99,15 +98,6 @@ public class SportObjectController {
 		});
 	}
 	
-	/*public static void getSportObjectByName() {
-		post("sportObject/showOne", (req, res) -> {
-			String payload = req.body();
-			String pd = g.fromJson(payload, String.class);
-			System.out.println("Selected sport object: " + pd);
-			return g.toJson(sos.getSportObjectByName(pd));
-		});
-	}*/
-	
 	public static void getSelectedObject() {
 		post("sportObject/getOne", (req, res) -> {
 			String payload = req.body();
@@ -122,6 +112,15 @@ public class SportObjectController {
 		post("sportObject/showOne", (req, res) -> {
 			System.out.println("temp obj:" + tempObject.getObjectName());
 			return g.toJson(tempObject);
+		});
+	}
+	
+	public static void addSportObject() {
+		post("sportObjects/add", (req, res) -> {
+			String payload = req.body();
+			SportObject so = g.fromJson(payload, SportObject.class);
+			sos.addSportObject(so);
+			return("OK");
 		});
 	}
 	

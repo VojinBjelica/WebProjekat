@@ -1,6 +1,8 @@
-Nonstopfit;Gym;Sauna;6-22;4.6;https://img.freepik.com/free-vector/gym-logo_219982-7.jpg;3233;4422;Balzakova 60;Novi Sad;400107;true;
-PlanetFitness;SportCenter;Group training;8-21;2.3;https://img.freepik.com/free-vector/fitness-gym-logo-premium-vector_144543-140.jpg;1111;2222;Strazilovska 23;Novi Sad;400108;false;
-Olympus;Pool;None;9-19;3.9;https://img.freepik.com/free-vector/swimming-pool-logo-design_501861-377.jpg?w=2000;6666;9876;Hadziruvimova 54;Novi Sad;400109;true;
-X Sport;SportCenter;Group training;6-22;4.8;https://st4.depositphotos.com/2954247/19891/v/1600/depositphotos_198919200-stock-illustration-sport-center-logo-design-gradient.jpg;1324;6457;Branka Bajica 32a;Novi Sad;400107;true;
-Poseidon;Pool;Sauna;11-23;4.0;https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRz-x-1rl27TVomtKwRXE39fMJ1p32lPsHSrQ&usqp=CAU;54354;324245;Cara Dusana 8;Belgrade;400203;true;
-Gold's gym;Gym;None;7-22;4.9;https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTPQpRBETBBRhKQ0ZyO_AkmvrebmqJnBJjOdw&usqp=CAU;2355;23435;Save Malesevica 48;Belgrade;1018-1;false;
+Imenko;Pool;Nema;12-23;0.0;https://img.freepik.com/free-vector/gym-logo_219982-7.jpg;Duzina;Sirina;Ulica brrr;Grad;343424;true
+Nonstopfit;Gym;Sauna;6-22;4.6;https://img.freepik.com/free-vector/gym-logo_219982-7.jpg;3233;4422;Balzakova 60;Novi Sad;400107;true
+Olympus;Pool;None;9-19;3.9;https://img.freepik.com/free-vector/swimming-pool-logo-design_501861-377.jpg?w=2000;6666;9876;Hadziruvimova 54;Novi Sad;400109;true
+X Sport;SportCenter;Group training;6-22;4.8;https://st4.depositphotos.com/2954247/19891/v/1600/depositphotos_198919200-stock-illustration-sport-center-logo-design-gradient.jpg;1324;6457;Branka Bajica 32a;Novi Sad;400107;true
+Poseidon;Pool;Sauna;11-23;4.0;https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRz-x-1rl27TVomtKwRXE39fMJ1p32lPsHSrQ&usqp=CAU;54354;324245;Cara Dusana 8;Belgrade;400203;true
+PlanetFitness;SportCenter;Group training;8-21;2.3;https://img.freepik.com/free-vector/fitness-gym-logo-premium-vector_144543-140.jpg;1111;2222;Strazilovska 23;Novi Sad;400108;false
+Gold's gym;Gym;None;7-22;4.9;https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTPQpRBETBBRhKQ0ZyO_AkmvrebmqJnBJjOdw&usqp=CAU;2355;23435;Save Malesevica 48;Belgrade;1018-1;false
+Drugii;SportCenter;Treniraj;2-22;0.0;https://img.freepik.com/free-vector/gym-logo_219982-7.jpg;3434;2343;Tamo daleko;negdje;432423;false

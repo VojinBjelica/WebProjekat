@@ -72,6 +72,9 @@ Vue.component("sportObjectsView", {
 	    			</div>
 	    		</div>
 	    	</div>
+	    	<div>
+	    		<button class="btn btn-primary" v-on:click="goToAddSportObject()" style="margin-top:15px; margin-left:75px">Add new sport object</button>
+	    	</div>
     	</div>		  
     	`,
 	mounted(){
@@ -444,7 +447,13 @@ Vue.component("sportObjectsView", {
 				
 			router.push(`/oneSportObject`);
 			router.go(0);
+		},
+		
+		goToAddSportObject: function() {
+			
+			router.push(`/addSportObject`);
 		}
+		
 		
 	}
 	
