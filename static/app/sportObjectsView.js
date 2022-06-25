@@ -75,13 +75,14 @@ Vue.component("sportObjectsView", {
 	    		</div>
 	    	</div>
 	    	<div>
-	    		<button class="btn btn-primary" v-on:click="goToAddSportObject()" style="margin-top:15px; margin-left:75px">Add new sport object</button>
+	    		<button class="btn btn-primary invisible" id="add-so-btn" v-on:click="goToAddSportObject()" style="margin-top:15px; margin-left:75px">Add new sport object</button>
 	    	</div>
     	</div>		  
     	`,
 	mounted(){
 		document.getElementById("btn-logout").disabled = true;
 		document.getElementById("btn-editprofile").disabled= true;
+
 		this.hideCheck();
 		axios
 			.get('sportObjects/read', this.sportObjectList)
@@ -121,21 +122,32 @@ Vue.component("sportObjectsView", {
 					alert("pali register");
 					
 				document.getElementById("btn-register").disabled = false;
+				document.getElementById("add-so-btn").classList.remove("invisible");
 				}
 				else
 				{
 					
 				document.getElementById("btn-register").disabled = true;
+				document.getElementById("add-so-btn").classList.add("invisible");
+
+
+
 				}
 				document.getElementById("btn-logout").disabled = false;
 			} else if (myArray[0]=""){
 				document.getElementById("btn-logout").disabled = true;
+				document.getElementById("add-so-btn").classList.add("invisible");
+
+
 			}
 			else {
 				document.getElementById("btn-logout").disabled = true;
 				document.getElementById("btn-editprofile").disabled= true;
 				document.getElementById("btn-login").disabled= false;
 				document.getElementById("btn-register").disabled = false;
+				document.getElementById("add-so-btn").classList.add("invisible");
+
+
 				
 			}
 		},
