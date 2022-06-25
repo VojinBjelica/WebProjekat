@@ -155,11 +155,30 @@ public class SportObjectFileStorage {
 				}
 			}
 			boolean nameReg = false;
+			boolean streetReg = false;
+			boolean cityReg = false;
+			boolean workHourReg = false;
 			
-			if (sportObject.getObjectName().matches("[a-zA-Z0-9 ]*")) nameReg = true;
+			if (sportObject.getObjectName().matches("[a-zA-Z0-9 ]*")) {
+				nameReg = true;
+				System.out.println("Dobro ime");
+			}
+			if (sportObject.getLocation().getAddress().getStreetAndNumber().matches("[a-zA-Z ]+[0-9 ]+[a-zA-Z ]?")) {
+				streetReg = true;
+				System.out.println("Dobra ulica i broj");
+			}
+			if (sportObject.getLocation().getAddress().getCity().matches("[a-zA-Z ]+")) {
+				cityReg = true;
+				System.out.println("Dobar grad");
+			}
+			if (sportObject.getWorkHour().matches("([01]?[0-9]|2[0-3]):?[0-5]?[0-9]?-([01]?[0-9]|2[0-3]):?[0-5]?[0-9]?")) {
+				workHourReg = true;
+				System.out.println("Dobri work hours");
+			}
 			
-			if (nameReg == true && nameDuplicate == true ) {
+			if (nameReg == true && nameDuplicate == true && streetReg == true && cityReg == true && workHourReg == true ) {
 				sportObjectList.add(sportObject);
+				System.out.println("Dodajem: " + sportObject.getObjectName());
 			}
 			else {
 				System.out.println("Invalid sport object data");

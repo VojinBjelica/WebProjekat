@@ -35,6 +35,7 @@ public class SportObjectController {
 	
 	public static void readSportObjects() {
 		get("sportObjects/read", (req, res) -> {
+			System.out.println("Pozvano citanje liste");
 			return g.toJson(sos.readSportObjects());
 		});
 	}

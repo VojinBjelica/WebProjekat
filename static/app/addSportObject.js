@@ -31,7 +31,7 @@ Vue.component("addSportObject", {
 						<p>Name: </p>
 					</td>
 					<td>
-						<input v-model="sportObject.objectName" class="form-control" type="text" />
+						<input v-model="sportObject.objectName" id="add-so-name" class="form-control" type="text" />
 					</td>
 				</tr>
 				<tr>
@@ -39,7 +39,7 @@ Vue.component("addSportObject", {
 						<p>Type:</p>
 					</td>
 					<td>
-						<select v-model="sportObject.objectType" class="form-select">
+						<select v-model="sportObject.objectType" id="add-so-type" class="form-select">
 							<option value="Gym" >Gym</option>
 							<option value="Pool" >Pool</option>
 							<option value="SportCenter" >Sport center</option>
@@ -51,7 +51,7 @@ Vue.component("addSportObject", {
 						<p>Longitude: </p>
 					</td>
 					<td>
-						<input v-model="sportObject.location.longitude" class="form-control" type="text" />
+						<input v-model="sportObject.location.longitude" id="add-so-longitude" class="form-control" type="text" />
 					</td>
 				</tr>
 				<tr>
@@ -59,7 +59,7 @@ Vue.component("addSportObject", {
 						<p>Latitude: </p>
 					</td>
 					<td>
-						<input v-model="sportObject.location.latitude" class="form-control" type="text" />
+						<input v-model="sportObject.location.latitude" id="add-so-latitude" class="form-control" type="text" />
 					</td>
 				</tr>
 				<tr>
@@ -67,7 +67,7 @@ Vue.component("addSportObject", {
 						<p>Street name and number: </p>
 					</td>
 					<td>
-						<input v-model="sportObject.location.address.streetAndNumber" class="form-control" type="text" />
+						<input v-model="sportObject.location.address.streetAndNumber" id="add-so-street" class="form-control" type="text" />
 					</td>
 				</tr>
 				<tr>
@@ -75,7 +75,7 @@ Vue.component("addSportObject", {
 						<p>City: </p>
 					</td>
 					<td>
-						<input v-model="sportObject.location.address.city" class="form-control" type="text" />
+						<input v-model="sportObject.location.address.city" id="add-so-city" class="form-control" type="text" />
 					</td>
 				</tr>
 				<tr>
@@ -83,7 +83,7 @@ Vue.component("addSportObject", {
 						<p>Zip code: </p>
 					</td>
 					<td>
-						<input v-model="sportObject.location.address.zipCode" class="form-control" type="text" />
+						<input v-model="sportObject.location.address.zipCode" id="add-so-zip" class="form-control" type="text" />
 					</td>
 				</tr>
 				<tr>
@@ -91,7 +91,7 @@ Vue.component("addSportObject", {
 						<p>Logo url: </p>
 					</td>
 					<td>
-						<input class="form-control" v-model="sportObject.logo" type="text" />
+						<input class="form-control" v-model="sportObject.logo" id="add-so-logo" type="text" />
 					</td>
 				</tr>
 				<tr>
@@ -99,7 +99,7 @@ Vue.component("addSportObject", {
 						<p>Offer: </p>
 					</td>
 					<td>
-						<input class="form-control" v-model="sportObject.objectOffer" type="text" />
+						<input class="form-control" v-model="sportObject.objectOffer" id="add-so-offer" type="text" />
 					</td>
 				</tr>
 				<tr>
@@ -109,11 +109,11 @@ Vue.component("addSportObject", {
 					<td>
 						<div>
 							<div class="form-check form-check-inline" >
-								<input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadioOpen" v-model="sportObject.status" value="True" />
+								<input checked  class="form-check-input " type="radio"  name="inlineRadioOptions" id="inlineRadioOpen" v-model="sportObject.status" value="True" >
 								<label class="form-check-label" for="inlineRadioOpen">Open</label>
 							</div>
 							<div class="form-check form-check-inline" >
-								<input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadioClosed" v-model="sportObject.status" value="False" />
+								<input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadioClosed" v-model="sportObject.status" value="False" >
 								<label class="form-check-label" for="inlineRadioClosed">Closed</label>
 							</div>
 						</div>
@@ -124,12 +124,12 @@ Vue.component("addSportObject", {
 						<p>Work hours: </p>
 					</td>
 					<td>
-						<input class="form-control" v-model="sportObject.workHour" type="text" />
+						<input class="form-control" id="add-so-work-hour" v-model="sportObject.workHour" type="text" />
 					</td>
 				</tr>
 				<tr>
 					<td>
-						<button class="btn btn-success ms-5" v-on:click="addObject()" >Confirm</button>
+						<button class="btn btn-success ms-5" v-on:click="validateAdding()" >Confirm</button>
 					</td>
 					<td >
 						<button v-on:click="goBack()" class="btn btn-danger ms-5">Cancel</button>
@@ -155,9 +155,65 @@ Vue.component("addSportObject", {
 		
 		goBack : function () {
 			router.push(`/`);
+		},
+		
+		validateAdding : function () {
+			var name = document.getElementById('add-so-name').value;
+			var type = document.getElementById('add-so-type').value;
+			var longitude = document.getElementById('add-so-longitude').value;
+			var latitude = document.getElementById('add-so-latitude').value;
+			var street = document.getElementById('add-so-street').value;
+			var city = document.getElementById('add-so-city').value;
+			var zip = document.getElementById('add-so-zip').value;
+			var logo = document.getElementById('add-so-logo').value;
+			var offer = document.getElementById('add-so-offer').value;
+			var workHour = document.getElementById('add-so-work-hour').value;
+			var statusOpen = document.getElementById('inlineRadioOpen');
+			var statusClosed = document.getElementById('inlineRadioClosed');
+			
+			if (name == "") {
+				alert("You must enter a name.");
+			} else if (type == ""){
+				alert("You must select a type.");
+			} else if (longitude == "") {
+				alert ("You must enter a longitude.");
+			} else if (latitude == "") {
+				alert ("You must enter a latitude.");
+			} else if (street == "") {
+				alert ("You must enter a street name and number");
+			} else if (city == "") {
+				alert ("You must enter a city.");
+			} else if (zip == "") {
+				alert ("You must enter a zip code.");
+			} else if (logo == "") {
+				alert ("You must enter a logo.");
+			} else if (offer == "") {
+				alert ("You must enter an offer.");
+			} else if (statusOpen.checked == false && statusClosed.checked == false) {
+				alert ("You must select a status.");
+			} else if (workHour == "") {
+				alert ("You must enter work hours.");
+			} else {
+				var nameFlag = true;
+				for (const i in this.sportObjectList) {
+					if (this.sportObjectList[i].objectName.trim().toLowerCase() == name.trim().toLowerCase()) {
+						nameFlag = false;
+					}
+				}
+				if (nameFlag == true) {
+					this.addObject();
+				} else {
+					alert("That name is already in use.");
+				}
+			}
+
 		}
 		
 	},
 	
-	mounted() {}
+	mounted() {
+		axios
+			.get('sportObjects/read', this.sportObjectList)
+			.then(response => (this.sportObjectList = response.data));
+	}
 });
