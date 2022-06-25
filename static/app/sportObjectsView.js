@@ -14,6 +14,7 @@ Vue.component("sportObjectsView", {
     			<button v-on:click="goToRegister();" class="register-btn" id="btn-register">Register</button>
     			<button v-on:click="logoutUser();" id="btn-logout" style="margin-right:5%">Log out</button>
     			<button v-on:click="goToEditProfile()" class="login-btn" id="btn-editprofile" >Edit profile</button>
+    			<button v-on:click="goToUsersView()" class="login-btn" id="btn-userview" >Users</button>
     			
     		</div>
     		<div class="sport-objects-view">
@@ -82,6 +83,7 @@ Vue.component("sportObjectsView", {
 	mounted(){
 		document.getElementById("btn-logout").disabled = true;
 		document.getElementById("btn-editprofile").disabled= true;
+		document.getElementById("btn-userview").disabled= true;
 
 		this.hideCheck();
 		axios
@@ -120,12 +122,16 @@ Vue.component("sportObjectsView", {
 				if(myArray[1] == "Administrator")
 				{
 					alert("pali register");
+				document.getElementById("btn-userview").disabled= false;
+
 					
 				document.getElementById("btn-register").disabled = false;
 				document.getElementById("add-so-btn").classList.remove("invisible");
 				}
 				else
 				{
+					document.getElementById("btn-userview").disabled= true;
+
 					
 				document.getElementById("btn-register").disabled = true;
 				document.getElementById("add-so-btn").classList.add("invisible");
@@ -146,6 +152,8 @@ Vue.component("sportObjectsView", {
 				document.getElementById("btn-login").disabled= false;
 				document.getElementById("btn-register").disabled = false;
 				document.getElementById("add-so-btn").classList.add("invisible");
+				document.getElementById("btn-userview").disabled= true;
+
 
 
 				
@@ -293,6 +301,9 @@ Vue.component("sportObjectsView", {
 		
 		goToRegister : function() {
 			router.push(`/register`);
+		},
+		goToUsersView : function() {
+			router.push(`/userview`);
 		},
 		
 		sortAvgMarkFunction : function() {
