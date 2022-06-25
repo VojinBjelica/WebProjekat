@@ -62,6 +62,25 @@ public class CustomerController {
 			return g.toJson(cs.readUsers());
 		});
 	}
+	public static void readListUser() {
+		get("customer/showuserlist", (req, res) -> {
+			ArrayList<User> userList = cs.readUsers();
+			String hashPass = null;
+
+			for(User u : userList)
+			{
+				
+				for(char c : u.getPassword().toCharArray()) {
+				    // process c
+					hashPass = u.getPassword().replaceAll(u.getPassword(),"Hidden");
+				}
+				u.setPassword(hashPass);
+				
+				
+			}
+			return g.toJson(userList);
+		});
+	}
 
 	public static void addCustomerInFile()
 	{
