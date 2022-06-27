@@ -87,7 +87,7 @@ Vue.component("register", {
 <a href="#/login" ><input type="button"  class="btn btn-success" value="Login"/></a>
 </td>
 <td>
-<a href="#/login" ><input  type="button"  class="btn btn-success" v-on:click="validateText();duplicateUsername();addCustomer();" value="Register"/></a>
+<input  type="button"  class="btn btn-success" v-on:click="validateText();duplicateUsername();addCustomer();goToLogin();" value="Register"/>
 </td>
 </tr>
 </table>
@@ -112,6 +112,7 @@ Vue.component("register", {
 				.post('customer/hidecombo', this.hideFlag)
 				.then(response =>  this.hideButton(response.data))
 		},
+		
 		hideButton: function(check) {
 			this.hideFlag = check;
 			alert("Usao hide button");
@@ -158,6 +159,9 @@ Vue.component("register", {
 			if(z == "")alert("Fill username input");
 			
 				
+		},
+		goToLogin : function() {
+			router.push(`/login`);
 		},
 		duplicateUsername : function()
 		{
