@@ -16,6 +16,7 @@ import java.util.StringTokenizer;
 
 import javax.swing.JOptionPane;
 
+import beans.Coach;
 import beans.Customer;
 import beans.GenderEnum;
 import beans.Manager;
@@ -26,6 +27,7 @@ public class CustomerFileStorage {
 	
 	public static ArrayList<Customer> customerList = new ArrayList<Customer>();
 	public static ArrayList<Manager> managerList = new ArrayList<Manager>();
+	public static ArrayList<Coach> coachList = new ArrayList<Coach>();
 	public static ArrayList<User> userList = new ArrayList<User>();
 	public ArrayList<Customer> readCustomers(String way) {
         ArrayList<Customer> customers = new ArrayList<Customer>();
@@ -105,6 +107,53 @@ public class CustomerFileStorage {
                     Manager customer = new Manager(username,password,name,surname, dt,gen);
                     customers.add(customer);
                     managerList = customers;
+                }
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        finally {
+            if ( in != null ) {
+                try {
+                    in.close();
+                }
+                catch (Exception e) { }
+            }
+        }
+        return customers;
+    }
+	public ArrayList<Coach> readCoaches() {
+        ArrayList<Coach> customers = new ArrayList<Coach>();
+        BufferedReader in = null;
+        try {
+            File file = new File("./coaches.txt");
+            in = new BufferedReader(new FileReader(file));
+            String line, username = "", password = "", name = "",surname = "",gender = "",date = "";
+            StringTokenizer st;
+            try {
+                while ((line = in.readLine()) != null) {
+                    line = line.trim();
+                    if (line.equals("") || line.indexOf('#') == 0)
+                        continue;
+                    st = new StringTokenizer(line, ";");
+                    while (st.hasMoreTokens()) {
+                        username = st.nextToken().trim();
+                        password = st.nextToken().trim();
+                        name = st.nextToken().trim();
+                        surname = st.nextToken().trim();
+                        gender = st.nextToken().trim();
+                        date = st.nextToken().trim();             
+                        }
+                    SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+                    Date dt = formatter.parse(date);
+                    GenderEnum gen = GenderEnum.Male;
+                    if(gender.equals("Male")) gen = GenderEnum.Male;
+                    else if(gender.equals("Female")) gen = GenderEnum.Female;
+                    Coach customer = new Coach(username,password,name,surname, dt,gen);
+                    customers.add(customer);
+                    coachList = customers;
                 }
             } catch (Exception ex) {
                 ex.printStackTrace();
@@ -203,7 +252,6 @@ public class CustomerFileStorage {
             outputString += formatter.format(customer.getDateOfBirth());
             output.println(outputString);
         }
-        addCustomersToUsers();
         } catch (IOException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
@@ -218,6 +266,35 @@ public class CustomerFileStorage {
             fileWriter = new FileWriter("./"+who+".txt");
         PrintWriter output = new PrintWriter(fileWriter, true);
         for(Manager customer : managerList)
+        {
+            String outputString = "";
+            outputString += customer.getUsername() + ";";
+            outputString += customer.getPassword() + ";";
+            outputString += customer.getName() + ";";
+            outputString += customer.getSurname() + ";";
+            if(customer.getGender() == GenderEnum.Male)
+            outputString += "Male" + ";";
+            else if(customer.getGender() == GenderEnum.Female)
+            outputString += "Female" + ";";
+            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+            outputString += formatter.format(customer.getDateOfBirth());
+            output.println(outputString);
+        }
+        //addCustomersToUsers();
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        return true;
+    }
+	public boolean addCoachesInFile() 
+    {
+		
+        FileWriter fileWriter;
+        try {
+            fileWriter = new FileWriter("./coaches.txt");
+        PrintWriter output = new PrintWriter(fileWriter, true);
+        for(Coach customer : coachList)
         {
             String outputString = "";
             outputString += customer.getUsername() + ";";
@@ -303,7 +380,7 @@ public class CustomerFileStorage {
 		{
 		customerList = readCustomers("customers");
 		System.out.println("Duzina liste customera:" + customerList.size());
-		ArrayList<User> userList = readUsers();
+		userList = readUsers();
 		boolean usernameDuplicate = true;
 		for(User u : userList)
 		{
@@ -312,9 +389,13 @@ public class CustomerFileStorage {
 				usernameDuplicate = false;
 			}
 		}
+		User newUser = new User(customer.getUsername(),customer.getPassword(),customer.getName(),customer.getSurname(),customer.getDateOfBirth(),customer.getGender(),customer.getRole());
+		userList.add(newUser);
+		addUsersInFile();
 		boolean nameReg = false;
 		boolean surnameReg = false;
 		boolean usernameReg = false;
+		
 		if(customer.getName().matches("[A-Z][a-z]+"))nameReg = true;
 		if(customer.getSurname().matches("[A-Z][a-z]+"))surnameReg = true;
 		if(customer.getUsername().matches("[A-Z]*[a-z]*[1-9]*"))usernameReg = true;
@@ -356,7 +437,7 @@ public class CustomerFileStorage {
 		if(customer.getName() != null && customer.getSurname()!= null  && customer.getUsername() != null)
 		{
 		managerList = readManagers("managers");
-		ArrayList<User> userList = readUsers();
+		userList = readUsers();
 		boolean usernameDuplicate = true;
 		for(User u : userList)
 		{
@@ -365,6 +446,9 @@ public class CustomerFileStorage {
 				usernameDuplicate = false;
 			}
 		}
+		User newUser = new User(customer.getUsername(),customer.getPassword(),customer.getName(),customer.getSurname(),customer.getDateOfBirth(),customer.getGender(),customer.getRole());
+		userList.add(newUser);
+		addUsersInFile();
 		boolean nameReg = false;
 		boolean surnameReg = false;
 		boolean usernameReg = false;
@@ -384,9 +468,47 @@ public class CustomerFileStorage {
 		return customer;
 	}
 	
+	
+	public Coach addCoach(Coach customer)
+	{
+		if(customer.getName() != null && customer.getSurname()!= null  && customer.getUsername() != null)
+		{
+		coachList = readCoaches();
+		userList = readUsers();
+		boolean usernameDuplicate = true;
+		for(User u : userList)
+		{
+			if(u.getUsername().equals(customer.getUsername()))
+			{
+				usernameDuplicate = false;
+			}
+		}
+		User newUser = new User(customer.getUsername(),customer.getPassword(),customer.getName(),customer.getSurname(),customer.getDateOfBirth(),customer.getGender(),customer.getRole());
+		userList.add(newUser);
+		addUsersInFile();
+		boolean nameReg = false;
+		boolean surnameReg = false;
+		boolean usernameReg = false;
+		if(customer.getName().matches("[A-Z][a-z]+"))nameReg = true;
+		if(customer.getSurname().matches("[A-Z][a-z]+"))surnameReg = true;
+		if(customer.getUsername().matches("[A-Z]*[a-z]*[1-9]*"))usernameReg = true;
+		if(nameReg == true && surnameReg == true && usernameReg == true && usernameDuplicate == true)
+		{
+			coachList.add(customer);
+		}
+		else
+		{
+			System.out.println("Invalid data");
+		}
+		addCoachesInFile();
+		}
+		return customer;
+	}
+	
 	public User loginUser(User customer)
 	{
 		ArrayList<User> customerList = readUsers();
+	    System.out.println(customerList.size());
 		User cust = null;
 		for(User c : customerList)
 		{

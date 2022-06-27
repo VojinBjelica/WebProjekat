@@ -13,6 +13,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import Service.CustomerService;
+import beans.Coach;
 import beans.Customer;
 import beans.CustomerAdapter;
 import beans.LocalDateAdapter;
@@ -100,6 +101,16 @@ public class CustomerController {
 			return "OK";
 		});
 	}
+	public static void addCoach()
+	{
+		post("customer/add", (req, res) -> {
+			System.out.println("Usao u add");
+			String payload = req.body();
+			Customer pd = g.fromJson(payload, Customer.class);
+			cs.addCustomer(pd);
+			return "OK";
+		});
+	}
 	public static void editProfile()
 	{
 		post("customer/editprofile", (req, res) -> {
@@ -118,6 +129,7 @@ public class CustomerController {
 			System.out.println("Usao u add user");
 			User pd = g.fromJson(payload, User.class);
 			System.out.println("Uloga:" + pd.getRole());
+			Coach coach = new Coach(pd.getUsername(),pd.getPassword(),pd.getName(),pd.getSurname(),pd.getDateOfBirth(),pd.getGender(),RoleEnum.Coach);
 			Manager manager = new Manager(pd.getUsername(),pd.getPassword(),pd.getName(),pd.getSurname(),pd.getDateOfBirth(),pd.getGender(),RoleEnum.Manager);
 			Customer customer = new Customer(pd.getUsername(),pd.getPassword(),pd.getName(),pd.getSurname(),pd.getDateOfBirth(),pd.getGender(),RoleEnum.Customer);
 			if(pd.getRole() == RoleEnum.Manager)
@@ -126,7 +138,21 @@ public class CustomerController {
 			{
 				cs.addCustomer(customer);
 			}
-			return "OK";
+			else 
+			{
+				cs.addCoach(coach);
+			}
+			Session ss = req.session(true);
+			User user = ss.attribute("user");
+			String role = "";
+			for(User u : cs.readUsers())
+			{
+				if(user.getUsername().equals(u.getUsername()))
+				{
+					role = u.getRole() + "";
+				}
+			}
+			return role;
 		});
 	}
 	public static void setCookie(Response res,Request req,String username) {
@@ -175,6 +201,7 @@ public class CustomerController {
 			String s = "";
 			User u = g.fromJson(payload, User.class);
 			User cust = cs.loginUser(u);
+
 			if(cust != null)
 			{
 			Session ss = req.session(true);
