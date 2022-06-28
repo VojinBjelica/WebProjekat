@@ -100,3 +100,17 @@ html, body {
 	height:50%;
 }
 
+/* ----------------------------------za Menadzerov Sportski Objekat------------------------------------- */
+
+.mso-container {
+	height: 170px;
+	display: flex;
+	flex-direction: row;
+}
+
+.mso-name {
+	margin-left: 10px;
+}
+
+
+

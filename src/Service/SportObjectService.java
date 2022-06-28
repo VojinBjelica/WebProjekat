@@ -3,6 +3,7 @@ package Service;
 import java.util.ArrayList;
 
 import FileStorage.SportObjectFileStorage;
+import beans.Manager;
 import beans.SportObject;
 
 public class SportObjectService {
@@ -34,6 +35,10 @@ public class SportObjectService {
 	
 	public SportObject addSportObject(SportObject sportObject) {
 		return sofs.addSportObject(sportObject);
+	}
+	
+	public SportObject getSportObjectByManager(Manager man) {
+		return sofs.getSportObjectByManager(man);
 	}
 	
 }

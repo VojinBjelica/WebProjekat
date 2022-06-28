@@ -18,6 +18,7 @@ import beans.Address;
 import beans.Customer;
 import beans.GenderEnum;
 import beans.Location;
+import beans.Manager;
 import beans.ObjectTypeEnum;
 import beans.SportObject;
 
@@ -226,6 +227,16 @@ public class SportObjectFileStorage {
 			e.printStackTrace();
 		}
 		return true;
+	}
+	
+	public SportObject getSportObjectByManager(Manager man) {
+		SportObject soTemp = new SportObject();
+		for(SportObject so : sportObjectList) {
+			if (so.getObjectName().equals(man.getSportObject())) {
+				soTemp = so; 
+			}
+		}
+		return soTemp;
 	}
 	
 }

@@ -6,6 +6,7 @@ import FileStorage.CustomerFileStorage;
 import beans.Coach;
 import beans.Customer;
 import beans.Manager;
+import beans.SportObject;
 import beans.User;
 
 public class CustomerService {
@@ -67,5 +68,16 @@ public class CustomerService {
 		return cfs.findCustomerByUsernameAndPassword(username, password);
 	}
 	
+	public Manager findManagerByUsername(String username) {
+		return cfs.findManagerByUsername(username);
+	}
+	
+	public ArrayList<Manager> findAvailableManagers(){
+		return cfs.findAvailableManagers();
+	}
+	
+	public Manager setManagerSportObject(String username, String sportObject) {
+		return cfs.setManagerSportObject(username, sportObject);
+	}
 
 }

@@ -1,6 +1,8 @@
 Vue.component("addSportObject", {
 	data: function () {
 		return {
+			availableManagersList:null,
+			selectedManager:null,
 			sportObjectList:null,
 			sportObject: {
 				objectName:null, 
@@ -24,7 +26,7 @@ Vue.component("addSportObject", {
 	template: `
 		<div class="add-so d-flex justify-content-center" >
 		<div class="add-so-body ">
-			<p class="h3 ms-5 mb-5">Add new sport object</p>
+			<p class="h3 ms-5 mb-3">Add new sport object</p>
 			<table>
 				<tr>
 					<td>
@@ -129,6 +131,17 @@ Vue.component("addSportObject", {
 				</tr>
 				<tr>
 					<td>
+						<p>Select a manager: </p>
+					</td>
+					<td>
+						<select id="add-so-manager" v-model="selectedManager" class="form-select">
+							<option v-for="man in availableManagersList" v-bind:value="man" >{{man.name}} {{man.surname}}</option>
+							
+						</select>
+					</td>
+				</tr>
+				<tr>
+					<td>
 						<button class="btn btn-success ms-5" v-on:click="validateAdding()" >Confirm</button>
 					</td>
 					<td >
@@ -147,14 +160,26 @@ Vue.component("addSportObject", {
 		addObject : function () {
 			this.sportObject.avarageMark = 0;
 			axios
+				.post('sportObjects/addSOManager', this.selectedManager)
+				.then(response => alert(response.data));
+			axios
 				.post('sportObjects/add', this.sportObject)
-				.then(response => alert(response.data))
+				.then(response => { alert(response.data)});
 				
+						alert("selektovani menadzer: " + this.selectedManager);	
 			router.push(`/`);
 		},
 		
+		
+		
 		goBack : function () {
 			router.push(`/`);
+		},
+		
+		testic: function () {
+			
+			this.selectedManager.sportObjectName = this.sportObject.objectName;
+			alert("Ime: " + this.selectedManager.sportObjectName);
 		},
 		
 		validateAdding : function () {
@@ -170,6 +195,7 @@ Vue.component("addSportObject", {
 			var workHour = document.getElementById('add-so-work-hour').value;
 			var statusOpen = document.getElementById('inlineRadioOpen');
 			var statusClosed = document.getElementById('inlineRadioClosed');
+			var managerUname = document.getElementById('add-so-manager').value;
 			
 			if (name == "") {
 				alert("You must enter a name.");
@@ -193,7 +219,11 @@ Vue.component("addSportObject", {
 				alert ("You must select a status.");
 			} else if (workHour == "") {
 				alert ("You must enter work hours.");
-			} else {
+			} else if (managerUname == "") {
+				alert ("You must select a manager or create a new one");
+			}
+			
+			 else {
 				var nameFlag = true;
 				for (const i in this.sportObjectList) {
 					if (this.sportObjectList[i].objectName.trim().toLowerCase() == name.trim().toLowerCase()) {
@@ -215,5 +245,10 @@ Vue.component("addSportObject", {
 		axios
 			.get('sportObjects/read', this.sportObjectList)
 			.then(response => (this.sportObjectList = response.data));
+			
+		axios
+			.get('sportObjects/availableManagers', this.availableManagersList)
+			.then(response => (this.availableManagersList = response.data));
+		
 	}
 });

@@ -14,7 +14,7 @@ Vue.component("oneSportObject", {
 					<p>Type: {{sportObject.objectType}}</p>
 				</div>
 				<div>
-					<p>Type: <span v-if="sportObject.status == true">Open</span><span v-else>Closed</span></p>
+					<p>Status: <span v-if="sportObject.status == true">Open</span><span v-else>Closed</span></p>
 				</div>
 				<div>
 					<p>Location: {{sportObject.location.longitude + ', ' + sportObject.location.latitude + ', ' + sportObject.location.address.streetAndNumber + ', '

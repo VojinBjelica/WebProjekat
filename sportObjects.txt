@@ -6,3 +6,4 @@ Poseidon;Pool;Sauna;11-23;4.0;https://encrypted-tbn0.gstatic.com/images?q=tbn:AN
 PlanetFitness;SportCenter;Group training;8-21;2.3;https://img.freepik.com/free-vector/fitness-gym-logo-premium-vector_144543-140.jpg;1111;2222;Strazilovska 23;Novi Sad;400108;false
 Gold's gym;Gym;None;7-22;4.9;https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTPQpRBETBBRhKQ0ZyO_AkmvrebmqJnBJjOdw&usqp=CAU;2355;23435;Save Malesevica 48;Belgrade;1018-1;false
 Drugii;SportCenter;Treniraj;2-22;0.0;https://img.freepik.com/free-vector/gym-logo_219982-7.jpg;3434;2343;Tamo daleko;negdje;432423;false
+XFit;Gym;Group training;7-23;0.0;https://img.freepik.com/free-vector/gym-logo_219982-7.jpg;4324;2312;Balzakova 8;Novi Sad;400140;true
