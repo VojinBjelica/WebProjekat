@@ -33,7 +33,7 @@ public class SportObjectService {
 		return sofs.getSportObjectByName(name);
 	}
 	
-	public SportObject addSportObject(SportObject sportObject) {
+	public boolean addSportObject(SportObject sportObject) {
 		return sofs.addSportObject(sportObject);
 	}
 	

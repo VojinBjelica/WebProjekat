@@ -129,8 +129,10 @@ public class SportObjectController {
 		post("sportObjects/add", (req, res) -> {
 			String payload = req.body();
 			SportObject so = g.fromJson(payload, SportObject.class);
-			sos.addSportObject(so);
-			cs.setManagerSportObject(tempManager.getUsername(), so.getObjectName());
+			boolean valid = sos.addSportObject(so);
+			if (valid) {
+				cs.setManagerSportObject(tempManager.getUsername(), so.getObjectName());
+			}
 			return("OK");
 		});
 	}

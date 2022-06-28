@@ -144,7 +144,7 @@ public class SportObjectFileStorage {
 		return sObject;
 	}
 	
-	public SportObject addSportObject(SportObject sportObject) {
+	public boolean addSportObject(SportObject sportObject) {
 		if (sportObject.getObjectName() != null && sportObject.getObjectType() != null) {
 			sportObjectList = readSportObjects();
 			System.out.println("Gornja duzina: " + sportObjectList.size() );
@@ -180,13 +180,15 @@ public class SportObjectFileStorage {
 			if (nameReg == true && nameDuplicate == true && streetReg == true && cityReg == true && workHourReg == true ) {
 				sportObjectList.add(sportObject);
 				System.out.println("Dodajem: " + sportObject.getObjectName());
+				addSportObjectInFile("sportObjects");
+				return true;
 			}
 			else {
 				System.out.println("Invalid sport object data");
 			}
-			addSportObjectInFile("sportObjects");
+			//addSportObjectInFile("sportObjects");
 		}
-		return sportObject;
+		return false;
 	}
 	
 	public boolean addSportObjectInFile(String who) {
