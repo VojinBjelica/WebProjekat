@@ -4,6 +4,7 @@ Vue.component("addSportObject", {
 			availableManagersList:null,
 			selectedManager:null,
 			sportObjectList:null,
+			isListEmpty:null,
 			sportObject: {
 				objectName:null, 
 				objectType:null, 
@@ -148,9 +149,10 @@ Vue.component("addSportObject", {
 						<button v-on:click="goBack()" class="btn btn-danger ms-5">Cancel</button>
 					</td>
 				</tr>
-					
-				
 			</table>
+		</div>
+		<div class="mt-5" v-if="isListEmpty == true">
+			<button class="btn btn-primary ">Register a new manager</button>
 		</div>
 		</div>
 	
@@ -170,17 +172,25 @@ Vue.component("addSportObject", {
 			router.push(`/`);
 		},
 		
-		
+		isEmpty : function () {
+			/*if (this.availableManagersList == null) {
+				this.isListEmpty = true;
+			} else {
+				this.isListEmpty = false;
+			}*/
+			var managerListLength = document.getElementsByTagName("option").length;
+			if (managerListLength == 3) {
+				this.isListEmpty = true;
+			} else {
+				this.isListEmpty = false;
+			}
+		},
 		
 		goBack : function () {
 			router.push(`/`);
 		},
 		
-		testic: function () {
-			
-			this.selectedManager.sportObjectName = this.sportObject.objectName;
-			alert("Ime: " + this.selectedManager.sportObjectName);
-		},
+		
 		
 		validateAdding : function () {
 			var name = document.getElementById('add-so-name').value;
@@ -197,8 +207,16 @@ Vue.component("addSportObject", {
 			var statusClosed = document.getElementById('inlineRadioClosed');
 			var managerUname = document.getElementById('add-so-manager').value;
 			
+			var patternName = /^[A-Za-z0-9 ]+$/;
+			var patternStreet = /^[A-Za-z]+ [0-9a-zA-Z]+$/;
+			var patternCity = /^[a-zA-Z ]+$/;
+			var patternHours = /^([01]?[0-9]|2[0-3])(:[0-5][0-9])?-([01]?[0-9]|2[0-3])(:[0-5][0-9])?$/;
+			//var patternHours = /^(([01]?[0-9]|2[0-3])-([01]?[0-9]|2[0-3]))|(([01]?[0-9]|2[0-3]):[0-5][0-9]-([01]?[0-9]|2[0-3]):[0-5][0-9])$/;
+			
 			if (name == "") {
 				alert("You must enter a name.");
+			} else if (!patternName.test(name)) {
+				alert("Name is in incorrect format (must contain only letters, numbers and spaces).");
 			} else if (type == ""){
 				alert("You must select a type.");
 			} else if (longitude == "") {
@@ -207,9 +225,15 @@ Vue.component("addSportObject", {
 				alert ("You must enter a latitude.");
 			} else if (street == "") {
 				alert ("You must enter a street name and number");
+			} else if (!patternStreet.test(street)) {
+				alert ("Street name and number in incorrect format.")
 			} else if (city == "") {
 				alert ("You must enter a city.");
-			} else if (zip == "") {
+			} else if (!patternCity.test(city)) {
+				alert ("City is in incorrent format (must contain only letters and spaces).");
+			} 
+			
+			else if (zip == "") {
 				alert ("You must enter a zip code.");
 			} else if (logo == "") {
 				alert ("You must enter a logo.");
@@ -219,7 +243,10 @@ Vue.component("addSportObject", {
 				alert ("You must select a status.");
 			} else if (workHour == "") {
 				alert ("You must enter work hours.");
-			} else if (managerUname == "") {
+			} else if (!patternHours.test(workHour)) {
+				alert ("Work hour is in incorrenct format (Correct example: 7-21 or 7:00-21:00)")
+			} 
+			 else if (managerUname == "") {
 				alert ("You must select a manager or create a new one");
 			}
 			
@@ -231,7 +258,7 @@ Vue.component("addSportObject", {
 					}
 				}
 				if (nameFlag == true) {
-					this.addObject();
+					//this.addObject();
 				} else {
 					alert("That name is already in use.");
 				}
@@ -250,5 +277,9 @@ Vue.component("addSportObject", {
 			.get('sportObjects/availableManagers', this.availableManagersList)
 			.then(response => (this.availableManagersList = response.data));
 		
+		//this.isEmpty();   ne ucita odmah sa ovim
+	},
+	beforeUpdate() {
+		this.isEmpty(); //ovo se pozove vise puta al valjda je ok
 	}
 });
