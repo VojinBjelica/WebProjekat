@@ -83,7 +83,7 @@ public class CustomerFileStorage {
         try {
             File file = new File("./"+ way + ".txt");
             in = new BufferedReader(new FileReader(file));
-            String line, username = "", password = "", name = "",surname = "",gender = "",date = "";
+            String line, username = "", password = "", name = "",surname = "",gender = "",date = "",sportObjectName="";
             StringTokenizer st;
             try {
                 while ((line = in.readLine()) != null) {
@@ -97,14 +97,15 @@ public class CustomerFileStorage {
                         name = st.nextToken().trim();
                         surname = st.nextToken().trim();
                         gender = st.nextToken().trim();
-                        date = st.nextToken().trim();             
+                        date = st.nextToken().trim();
+                        sportObjectName = st.nextToken().trim();
                         }
                     SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
                     Date dt = formatter.parse(date);
                     GenderEnum gen = GenderEnum.Male;
                     if(gender.equals("Male")) gen = GenderEnum.Male;
                     else if(gender.equals("Female")) gen = GenderEnum.Female;
-                    Manager customer = new Manager(username,password,name,surname, dt,gen);
+                    Manager customer = new Manager(username,password,name,surname, dt,gen,sportObjectName);
                     customers.add(customer);
                     managerList = customers;
                 }
@@ -277,7 +278,8 @@ public class CustomerFileStorage {
             else if(customer.getGender() == GenderEnum.Female)
             outputString += "Female" + ";";
             SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-            outputString += formatter.format(customer.getDateOfBirth());
+            outputString += formatter.format(customer.getDateOfBirth()) + ";"; //dodao ;
+            outputString += customer.getSportObject(); //dodao i iscitavanje sportskog objekta
             output.println(outputString);
         }
         //addCustomersToUsers();
@@ -533,6 +535,43 @@ public class CustomerFileStorage {
 			}
 		}
 		return cust;
+	}
+	
+	//Koristim da dobijem ulogovanog menadzera
+	public Manager findManagerByUsername(String username) {
+		Manager tempManager = new Manager();
+		managerList = readManagers("managers");
+		for (Manager man : managerList) {
+			if (man.getUsername().equals(username)) {
+				tempManager = man;
+			}
+		}
+		return tempManager;
+	}
+	
+	public Manager setManagerSportObject(String username, String sportObject) {
+		managerList = readManagers("managers");
+		Manager man = new Manager();
+		for (Manager m : managerList) {
+			if (m.getUsername().equals(username)) {
+				m.setSportObject(sportObject);
+				man = m;
+			}
+		}
+		addManagersInFile("managers");
+		return man;
+	}
+	
+	//Nalazi menadzere koji nisu dodjeljeni sportskom objektu
+	public ArrayList<Manager> findAvailableManagers() {
+		managerList = readManagers("managers");
+		ArrayList<Manager> availableManagers = new ArrayList<Manager>();
+		for (Manager man : managerList) {
+			if (man.getSportObject().equals("None")) {
+				availableManagers.add(man);
+			}
+		}
+		return availableManagers;
 	}
 	
 

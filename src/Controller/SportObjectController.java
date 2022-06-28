@@ -5,6 +5,7 @@ import com.google.gson.Gson;
 import Service.CustomerService;
 import Service.SportObjectService;
 import beans.Customer;
+import beans.Manager;
 import beans.SportObject;
 import beans.User;
 import spark.Session;
@@ -21,6 +22,7 @@ public class SportObjectController {
 	public static Gson g;
 	public static SportObject tempObject;
 	public static String temp;
+	public static Manager tempManager;
 	
 	public static ArrayList<SportObject> objList;
 	
@@ -31,12 +33,19 @@ public class SportObjectController {
 		objList = new ArrayList<SportObject>();
 		tempObject = new SportObject();
 		temp = "";
+		tempManager = new Manager();
 	}
 	
 	public static void readSportObjects() {
 		get("sportObjects/read", (req, res) -> {
-			System.out.println("Pozvano citanje liste");
 			return g.toJson(sos.readSportObjects());
+		});
+	}
+	
+	public static void getAvailableManagers() {
+		get("sportObjects/availableManagers", (req, res) -> {
+			System.out.println("Nasao slobodne menadzere");
+			return g.toJson(cs.findAvailableManagers());
 		});
 	}
 	
@@ -121,7 +130,28 @@ public class SportObjectController {
 			String payload = req.body();
 			SportObject so = g.fromJson(payload, SportObject.class);
 			sos.addSportObject(so);
+			cs.setManagerSportObject(tempManager.getUsername(), so.getObjectName());
 			return("OK");
+		});
+	}
+	
+	public static void setSportObjectManager() {
+		post("sportObjects/addSOManager", (req, res) -> {
+			String payload = req.body();
+			Manager man = g.fromJson(payload, Manager.class);
+			tempManager = man;
+			return "ok";
+		});
+	}
+	
+	//dodao i ovo sad
+	public static void showManagersSportObject() {
+		get("sportObjects/showManagersSO", (req, res) -> {
+			Session ss = req.session(true);
+			User user = ss.attribute("user");
+			Manager mana = cs.findManagerByUsername(user.getUsername());
+			SportObject sObject = sos.getSportObjectByManager(mana);
+			return g.toJson(sObject);
 		});
 	}
 	

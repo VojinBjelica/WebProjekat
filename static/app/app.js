@@ -5,6 +5,7 @@ const OneSportObject = { template: '<oneSportObject></oneSportObject>' }
 const AddSportObject = { template: '<addSportObject></addSportObject>'}
 const EditProfile = { template: '<editprofile></editprofile>'}
 const UserView = { template: '<userview></userview>'}
+const ManagersSportObject = { template: '<managersSportObject></managersSportObject>' }
 
 
 const router = new VueRouter({
@@ -16,7 +17,8 @@ const router = new VueRouter({
 	    { path: '/oneSportObject', component: OneSportObject },
 	    { path: '/addSportObject', component: AddSportObject },
 	    { path: '/editprofile', component: EditProfile },
-	    { path: '/userview', component: UserView }
+	    { path: '/userview', component: UserView },
+	    { path: '/managersSportObject', component: ManagersSportObject }
 	    
 	  ]
 });

@@ -250,6 +250,7 @@ public class CustomerController {
 	
 	
 	
+	
 	public static void logoutCustomer()
 	{
 		get("customer/logout", (req, res) -> {

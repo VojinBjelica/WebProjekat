@@ -42,6 +42,9 @@ public class main {
 		SportObjectController.getSelectedObject();
 		SportObjectController.showSelectedObject();
 		SportObjectController.addSportObject();
+		SportObjectController.showManagersSportObject();
+		SportObjectController.getAvailableManagers();
+		SportObjectController.setSportObjectManager();	
 		// TODO Auto-generated method stub
 
 	}

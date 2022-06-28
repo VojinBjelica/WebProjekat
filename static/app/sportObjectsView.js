@@ -15,6 +15,7 @@ Vue.component("sportObjectsView", {
     			<button v-on:click="logoutUser();" id="btn-logout" style="margin-right:5%">Log out</button>
     			<button v-on:click="goToEditProfile()" class="login-btn" id="btn-editprofile" >Edit profile</button>
     			<button v-on:click="goToUsersView()" class="login-btn" id="btn-userview" >Users</button>
+    			<button v-on:click="goToManagersSO()" class="login-btn" id="btn-managers-s-o" >My sport object</button>
     			
     		</div>
     		<div class="sport-objects-view">
@@ -84,6 +85,7 @@ Vue.component("sportObjectsView", {
 		document.getElementById("btn-logout").disabled = true;
 		document.getElementById("btn-editprofile").disabled= true;
 		document.getElementById("btn-userview").disabled= true;
+		document.getElementById("btn-managers-s-o").disabled = true;
 
 		this.hideCheck();
 		axios
@@ -124,9 +126,15 @@ Vue.component("sportObjectsView", {
 					alert("pali register");
 				document.getElementById("btn-userview").disabled= false;
 
-					
+				document.getElementById("btn-managers-s-o").disabled = true;
 				document.getElementById("btn-register").disabled = false;
 				document.getElementById("add-so-btn").classList.remove("invisible");
+				}
+				else if (myArray[1] == "Manager") {
+					document.getElementById("btn-managers-s-o").disabled = false;
+					document.getElementById("add-so-btn").classList.add("invisible");
+				    document.getElementById("btn-userview").disabled= true;
+
 				}
 				else
 				{
@@ -135,6 +143,7 @@ Vue.component("sportObjectsView", {
 					
 				document.getElementById("btn-register").disabled = true;
 				document.getElementById("add-so-btn").classList.add("invisible");
+				document.getElementById("btn-managers-s-o").disabled = true;
 
 
 
@@ -143,7 +152,8 @@ Vue.component("sportObjectsView", {
 			} else if (myArray[0]=""){
 				document.getElementById("btn-logout").disabled = true;
 				document.getElementById("add-so-btn").classList.add("invisible");
-
+				document.getElementById("btn-managers-s-o").disabled = true;
+				document.getElementById("btn-managers-s-o").disabled = true;
 
 			}
 			else {
@@ -153,6 +163,7 @@ Vue.component("sportObjectsView", {
 				document.getElementById("btn-register").disabled = false;
 				document.getElementById("add-so-btn").classList.add("invisible");
 				document.getElementById("btn-userview").disabled= true;
+				document.getElementById("btn-managers-s-o").disabled = true;
 
 
 
@@ -483,6 +494,10 @@ Vue.component("sportObjectsView", {
 		goToAddSportObject: function() {
 			
 			router.push(`/addSportObject`);
+		},
+		
+		goToManagersSO : function() {
+			router.push(`/managersSportObject`);
 		}
 		
 		
