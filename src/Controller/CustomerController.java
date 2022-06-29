@@ -168,12 +168,19 @@ public class CustomerController {
 			Session ss = req.session(true);
 			User user = ss.attribute("user");
 			String role = "";
-			for(User u : cs.readUsers())
+			if(user != null)
 			{
-				if(user.getUsername().equals(u.getUsername()))
+				for(User u : cs.readUsers())
 				{
-					role = u.getRole() + "";
+					if(user.getUsername().equals(u.getUsername()))
+					{
+						role = u.getRole() + "";
+					}
 				}
+			}
+			else
+			{
+				role = "Customer";
 			}
 			return role;
 		});

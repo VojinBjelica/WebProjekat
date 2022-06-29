@@ -30,6 +30,7 @@ public class CustomerFileStorage {
 	public static ArrayList<Customer> customerViewList = new ArrayList<Customer>();
 	public static ArrayList<Manager> managerList = new ArrayList<Manager>();
 	public static ArrayList<Coach> coachList = new ArrayList<Coach>();
+	public static ArrayList<Coach> coachObjectList = new ArrayList<Coach>();
 	public static ArrayList<User> userList = new ArrayList<User>();
 	public ArrayList<Customer> readCustomers(String way) {
         ArrayList<Customer> customers = new ArrayList<Customer>();
@@ -181,6 +182,54 @@ public class CustomerFileStorage {
         try {
             File file = new File("./coaches.txt");
             in = new BufferedReader(new FileReader(file));
+            String line, username = "", password = "", name = "",surname = "",gender = "",date = "";
+            StringTokenizer st;
+            try {
+                while ((line = in.readLine()) != null) {
+                    line = line.trim();
+                    if (line.equals("") || line.indexOf('#') == 0)
+                        continue;
+                    st = new StringTokenizer(line, ";");
+                    while (st.hasMoreTokens()) {
+                        username = st.nextToken().trim();
+                        password = st.nextToken().trim();
+                        name = st.nextToken().trim();
+                        surname = st.nextToken().trim();
+                        gender = st.nextToken().trim();
+                        date = st.nextToken().trim();       
+                       
+                        }
+                    SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+                    Date dt = formatter.parse(date);
+                    GenderEnum gen = GenderEnum.Male;
+                    if(gender.equals("Male")) gen = GenderEnum.Male;
+                    else if(gender.equals("Female")) gen = GenderEnum.Female;
+                    Coach customer = new Coach(username,password,name,surname, dt,gen);
+                    customers.add(customer);
+                    coachList = customers;
+                }
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        finally {
+            if ( in != null ) {
+                try {
+                    in.close();
+                }
+                catch (Exception e) { }
+            }
+        }
+        return customers;
+    }
+	public ArrayList<Coach> readObjectCoaches() {
+        ArrayList<Coach> customers = new ArrayList<Coach>();
+        BufferedReader in = null;
+        try {
+            File file = new File("./coachObjects.txt");
+            in = new BufferedReader(new FileReader(file));
             String line, username = "", password = "", name = "",surname = "",gender = "",date = "",sportObjectName = "";
             StringTokenizer st;
             try {
@@ -205,7 +254,7 @@ public class CustomerFileStorage {
                     else if(gender.equals("Female")) gen = GenderEnum.Female;
                     Coach customer = new Coach(username,password,name,surname, dt,gen,sportObjectName);
                     customers.add(customer);
-                    coachList = customers;
+                    coachObjectList = customers;
                 }
             } catch (Exception ex) {
                 ex.printStackTrace();
@@ -387,6 +436,36 @@ public class CustomerFileStorage {
             fileWriter = new FileWriter("./coaches.txt");
         PrintWriter output = new PrintWriter(fileWriter, true);
         for(Coach customer : coachList)
+        {
+            String outputString = "";
+            outputString += customer.getUsername() + ";";
+            outputString += customer.getPassword() + ";";
+            outputString += customer.getName() + ";";
+            outputString += customer.getSurname() + ";";
+            if(customer.getGender() == GenderEnum.Male)
+            outputString += "Male" + ";";
+            else if(customer.getGender() == GenderEnum.Female)
+            outputString += "Female" + ";";
+            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+            outputString += formatter.format(customer.getDateOfBirth());
+           
+            output.println(outputString);
+        }
+        //addCustomersToUsers();
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        return true;
+    }
+	public boolean addCoachesObjectInFile() 
+    {
+		
+        FileWriter fileWriter;
+        try {
+            fileWriter = new FileWriter("./coachObjects.txt");
+        PrintWriter output = new PrintWriter(fileWriter, true);
+        for(Coach customer : coachObjectList)
         {
             String outputString = "";
             outputString += customer.getUsername() + ";";
@@ -656,7 +735,7 @@ public class CustomerFileStorage {
 	}
 	public ArrayList<Coach> findCoachesByObject(String sobject)
 	{
-		ArrayList<Coach> iterList = readCoaches();
+		ArrayList<Coach> iterList = readObjectCoaches();
 		ArrayList<Coach> returnList = new ArrayList<Coach>();
 		
 		for(Coach coach :iterList)

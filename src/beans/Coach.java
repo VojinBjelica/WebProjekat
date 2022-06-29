@@ -10,12 +10,10 @@ public class Coach extends User {
 	public Coach(String username,String password,String name,String surname,Date date,GenderEnum gender,RoleEnum role) {
 		super(username,password,name,surname,date,gender,role);
 		this.rolee = "Coach";
-		this.sportObjectNamee = "None";
 	}
 	public Coach(String username,String password,String name,String surname,Date date,GenderEnum gender) {
 		super(username,password,name,surname,date,gender);
 		this.rolee = "Coach";
-		this.sportObjectNamee = "None";
 	}
 	public Coach(String username,String password,String name,String surname,Date date,GenderEnum gender,String sportObject) {
 		super(username,password,name,surname,date,gender);
