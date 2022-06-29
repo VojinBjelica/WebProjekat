@@ -38,6 +38,10 @@ Vue.component("oneSportObject", {
 		axios
 			.post('sportObject/showOne', this.sportObject)
 			.then(response => this.sportObject = response.data);
+		
+		axios
+			.get('sportObject/addView')
+			.then(response => alert(response.data));
 	}
 	
 	
