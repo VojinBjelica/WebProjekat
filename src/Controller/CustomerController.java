@@ -19,6 +19,7 @@ import beans.CustomerAdapter;
 import beans.LocalDateAdapter;
 import beans.Manager;
 import beans.RoleEnum;
+import beans.SportObject;
 import beans.User;
 import spark.Request;
 import spark.Response;
@@ -61,6 +62,28 @@ public class CustomerController {
 	public static void initList() {
 		get("customer/listinit", (req, res) -> {
 			return g.toJson(cs.readUsers());
+		});
+	}
+	public static void showCoachesInObject() {
+		get("customer/showObjectCoaches", (req, res) -> {
+			Session ss = req.session(true);
+			User user = ss.attribute("user");
+			Manager mana = cs.findManagerByUsername(user.getUsername());
+			ArrayList<Coach> retList = new ArrayList<Coach>();
+			retList = cs.findCoachesByObject(mana.getSportObject());
+			System.out.println(retList.size());
+			return g.toJson(retList);
+		});
+	}
+	public static void findViewers() {
+		get("customer/getViewers", (req, res) -> {
+			Session ss = req.session(true);
+			User user = ss.attribute("user");
+			Manager mana = cs.findManagerByUsername(user.getUsername());
+			ArrayList<Customer> retList = new ArrayList<Customer>();
+			retList = cs.findViewers(mana.getSportObject());
+			System.out.println(retList.size());
+			return g.toJson(retList);
 		});
 	}
 	public static void readListUser() {

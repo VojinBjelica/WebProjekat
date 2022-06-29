@@ -6,6 +6,7 @@ import Service.CustomerService;
 import Service.SportObjectService;
 import beans.Customer;
 import beans.Manager;
+import beans.RoleEnum;
 import beans.SportObject;
 import beans.User;
 import spark.Session;
@@ -124,6 +125,35 @@ public class SportObjectController {
 			return g.toJson(tempObject);
 		});
 	}
+	
+	public static void addViewInFile() {
+		get("sportObject/addView", (req, res) -> {	
+			System.out.println("Usao u dodavanje view");
+			Session ss = req.session(true);
+			User user = ss.attribute("user");
+			User custo = cs.findCustomerByUsernameAndPassword(user.getUsername(), user.getPassword());
+			System.out.println("custov role:" + custo.getRole());
+			ArrayList<Customer> tempList = cs.readCustomersView();
+			int help = 0;
+			for(Customer c : tempList)
+			{
+				if(c.getUsername().equals(custo.getUsername()))
+				{
+					help = 1;
+				}
+			}
+			if(custo.getRole().equals(RoleEnum.Customer))
+			{
+				if(help == 0)
+				{
+					Customer cust = new Customer(custo.getUsername(),custo.getPassword(),custo.getName(),custo.getSurname(),custo.getDateOfBirth(),custo.getGender());
+					cs.addViewSecret(cust, tempObject.getObjectName());
+				}
+			}
+			return "View added";
+		});
+	}
+	
 	
 	public static void addSportObject() {
 		post("sportObjects/add", (req, res) -> {

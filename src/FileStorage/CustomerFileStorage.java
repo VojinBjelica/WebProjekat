@@ -21,11 +21,13 @@ import beans.Customer;
 import beans.GenderEnum;
 import beans.Manager;
 import beans.RoleEnum;
+import beans.SportObject;
 import beans.User;
 
 public class CustomerFileStorage {
 	
 	public static ArrayList<Customer> customerList = new ArrayList<Customer>();
+	public static ArrayList<Customer> customerViewList = new ArrayList<Customer>();
 	public static ArrayList<Manager> managerList = new ArrayList<Manager>();
 	public static ArrayList<Coach> coachList = new ArrayList<Coach>();
 	public static ArrayList<User> userList = new ArrayList<User>();
@@ -59,6 +61,54 @@ public class CustomerFileStorage {
                     Customer customer = new Customer(username,password,name,surname, dt,gen);
                     customers.add(customer);
                     customerList = customers;
+                }
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        finally {
+            if ( in != null ) {
+                try {
+                    in.close();
+                }
+                catch (Exception e) { }
+            }
+        }
+        return customers;
+    }
+	public ArrayList<Customer> readCustomersView() {
+        ArrayList<Customer> customers = new ArrayList<Customer>();
+        BufferedReader in = null;
+        try {
+            File file = new File("./sportObjectInfo.txt");
+            in = new BufferedReader(new FileReader(file));
+            String line, username = "", password = "", name = "",surname = "",gender = "",date = "",so = "";
+            StringTokenizer st;
+            try {
+                while ((line = in.readLine()) != null) {
+                    line = line.trim();
+                    if (line.equals("") || line.indexOf('#') == 0)
+                        continue;
+                    st = new StringTokenizer(line, ";");
+                    while (st.hasMoreTokens()) {
+                        username = st.nextToken().trim();
+                        password = st.nextToken().trim();
+                        name = st.nextToken().trim();
+                        surname = st.nextToken().trim();
+                        gender = st.nextToken().trim();
+                        date = st.nextToken().trim();      
+                        so = st.nextToken().trim();
+                        }
+                    SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+                    Date dt = formatter.parse(date);
+                    GenderEnum gen = GenderEnum.Male;
+                    if(gender.equals("Male")) gen = GenderEnum.Male;
+                    else if(gender.equals("Female")) gen = GenderEnum.Female;
+                    Customer customer = new Customer(username,password,name,surname, dt,gen,so);
+                    customers.add(customer);
+                    customerViewList = customers;
                 }
             } catch (Exception ex) {
                 ex.printStackTrace();
@@ -131,7 +181,7 @@ public class CustomerFileStorage {
         try {
             File file = new File("./coaches.txt");
             in = new BufferedReader(new FileReader(file));
-            String line, username = "", password = "", name = "",surname = "",gender = "",date = "";
+            String line, username = "", password = "", name = "",surname = "",gender = "",date = "",sportObjectName = "";
             StringTokenizer st;
             try {
                 while ((line = in.readLine()) != null) {
@@ -145,14 +195,15 @@ public class CustomerFileStorage {
                         name = st.nextToken().trim();
                         surname = st.nextToken().trim();
                         gender = st.nextToken().trim();
-                        date = st.nextToken().trim();             
+                        date = st.nextToken().trim();       
+                        sportObjectName = st.nextToken().trim();
                         }
                     SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
                     Date dt = formatter.parse(date);
                     GenderEnum gen = GenderEnum.Male;
                     if(gender.equals("Male")) gen = GenderEnum.Male;
                     else if(gender.equals("Female")) gen = GenderEnum.Female;
-                    Coach customer = new Coach(username,password,name,surname, dt,gen);
+                    Coach customer = new Coach(username,password,name,surname, dt,gen,sportObjectName);
                     customers.add(customer);
                     coachList = customers;
                 }
@@ -231,6 +282,8 @@ public class CustomerFileStorage {
 			System.out.println(c.getName() + " " + c.getSurname());
 		}
 	}
+	
+	
 	public boolean addCustomerInFile(String who) 
     {
 		
@@ -251,6 +304,43 @@ public class CustomerFileStorage {
             outputString += "Female" + ";";
             SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
             outputString += formatter.format(customer.getDateOfBirth());
+            output.println(outputString);
+        }
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        return true;
+    }
+	public boolean addViewSecret(Customer cust, String objectName)
+	{
+		customerViewList = readCustomersView();
+		customerViewList.add(new Customer(cust.getUsername(),cust.getPassword(),cust.getName(),cust.getSurname(),cust.getDateOfBirth(),cust.getGender(),objectName));
+		addCustomerViewInFile();
+		return true;
+		
+	}
+	public boolean addCustomerViewInFile() 
+    {
+		
+        FileWriter fileWriter;
+        try {
+            fileWriter = new FileWriter("./sportObjectInfo.txt");
+        PrintWriter output = new PrintWriter(fileWriter, true);
+        for(Customer customer : customerViewList)
+        {
+            String outputString = "";
+            outputString += customer.getUsername() + ";";
+            outputString += customer.getPassword() + ";";
+            outputString += customer.getName() + ";";
+            outputString += customer.getSurname() + ";";
+            if(customer.getGender() == GenderEnum.Male)
+            outputString += "Male" + ";";
+            else if(customer.getGender() == GenderEnum.Female)
+            outputString += "Female" + ";";
+            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+            outputString += formatter.format(customer.getDateOfBirth());
+            outputString += ";" + customer.getSportObjectNick();
             output.println(outputString);
         }
         } catch (IOException e) {
@@ -309,6 +399,8 @@ public class CustomerFileStorage {
             outputString += "Female" + ";";
             SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
             outputString += formatter.format(customer.getDateOfBirth());
+            outputString += customer.getSportObject(); //dodao i iscitavanje sportskog objekta
+         
             output.println(outputString);
         }
         //addCustomersToUsers();
@@ -549,6 +641,7 @@ public class CustomerFileStorage {
 		return tempManager;
 	}
 	
+	
 	public Manager setManagerSportObject(String username, String sportObject) {
 		managerList = readManagers("managers");
 		Manager man = new Manager();
@@ -560,6 +653,41 @@ public class CustomerFileStorage {
 		}
 		addManagersInFile("managers");
 		return man;
+	}
+	public ArrayList<Coach> findCoachesByObject(String sobject)
+	{
+		ArrayList<Coach> iterList = readCoaches();
+		ArrayList<Coach> returnList = new ArrayList<Coach>();
+		
+		for(Coach coach :iterList)
+		{
+			if(coach.getSportObjectNamee().equals(sobject))
+			{
+				returnList.add(coach);
+			}
+		}
+		
+		
+		
+		return returnList;
+		
+	}
+	public ArrayList<Customer> findViewers(String sobject)
+	{
+		ArrayList<Customer> iterList = readCustomersView();
+		ArrayList<Customer> returnList = new ArrayList<Customer>();
+		
+		for(Customer coach :iterList)
+		{
+			if(coach.getSportObjectNick().equals(sobject))
+			{
+				returnList.add(coach);
+			}
+		}
+		
+		
+		
+		return returnList;
 	}
 	
 	//Nalazi menadzere koji nisu dodjeljeni sportskom objektu

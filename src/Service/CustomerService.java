@@ -20,6 +20,9 @@ public class CustomerService {
 	{
 		return cfs.readCustomers("customers");
 	}
+	public ArrayList<Customer> readCustomersView() {
+		return cfs.readCustomersView();
+	}
 	public ArrayList<Manager> readManagers()
 	{
 		return cfs.readManagers("managers");
@@ -35,6 +38,22 @@ public class CustomerService {
 	public void writeCustomers()
 	{
 		cfs.writeCustomers();
+	}
+	public ArrayList<Coach> findCoachesByObject(String sobject)
+	{
+		return cfs.findCoachesByObject(sobject);
+	}
+	public ArrayList<Customer> findViewers(String sobject)
+	{
+		return cfs.findViewers(sobject);
+	}
+	public boolean addCustomerViewInFile() 
+    {
+		return cfs.addCustomerViewInFile();
+    }
+	public boolean addViewSecret(Customer cust, String objectName)
+	{
+		return cfs.addViewSecret(cust, objectName);
 	}
 	public ArrayList<User> readUsers() {
 		return cfs.readUsers();
