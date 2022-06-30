@@ -4,6 +4,8 @@ Vue.component("addSportObject", {
 			availableManagersList:null,
 			selectedManager:null,
 			sportObjectList:null,
+			listOfUsers:null,
+			user:{name:null,surname:null,username:null,password:null,gender:null,dateOfBirth:null,role:null},
 			isListEmpty:null,
 			sportObject: {
 				objectName:null, 
@@ -151,8 +153,70 @@ Vue.component("addSportObject", {
 				</tr>
 			</table>
 		</div>
-		<div class="mt-5" v-if="isListEmpty == true">
-			<button class="btn btn-primary ">Register a new manager</button>
+		<div class="mt-5 ms-5" v-if="isListEmpty == false">
+			
+			
+			<form name="myManaForm">
+				<table style="margin-left:auto;margin-right:auto;" >
+					<tr>
+						<td>
+							<p>Name:</p>
+						</td>
+						<td>
+							<input id="nameMana" class="form-control" v-model="user.name"  type="text" />
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<p>Surname:</p>
+						</td>
+						<td>
+							<input id="surnameMana" class="form-control" v-model="user.surname" type="text" />
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<p>Username:</p>
+						</td>
+						<td>
+							<input id="usernameMana" class="form-control" v-model="user.username"  type="text" />
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<p>Password:</p>
+						</td>
+						<td>
+							<input id="passwordMana" v-model="user.password" class="form-control" type="password" />
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<p>Gender:</p>
+						</td>
+						<td>
+							<select id="genderMana" v-model="user.gender" class="form-select" >
+								<option value="Male" >Male</option>
+								<option value="Female" >Female</option>
+							</select>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<p>Date:</p>
+						</td>
+						<td>
+							<input id="dateMana" v-model="user.dateOfBirth" class="form-control" type="date" />
+						</td>
+					</tr>
+					<tr>
+						<td colspan="2">
+							<input  type="button"  class="btn btn-success" v-on:click="validateText()" value="Register a new manager"/>
+						</td>
+					</tr>
+				</table>
+			</form>
+			
 		</div>
 		</div>
 	
@@ -160,6 +224,7 @@ Vue.component("addSportObject", {
 	`,
 	methods : {
 		addObject : function () {
+			alert("Usao u addObject 5");
 			this.sportObject.avarageMark = 0;
 			axios
 				.post('sportObjects/addSOManager', this.selectedManager)
@@ -168,22 +233,30 @@ Vue.component("addSportObject", {
 				.post('sportObjects/add', this.sportObject)
 				.then(response => { alert(response.data)});
 				
-						alert("selektovani menadzer: " + this.selectedManager);	
+			router.push(`/`);
+		},
+		
+		addManagerlessObject : function () {
+			this.sportObject.avarageMark = 0;
+			axios
+				.post('sportObjects/add', this.sportObject)
+				.then(response => { alert(response.data)});
+				
 			router.push(`/`);
 		},
 		
 		isEmpty : function () {
-			/*if (this.availableManagersList == null) {
-				this.isListEmpty = true;
-			} else {
-				this.isListEmpty = false;
-			}*/
-			var managerListLength = document.getElementsByTagName("option").length;
-			if (managerListLength == 3) {
+			if (this.availableManagersList == null) {
 				this.isListEmpty = true;
 			} else {
 				this.isListEmpty = false;
 			}
+			/*var managerListLength = document.getElementsByTagName("option").length;
+			if (managerListLength == 3) {
+				this.isListEmpty = true;
+			} else {
+				this.isListEmpty = false;
+			}*/
 		},
 		
 		goBack : function () {
@@ -263,8 +336,138 @@ Vue.component("addSportObject", {
 					alert("That name is already in use.");
 				}
 			}
+		},
+		
+		validateManagerlessAdding : function () {
+			alert("Usao u validateManagerlessAdding 3");
+			var name = document.getElementById('add-so-name').value;
+			var type = document.getElementById('add-so-type').value;
+			var longitude = document.getElementById('add-so-longitude').value;
+			var latitude = document.getElementById('add-so-latitude').value;
+			var street = document.getElementById('add-so-street').value;
+			var city = document.getElementById('add-so-city').value;
+			var zip = document.getElementById('add-so-zip').value;
+			var logo = document.getElementById('add-so-logo').value;
+			var offer = document.getElementById('add-so-offer').value;
+			var workHour = document.getElementById('add-so-work-hour').value;
+			var statusOpen = document.getElementById('inlineRadioOpen');
+			var statusClosed = document.getElementById('inlineRadioClosed');
+			
+			var patternName = /^[A-Za-z0-9 ]+$/;
+			var patternStreet = /^[A-Za-z]+ [0-9a-zA-Z]+$/;
+			var patternCity = /^[a-zA-Z ]+$/;
+			var patternHours = /^([01]?[0-9]|2[0-3])(:[0-5][0-9])?-([01]?[0-9]|2[0-3])(:[0-5][0-9])?$/;
+			//var patternHours = /^(([01]?[0-9]|2[0-3])-([01]?[0-9]|2[0-3]))|(([01]?[0-9]|2[0-3]):[0-5][0-9]-([01]?[0-9]|2[0-3]):[0-5][0-9])$/;
+			
+			if (name == "") {
+				alert("You must enter a name.");
+			} else if (!patternName.test(name)) {
+				alert("Name is in incorrect format (must contain only letters, numbers and spaces).");
+			} else if (type == ""){
+				alert("You must select a type.");
+			} else if (longitude == "") {
+				alert ("You must enter a longitude.");
+			} else if (latitude == "") {
+				alert ("You must enter a latitude.");
+			} else if (street == "") {
+				alert ("You must enter a street name and number");
+			} else if (!patternStreet.test(street)) {
+				alert ("Street name and number in incorrect format.")
+			} else if (city == "") {
+				alert ("You must enter a city.");
+			} else if (!patternCity.test(city)) {
+				alert ("City is in incorrent format (must contain only letters and spaces).");
+			} 
+			
+			else if (zip == "") {
+				alert ("You must enter a zip code.");
+			} else if (logo == "") {
+				alert ("You must enter a logo.");
+			} else if (offer == "") {
+				alert ("You must enter an offer.");
+			} else if (statusOpen.checked == false && statusClosed.checked == false) {
+				alert ("You must select a status.");
+			} else if (workHour == "") {
+				alert ("You must enter work hours.");
+			} else if (!patternHours.test(workHour)) {
+				alert ("Work hour is in incorrenct format (Correct example: 7-21 or 7:00-21:00)")
+			} 
+			 
+			
+			 else {
+				var nameFlag = true;
+				for (const i in this.sportObjectList) {
+					if (this.sportObjectList[i].objectName.trim().toLowerCase() == name.trim().toLowerCase()) {
+						nameFlag = false;
+					}
+				}
+				if (nameFlag == true) {
+					this.addNewManager();
+					
+				} else {
+					alert("That name is already in use.");
+				}
+			}
+		},
+		
+		validateText : function() {
+			alert("Usao u validateText 1");
+			let x = document.getElementById('nameMana').value;
+			let y = document.getElementById('surnameMana').value;
+			let z = document.getElementById('usernameMana').value;
+			let w = document.getElementById('passwordMana').value;
+			let q = document.getElementById('genderMana').value;
+			let p = document.getElementById('dateMana').value;
 
+			if (x == "") {
+				alert("Fill name input.");
+			} else if (y == "") {
+				alert("Fill surname input.");
+			} else if (z == "") {
+				alert("Fill username input.");
+			} else if (w == "") {
+				alert("Fill password input.");
+			} else if (q == "") {
+				alert("Select a gender.");
+			} else if(p == "") {
+				alert("Select a date.");	
+			} else {
+				this.duplicateUsername();
+			}
+		},
+		
+		duplicateUsername: function() {
+			alert("Usao u duplicate username 2");
+			let z = document.getElementById('usernameMana').value;
+			let doubleFlag = false;
+			let regexxx = new RegExp('[A-Z]*[a-z]*[1-9]*');
+
+			for (const s in this.listOfUsers) {
+				if(this.listOfUsers[s].username == z)
+				{
+					doubleFlag = true;
+				}
+			}
+			if (doubleFlag == true) {
+				alert("Username is already taken.");
+			} else if(!regexxx.test(z)) {
+				alert("Invalid username.");
+			} else {
+				
+				this.validateManagerlessAdding();
+			}
+		},
+		
+		addNewManager : function () {
+			alert("Usao u addNewManager 4");
+			this.user.role = "Manager";
+			axios  
+		    	.post('sportObject/addManager',this.user)
+		        .then(response => alert(response.data))
+		        
+		  	this.addManagerlessObject();
 		}
+		
 		
 	},
 	
@@ -276,6 +479,10 @@ Vue.component("addSportObject", {
 		axios
 			.get('sportObjects/availableManagers', this.availableManagersList)
 			.then(response => (this.availableManagersList = response.data));
+			
+		axios
+			.get('customer/listinit', this.listOfUsers)
+			.then(response => (this.listOfUsers = response.data));
 		
 		//this.isEmpty();   ne ucita odmah sa ovim
 	},
