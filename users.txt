@@ -31,3 +31,7 @@ ajwdoiawijdo;awidiawdiawj;AWdadwjioa;AWdjawdjo;Male;2022-06-20;Coach
 ala;ala;Joca;Jocic;Male;2022-06-14;Customer
 laca;laca;Laca;Lacic;Male;2022-06-21;Customer
 maca;maca;Maca;Macic;Female;2022-06-15;Customer
+steva111;steva111;Steva;Stevanovic;Male;2022-04-06;Customer
+vojo;vojo;Vojin;Vojinovic;Male;2022-06-01;Customer
+mia;mia;Mia;Mijovic;Female;2022-06-01;Manager
+rada;rada;Rada;Radovic;Female;2022-06-04;Manager

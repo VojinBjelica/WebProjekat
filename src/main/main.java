@@ -48,6 +48,7 @@ public class main {
 		SportObjectController.getAvailableManagers();
 		SportObjectController.setSportObjectManager();	
 		SportObjectController.addViewInFile();
+		SportObjectController.addNewManager();
 		// TODO Auto-generated method stub
 
 	}
