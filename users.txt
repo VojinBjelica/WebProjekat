@@ -35,3 +35,5 @@ steva111;steva111;Steva;Stevanovic;Male;2022-04-06;Customer
 vojo;vojo;Vojin;Vojinovic;Male;2022-06-01;Customer
 mia;mia;Mia;Mijovic;Female;2022-06-01;Manager
 rada;rada;Rada;Radovic;Female;2022-06-04;Manager
+mitar111;mitar111;Mitar;Mitrovic;Male;2022-06-05;Manager
+jeca;jeca;Jelena;Jankovic;Female;2022-06-04;Manager
