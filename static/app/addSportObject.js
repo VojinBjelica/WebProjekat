@@ -132,12 +132,12 @@ Vue.component("addSportObject", {
 						<input class="form-control" id="add-so-work-hour" v-model="sportObject.workHour" type="text" />
 					</td>
 				</tr>
-				<tr>
+				<tr v-if="isListEmpty == false">
 					<td>
 						<p>Select a manager: </p>
 					</td>
 					<td>
-						<select id="add-so-manager" v-model="selectedManager" class="form-select">
+						<select id="add-so-manager"  v-model="selectedManager" class="form-select">
 							<option v-for="man in availableManagersList" v-bind:value="man" >{{man.name}} {{man.surname}}</option>
 							
 						</select>
@@ -145,7 +145,7 @@ Vue.component("addSportObject", {
 				</tr>
 				<tr>
 					<td>
-						<button class="btn btn-success ms-5" v-on:click="validateAdding()" >Confirm</button>
+						<button id="add-so-conf-btn" class="btn btn-success ms-5" v-on:click="validateAdding()" >Confirm</button>
 					</td>
 					<td >
 						<button v-on:click="goBack()" class="btn btn-danger ms-5">Cancel</button>
@@ -153,7 +153,7 @@ Vue.component("addSportObject", {
 				</tr>
 			</table>
 		</div>
-		<div class="mt-5 ms-5" v-if="isListEmpty == false">
+		<div class="mt-5 ms-5" v-if="isListEmpty == true">
 			
 			
 			<form name="myManaForm">
@@ -245,18 +245,23 @@ Vue.component("addSportObject", {
 			router.push(`/`);
 		},
 		
-		isEmpty : function () {
-			if (this.availableManagersList == null) {
+		isEmpty : function (lista) {
+			
+			if (lista == undefined || lista.length < 1) {
 				this.isListEmpty = true;
 			} else {
 				this.isListEmpty = false;
 			}
-			/*var managerListLength = document.getElementsByTagName("option").length;
-			if (managerListLength == 3) {
-				this.isListEmpty = true;
+			alert("Empty list? : " + this.isListEmpty);
+			
+			var btn = document.getElementById("add-so-conf-btn");
+			if (this.isListEmpty == true) {
+				btn.classList.add('invisible');
 			} else {
-				this.isListEmpty = false;
-			}*/
+				btn.classList.remove('invisible');
+			}
+			
+			
 		},
 		
 		goBack : function () {
@@ -281,7 +286,7 @@ Vue.component("addSportObject", {
 			var managerUname = document.getElementById('add-so-manager').value;
 			
 			var patternName = /^[A-Za-z0-9 ]+$/;
-			var patternStreet = /^[A-Za-z]+ [0-9a-zA-Z]+$/;
+			var patternStreet = /^[A-Za-z ]+ [0-9a-zA-Z]+$/;
 			var patternCity = /^[a-zA-Z ]+$/;
 			var patternHours = /^([01]?[0-9]|2[0-3])(:[0-5][0-9])?-([01]?[0-9]|2[0-3])(:[0-5][0-9])?$/;
 			//var patternHours = /^(([01]?[0-9]|2[0-3])-([01]?[0-9]|2[0-3]))|(([01]?[0-9]|2[0-3]):[0-5][0-9]-([01]?[0-9]|2[0-3]):[0-5][0-9])$/;
@@ -478,15 +483,20 @@ Vue.component("addSportObject", {
 			
 		axios
 			.get('sportObjects/availableManagers', this.availableManagersList)
-			.then(response => (this.availableManagersList = response.data));
+			.then(response => {(this.availableManagersList = response.data),
+			this.isEmpty(response.data);
+			});
 			
 		axios
 			.get('customer/listinit', this.listOfUsers)
 			.then(response => (this.listOfUsers = response.data));
 		
-		//this.isEmpty();   ne ucita odmah sa ovim
+		/*this.isEmpty(this.availableManagersList);   //ne ucita odmah sa ovim
+		alert(this.availableManagersList.length);*/
+
 	},
 	beforeUpdate() {
-		this.isEmpty(); //ovo se pozove vise puta al valjda je ok
+		//this.isEmpty(); //ovo se pozove vise puta al valjda je ok
+		//alert(this.availableManagersList.length);
 	}
 });
