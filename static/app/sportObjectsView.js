@@ -16,6 +16,7 @@ Vue.component("sportObjectsView", {
     			<button v-on:click="goToEditProfile()" class="login-btn" id="btn-editprofile" >Edit profile</button>
     			<button v-on:click="goToUsersView()" class="login-btn" id="btn-userview" >Users</button>
     			<button v-on:click="goToManagersSO()" class="login-btn" id="btn-managers-s-o" >My sport object</button>
+    			<button v-on:click="goToMyTrainings()" class="login-btn" id="btn-coach-training" >My trainings</button>
     			
     		</div>
     		<div class="sport-objects-view">
@@ -129,12 +130,21 @@ Vue.component("sportObjectsView", {
 				document.getElementById("btn-managers-s-o").disabled = true;
 				document.getElementById("btn-register").disabled = false;
 				document.getElementById("add-so-btn").classList.remove("invisible");
+				
+					document.getElementById("btn-coach-training").disabled= true;
 				}
 				else if (myArray[1] == "Manager") {
 					document.getElementById("btn-managers-s-o").disabled = false;
 					document.getElementById("add-so-btn").classList.add("invisible");
 				    document.getElementById("btn-userview").disabled= true;
+				    
+					document.getElementById("btn-coach-training").disabled= true;
 
+				}
+				else if(myArray[1] == "Coach")
+				{
+					
+					document.getElementById("btn-coach-training").disabled= false;
 				}
 				else
 				{
@@ -144,6 +154,8 @@ Vue.component("sportObjectsView", {
 				document.getElementById("btn-register").disabled = true;
 				document.getElementById("add-so-btn").classList.add("invisible");
 				document.getElementById("btn-managers-s-o").disabled = true;
+				
+					document.getElementById("btn-coach-training").disabled= true;
 
 
 
@@ -154,6 +166,8 @@ Vue.component("sportObjectsView", {
 				document.getElementById("add-so-btn").classList.add("invisible");
 				document.getElementById("btn-managers-s-o").disabled = true;
 				document.getElementById("btn-managers-s-o").disabled = true;
+				
+					document.getElementById("btn-coach-training").disabled= true;
 
 			}
 			else {
@@ -164,6 +178,8 @@ Vue.component("sportObjectsView", {
 				document.getElementById("add-so-btn").classList.add("invisible");
 				document.getElementById("btn-userview").disabled= true;
 				document.getElementById("btn-managers-s-o").disabled = true;
+				
+					document.getElementById("btn-coach-training").disabled= true;
 
 
 
@@ -316,7 +332,10 @@ Vue.component("sportObjectsView", {
 		goToUsersView : function() {
 			router.push(`/userview`);
 		},
-		
+		goToMyTrainings : function()
+		{
+			router.push(`/coachTraining`);
+		},
 		sortAvgMarkFunction : function() {
 			this.sportObjectList.sort(this.compareNum);
 			var searchNameInput = document.getElementById("searchName").value;

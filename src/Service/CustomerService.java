@@ -7,6 +7,7 @@ import beans.Coach;
 import beans.Customer;
 import beans.Manager;
 import beans.SportObject;
+import beans.Training;
 import beans.User;
 
 public class CustomerService {
@@ -20,8 +21,27 @@ public class CustomerService {
 	{
 		return cfs.readCustomers("customers");
 	}
+	public ArrayList<Training> findGroupForCoach(Coach c)
+	{
+		return cfs.findGroupForCoach(c);
+	}
+	public ArrayList<Training> findTrainingsForCoach(Coach c)
+	{
+		return cfs.findTrainingsForCoach(c);
+	}
+	public ArrayList<Training> findPersonalForCoach(Coach c)
+	{
+		return cfs.findPersonalForCoach(c);
+	}
+	public Coach getCoachByUsername(String username)
+	{
+		return cfs.getCoachByUsername(username);
+	}
 	public ArrayList<Customer> readCustomersView() {
 		return cfs.readCustomersView();
+	}
+	public ArrayList<Training> readTraining() {
+		return cfs.readTraining();
 	}
 	public ArrayList<Manager> readManagers()
 	{

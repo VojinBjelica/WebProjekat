@@ -35,6 +35,9 @@ public class main {
 		CustomerController.readListUser();
 		CustomerController.showCoachesInObject();
 		CustomerController.findViewers();
+		CustomerController.getMyTrainings();
+		CustomerController.getMyPersonal();
+		CustomerController.getMyGroup();
 		
 		new SportObjectController();
 		SportObjectController.readSportObjects();

@@ -12,6 +12,18 @@ public class Training {
 	private String description;
 	private Image picture;
 	
+	
+	public Training(String name, TrainingTypeEnum type, SportObject sportObject, int duration, Coach trainer,
+			String description) {
+		super();
+		this.name = name;
+		this.type = type;
+		this.sportObject = sportObject;
+		this.duration = duration;
+		this.trainer = trainer;
+		this.description = description;
+	}
+
 	public Training(String name, TrainingTypeEnum type, SportObject sportObject, int duration, Coach trainer,
 			String description, Image picture) {
 		super();
