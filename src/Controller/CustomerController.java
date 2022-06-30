@@ -20,6 +20,7 @@ import beans.LocalDateAdapter;
 import beans.Manager;
 import beans.RoleEnum;
 import beans.SportObject;
+import beans.Training;
 import beans.User;
 import spark.Request;
 import spark.Response;
@@ -112,6 +113,39 @@ public class CustomerController {
 			cs.addCustomerInFile();
 			
 			return "OK";
+		});
+	}
+	public static void getMyTrainings()
+	{
+		get("customer/mytrainings", (req, res) -> {
+			ArrayList<Training> myTrainingList = new ArrayList<Training>();
+			Session ss = req.session(true);
+			User user = ss.attribute("user");
+			myTrainingList = cs.findTrainingsForCoach(cs.getCoachByUsername(user.getUsername()));
+			System.out.println(myTrainingList.size());
+			return g.toJson(myTrainingList);
+		});
+	}
+	public static void getMyPersonal()
+	{
+		get("customer/mypersonal", (req, res) -> {
+			ArrayList<Training> myTrainingList = new ArrayList<Training>();
+			Session ss = req.session(true);
+			User user = ss.attribute("user");
+			myTrainingList = cs.findPersonalForCoach(cs.getCoachByUsername(user.getUsername()));
+			System.out.println(myTrainingList.size());
+			return g.toJson(myTrainingList);
+		});
+	}
+	public static void getMyGroup()
+	{
+		get("customer/mygroup", (req, res) -> {
+			ArrayList<Training> myTrainingList = new ArrayList<Training>();
+			Session ss = req.session(true);
+			User user = ss.attribute("user");
+			myTrainingList = cs.findGroupForCoach(cs.getCoachByUsername(user.getUsername()));
+			System.out.println(myTrainingList.size());
+			return g.toJson(myTrainingList);
 		});
 	}
 	public static void addCustomer()

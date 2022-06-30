@@ -16,12 +16,15 @@ import java.util.StringTokenizer;
 
 import javax.swing.JOptionPane;
 
+import Service.SportObjectService;
 import beans.Coach;
 import beans.Customer;
 import beans.GenderEnum;
 import beans.Manager;
 import beans.RoleEnum;
 import beans.SportObject;
+import beans.Training;
+import beans.TrainingTypeEnum;
 import beans.User;
 
 public class CustomerFileStorage {
@@ -32,6 +35,7 @@ public class CustomerFileStorage {
 	public static ArrayList<Coach> coachList = new ArrayList<Coach>();
 	public static ArrayList<Coach> coachObjectList = new ArrayList<Coach>();
 	public static ArrayList<User> userList = new ArrayList<User>();
+	public static ArrayList<Training> trainingList = new ArrayList<Training>();
 	public ArrayList<Customer> readCustomers(String way) {
         ArrayList<Customer> customers = new ArrayList<Customer>();
         BufferedReader in = null;
@@ -62,6 +66,56 @@ public class CustomerFileStorage {
                     Customer customer = new Customer(username,password,name,surname, dt,gen);
                     customers.add(customer);
                     customerList = customers;
+                }
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        finally {
+            if ( in != null ) {
+                try {
+                    in.close();
+                }
+                catch (Exception e) { }
+            }
+        }
+        return customers;
+    }
+	public ArrayList<Training> readTraining() {
+        ArrayList<Training> customers = new ArrayList<Training>();
+        BufferedReader in = null;
+        try {
+            File file = new File("./trainings.txt");
+            in = new BufferedReader(new FileReader(file));
+            String line, name = "", type = "", sportObject = "",duration = "",coach = "",description = "";
+            StringTokenizer st;
+            try {
+                while ((line = in.readLine()) != null) {
+                    line = line.trim();
+                    if (line.equals("") || line.indexOf('#') == 0)
+                        continue;
+                    st = new StringTokenizer(line, ";");
+                    while (st.hasMoreTokens()) {
+                    	name = st.nextToken().trim();
+                    	type = st.nextToken().trim();
+                    	sportObject = st.nextToken().trim();
+                    	duration = st.nextToken().trim();
+                    	coach = st.nextToken().trim();
+                    	description = st.nextToken().trim();             
+                        }
+                    
+                    TrainingTypeEnum typeEnum = TrainingTypeEnum.Group;
+                    if(type.equals("Group")) typeEnum = TrainingTypeEnum.Group;
+                    else if(type.equals("Gym")) typeEnum = TrainingTypeEnum.Gym;
+                    else typeEnum = TrainingTypeEnum.Personal;
+                    SportObjectService sos = new SportObjectService();
+                    SportObject so = sos.getSportObjectByName(sportObject);
+                    Coach c = getCoachByUsername(coach);
+                    Training train = new Training(name,typeEnum,so,Integer.parseInt(duration),c,description);
+                    customers.add(train);
+                    trainingList = customers;
                 }
             } catch (Exception ex) {
                 ex.printStackTrace();
@@ -272,6 +326,56 @@ public class CustomerFileStorage {
         }
         return customers;
     }
+	public ArrayList<Coach> readCoachesID() {
+        ArrayList<Coach> customers = new ArrayList<Coach>();
+        BufferedReader in = null;
+        try {
+            File file = new File("./coachObjects.txt");
+            in = new BufferedReader(new FileReader(file));
+            String line,id = "", username = "", password = "", name = "",surname = "",gender = "",date = "",sportObjectName = "";
+            StringTokenizer st;
+            try {
+                while ((line = in.readLine()) != null) {
+                    line = line.trim();
+                    if (line.equals("") || line.indexOf('#') == 0)
+                        continue;
+                    st = new StringTokenizer(line, ";");
+                    while (st.hasMoreTokens()) {
+                        username = st.nextToken().trim();
+                        password = st.nextToken().trim();
+                        name = st.nextToken().trim();
+                        surname = st.nextToken().trim();
+                        gender = st.nextToken().trim();
+                        date = st.nextToken().trim();       
+                        sportObjectName = st.nextToken().trim();
+                        id = st.nextToken().trim();
+                        
+                        }
+                    SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+                    Date dt = formatter.parse(date);
+                    GenderEnum gen = GenderEnum.Male;
+                    if(gender.equals("Male")) gen = GenderEnum.Male;
+                    else if(gender.equals("Female")) gen = GenderEnum.Female;
+                    Coach customer = new Coach(username,password,name,surname,dt,gen,Integer.parseInt(id));
+                    customers.add(customer);
+                    coachObjectList = customers;
+                }
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        finally {
+            if ( in != null ) {
+                try {
+                    in.close();
+                }
+                catch (Exception e) { }
+            }
+        }
+        return customers;
+    }
 	public ArrayList<User> readUsers() {
         ArrayList<User> users = new ArrayList<User>();
         BufferedReader in = null;
@@ -448,7 +552,7 @@ public class CustomerFileStorage {
             outputString += "Female" + ";";
             SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
             outputString += formatter.format(customer.getDateOfBirth());
-           
+            outputString += customer.getCoachID();
             output.println(outputString);
         }
         //addCustomersToUsers();
@@ -479,7 +583,7 @@ public class CustomerFileStorage {
             SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
             outputString += formatter.format(customer.getDateOfBirth());
             outputString += customer.getSportObject(); //dodao i iscitavanje sportskog objekta
-         
+
             output.println(outputString);
         }
         //addCustomersToUsers();
@@ -780,6 +884,63 @@ public class CustomerFileStorage {
 		}
 		return availableManagers;
 	}
-	
+	public Coach getCoachByUsername(String username)
+	{
+		Coach retCoach = null;
+		for(Coach c : readCoaches())
+		{
+			if(c.getUsername().equals(username))
+			{
+				retCoach = c;
+			}
+		}
+		return retCoach;
+	}
+	public ArrayList<Training> findTrainingsForCoach(Coach c)
+	{
+		ArrayList<Training> trainingPrivList = readTraining();
+		ArrayList<Training> retList = new ArrayList<Training>();
+		for(Training t : trainingPrivList)
+		{
+			Coach coach = getCoachByUsername(t.getTrainer().getUsername());
+			if(coach.getUsername().equals(c.getUsername()))
+			{
+				System.out.println(t.getType() + " == " + TrainingTypeEnum.Gym);
+				if(t.getType() == TrainingTypeEnum.Gym)
+				retList.add(t);
+			}
+		}
+		return retList;
+	}
+	public ArrayList<Training> findPersonalForCoach(Coach c)
+	{
+		ArrayList<Training> trainingPrivList = readTraining();
+		ArrayList<Training> retList = new ArrayList<Training>();
+		for(Training t : trainingPrivList)
+		{
+			Coach coach = getCoachByUsername(t.getTrainer().getUsername());
+			if(coach.getUsername().equals(c.getUsername()))
+			{
+				if(t.getType() == TrainingTypeEnum.Personal)
+				retList.add(t);
+			}
+		}
+		return retList;
+	}
+	public ArrayList<Training> findGroupForCoach(Coach c)
+	{
+		ArrayList<Training> trainingPrivList = readTraining();
+		ArrayList<Training> retList = new ArrayList<Training>();
+		for(Training t : trainingPrivList)
+		{
+			Coach coach = getCoachByUsername(t.getTrainer().getUsername());
+			if(coach.getUsername().equals(c.getUsername()))
+			{
+				if(t.getType() == TrainingTypeEnum.Group)
+				retList.add(t);
+			}
+		}
+		return retList;
+	}
 
 }

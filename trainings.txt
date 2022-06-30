@@ -1,0 +1,3 @@
+Trening;Gym;XFit;30;kelja123;blabla
+Trening;Personal;XFit;30;kelja123;blabla
+Trening;Group;XFit;30;kelja123;blabla
