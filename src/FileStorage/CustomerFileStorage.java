@@ -89,7 +89,7 @@ public class CustomerFileStorage {
         try {
             File file = new File("./trainings.txt");
             in = new BufferedReader(new FileReader(file));
-            String line, name = "", type = "", sportObject = "",duration = "",coach = "",description = "";
+            String line, name = "", type = "",deleted = "", sportObject = "",date = "",id = "",duration = "",coach = "",description = "";
             StringTokenizer st;
             try {
                 while ((line = in.readLine()) != null) {
@@ -103,9 +103,13 @@ public class CustomerFileStorage {
                     	sportObject = st.nextToken().trim();
                     	duration = st.nextToken().trim();
                     	coach = st.nextToken().trim();
-                    	description = st.nextToken().trim();             
+                    	description = st.nextToken().trim();
+                    	date = st.nextToken().trim();
+                    	id = st.nextToken().trim();
+                    	deleted = st.nextToken().trim();
                         }
-                    
+                    SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+                    Date dt = formatter.parse(date);
                     TrainingTypeEnum typeEnum = TrainingTypeEnum.Group;
                     if(type.equals("Group")) typeEnum = TrainingTypeEnum.Group;
                     else if(type.equals("Gym")) typeEnum = TrainingTypeEnum.Gym;
@@ -113,7 +117,7 @@ public class CustomerFileStorage {
                     SportObjectService sos = new SportObjectService();
                     SportObject so = sos.getSportObjectByName(sportObject);
                     Coach c = getCoachByUsername(coach);
-                    Training train = new Training(name,typeEnum,so,Integer.parseInt(duration),c,description);
+                    Training train = new Training(name,typeEnum,so,Integer.parseInt(duration),c,description,dt,Integer.parseInt(id),Integer.parseInt(deleted));
                     customers.add(train);
                     trainingList = customers;
                 }
@@ -133,6 +137,17 @@ public class CustomerFileStorage {
         }
         return customers;
     }
+	public Training findTrainingById(int id)
+	{
+		for(Training t : readTraining())
+		{
+			if(t.getId() == id)
+			{
+				return t;
+			}
+		}
+		return null;
+	}
 	public ArrayList<Customer> readCustomersView() {
         ArrayList<Customer> customers = new ArrayList<Customer>();
         BufferedReader in = null;
@@ -532,6 +547,41 @@ public class CustomerFileStorage {
         }
         return true;
     }
+	public boolean addTrainingsInFile() 
+    {
+		
+        FileWriter fileWriter;
+        try {
+            fileWriter = new FileWriter("./trainings.txt");
+        PrintWriter output = new PrintWriter(fileWriter, true);
+        for(Training customer : trainingList)
+        {
+            String outputString = "";
+            outputString += customer.getName() + ";";
+            if(customer.getType() == TrainingTypeEnum.Personal)
+                outputString += "Personal" + ";";
+                else if(customer.getType() == TrainingTypeEnum.Group)
+                outputString += "Group" + ";";
+                else outputString += "Gym" + ";";
+                	
+            outputString += customer.getSportObject().getObjectName() + ";";
+            outputString += customer.getDuration() + ";";
+            outputString += customer.getTrainer().getUsername() + ";";
+            outputString += customer.getDescription() + ";";
+            
+            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+            outputString += formatter.format(customer.getTrainingDate()) + ";"; //dodao ;
+            outputString += customer.getId() + ";"; //dodao i iscitavanje sportskog objekta
+            outputString += customer.getDeleted(); //dodao i iscitavanje sportskog objekta
+            output.println(outputString);
+        }
+        //addCustomersToUsers();
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        return true;
+    }
 	public boolean addCoachesInFile() 
     {
 		
@@ -872,6 +922,18 @@ public class CustomerFileStorage {
 		
 		return returnList;
 	}
+	public Training cancelTraining(Training t)
+	{
+		//t.setDeleted(1);
+		readTraining();
+		for(Training tt : trainingList)
+		{
+			if(tt.getId() == t.getId())
+			tt.setDeleted(1);
+		}
+		addTrainingsInFile();
+		return null;
+	}
 	
 	//Nalazi menadzere koji nisu dodjeljeni sportskom objektu
 	public ArrayList<Manager> findAvailableManagers() {
@@ -922,7 +984,10 @@ public class CustomerFileStorage {
 			if(coach.getUsername().equals(c.getUsername()))
 			{
 				if(t.getType() == TrainingTypeEnum.Personal)
-				retList.add(t);
+				{
+					if(t.getDeleted() == 0)
+						retList.add(t);
+				}
 			}
 		}
 		return retList;

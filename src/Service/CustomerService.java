@@ -21,6 +21,14 @@ public class CustomerService {
 	{
 		return cfs.readCustomers("customers");
 	}
+	public Training findTrainingById(int id)
+	{
+		return cfs.findTrainingById(id);
+	}
+	public Training cancelTraining(Training t)
+	{
+		return cfs.cancelTraining(t);
+	}
 	public ArrayList<Training> findGroupForCoach(Coach c)
 	{
 		return cfs.findGroupForCoach(c);

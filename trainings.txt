@@ -1,3 +1,3 @@
-Trening;Gym;XFit;30;kelja123;blabla
-Trening;Personal;XFit;30;kelja123;blabla
-Trening;Group;XFit;30;kelja123;blabla
+Trening;Gym;XFit;30;kelja123;blabla;2022-06-14;1;0
+Treningg;Personal;XFit;30;kelja123;blabla;2022-06-14;2;0
+Treninggg;Group;XFit;30;kelja123;blabla;2022-06-14;3;0

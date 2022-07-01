@@ -115,6 +115,19 @@ public class CustomerController {
 			return "OK";
 		});
 	}
+	public static void cancelTraining()
+	{
+		post("customer/cancelTraining", (req, res) -> {
+			String payload = req.body();
+			Training pd = g.fromJson(payload, Training.class);
+			System.out.println(pd.getId());
+			Training t = cs.findTrainingById(pd.getId());
+			System.out.println(t.getName());
+			cs.cancelTraining(t);
+			
+			return "OK";
+		});
+	}
 	public static void getMyTrainings()
 	{
 		get("customer/mytrainings", (req, res) -> {
