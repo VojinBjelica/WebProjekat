@@ -3,13 +3,14 @@ Vue.component("managersSportObject", {
 		return {
 			sportObject: {objectName:null, objectType:null, objectOffer:null, status:null, location:null, logo:null, avarageMark:null, workHour:null},
 			coaches : null,
-			viewers : null
+			viewers : null,
+			allCoaches: null
 		}
 	},
 	template: `
-		<div>
-			<div class="mso-container">
-				<img v-bind:src="sportObject.logo" />
+		<div  >
+			<div class="mso-container " style="width:70%">
+				<img v-bind:src="sportObject.logo" style="width:20%"/>
 				<div style="display:flex;flex-direction:column;">
 					<p class="mso-name  h3" >{{sportObject.objectName}}</p>
 					<div class="d-flex ">
@@ -30,54 +31,136 @@ Vue.component("managersSportObject", {
 				</div>
 			</div>
 			<br/>
-			<br/>
-			<br/>
-			<br/>
-			<div class="a">
-    			<table id="aaa"  style="width:40%;">
-	    			<tr bgcolor="grey">
-	    				<th style="min-width:50px">Name </th>
-	    				<th style="min-width:50px">Surname</th>
-	    				<th style="min-width:50px">Username</th>
-	    				<th style="min-width:50px">Birth date</th>
-	    				<th style="min-width:50px">gender</th>
+			
+			<div class="d-flex justify-content-between">
+				<div style="width:40%">
+					<div class="a" >
+						<p>Trainers:</p>
+    					<table id="aaa"  style="width:100%;">
+	    					<tr bgcolor="grey">
+	    						<th style="min-width:50px">Name </th>
+	    						<th style="min-width:50px">Surname</th>
+	    						<th style="min-width:50px">Username</th>
+	    						<th style="min-width:50px">Birth date</th>
+	    						<th style="min-width:50px">gender</th>
 	    				
-	    			</tr>
+	    					</tr>
 	    			
-	    			<tr class="data" v-for="sCoaches in coaches">
-	    				<td >{{sCoaches.name}}</td>
-	    				<td >{{sCoaches.surname}}</td>
-	    				<td >{{sCoaches.username}}</td>
-	    				<td >{{sCoaches.dateOfBirth}}</td>
-	    				<td >{{sCoaches.gender}}</td>
-	    			</tr>
-	    		</table>
-	    		</div>
-	    	<br/>
-			<br/>
-			<br/>
-			<br/>
-			<div class="a">
-    			<table id="aa"  style="width:40%;">
-	    			<tr bgcolor="grey">
-	    				<th style="min-width:50px">Name </th>
-	    				<th style="min-width:50px">Surname</th>
-	    				<th style="min-width:50px">Username</th>
-	    				<th style="min-width:50px">Birth date</th>
-	    				<th style="min-width:50px">gender</th>
+	    					<tr class="data" v-for="sCoaches in coaches">
+	    						<td >{{sCoaches.name}}</td>
+	    						<td >{{sCoaches.surname}}</td>
+	    						<td >{{sCoaches.username}}</td>
+	    						<td >{{sCoaches.dateOfBirth}}</td>
+	    						<td >{{sCoaches.gender}}</td>
+	    					</tr>
+	    				</table>
+	    			</div>
+	    			<br/>
+			
+					<div class="a">
+						<p>Customers who visited {{sportObject.objectName}}:</p>
+    					<table id="aa"  style="width:100%;">
+	    					<tr bgcolor="grey">
+	    						<th style="min-width:50px">Name </th>
+	    						<th style="min-width:50px">Surname</th>
+	    						<th style="min-width:50px">Username</th>
+	    						<th style="min-width:50px">Birth date</th>
+	    						<th style="min-width:50px">gender</th>
 	    				
-	    			</tr>
+	    					</tr>
 	    			
-	    			<tr class="data" v-for="sViewers in viewers">
-	    				<td >{{sViewers.name}}</td>
-	    				<td >{{sViewers.surname}}</td>
-	    				<td >{{sViewers.username}}</td>
-	    				<td >{{sViewers.dateOfBirth}}</td>
-	    				<td >{{sViewers.gender}}</td>
-	    			</tr>
-	    		</table>
+	    					<tr class="data" v-for="sViewers in viewers">
+	    						<td >{{sViewers.name}}</td>
+	    						<td >{{sViewers.surname}}</td>
+	    						<td >{{sViewers.username}}</td>
+	    						<td >{{sViewers.dateOfBirth}}</td>
+	    						<td >{{sViewers.gender}}</td>
+	    					</tr>
+	    				</table>
+	    			</div>
+	    	
+	    			
+	    	
 	    		</div>
+	    		<div  style="width:50%">
+	    			<button v-on:click="toggleAddTraining()" >Add a new training</button>
+	    			<div id="add-training-input" class="invisible">
+	    			<table>
+						<tr>
+							<td>
+								<p>Name: </p>
+							</td>
+							<td>
+								<input id="add-training-name" class="form-control" type="text" />
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<p>Type:</p>
+							</td>
+							<td>
+								<select id="add-training-type"  class="form-select">
+									<option value="Personal" >Personal training</option>
+									<option value="Group" >Group training</option>
+									<option value="Gym" >Gym</option>
+								</select>
+							</td>
+						</tr>
+				
+						<tr>
+							<td>
+								<p>Image url: </p>
+							</td>
+							<td>
+								<input id="add-training-img" class="form-control"  type="text" />
+							</td>
+						</tr>
+				
+						<tr>
+							<td>
+								<p>Description: </p>
+							</td>
+							<td>
+								<input class="form-control" type="text" />
+							</td>
+						</tr>
+				
+						
+						<tr>
+							<td>
+								<p>Duration (in minutes): </p>
+							</td>
+							<td>
+								<input class="form-control"  type="text" />
+							</td>
+						</tr>
+						
+						<tr>
+							<td>
+								<p>Select a coach:</p>
+							</td>
+							<td>
+								<select class="form-select" >
+									<option v-for="co in allCoaches" v-bind:value="co" >{{co.name}} {{co.surname}}</option>
+								</select>
+							</td>
+						</tr>
+						
+						<tr>
+							<td>
+								<button class="btn btn-success ms-5" v-on:click="validateAdding()" >Confirm</button>
+							</td>
+							<td >
+								<button  class="btn btn-danger ms-5" v-on:click="cancelAdding()" >Cancel</button>
+							</td>
+						</tr>
+					</table>
+					</div>
+	    		</div>
+	    	</div>
+	    	
 		</div>
+		
 	`,
 	mounted() {
 		axios
@@ -90,10 +173,46 @@ Vue.component("managersSportObject", {
 		axios
 			.get('customer/getViewers', this.viewers)
 			.then(response => this.viewers = response.data);
+		axios
+			.get('customers/getAllTrainers', this.allCoaches)
+			.then(response => this.allCoaches = response.data);
 			
 	},
 	
 	methods: {
+		testiram: function() {
+			alert("Broj svih trenera: " + this.allCoaches.length);
+		},
+		
+		toggleAddTraining : function() {
+			var input = document.getElementById('add-training-input');
+			
+			if (input.classList.contains('invisible')) {
+				input.classList.remove('invisible');
+			} else {
+				input.classList.add('invisible');
+			}
+		},
+		
+		validateAdding: function() {
+			var name = document.getElementById('add-training-name').value;
+			var type = document.getElementById('add-training-type').value;
+			var img = document.getElementById('add-training-img').value;
+			
+			if (name == "") {
+				alert("You must enter a name.");
+			} else if (type == "") {
+				alert("You must enter a type.");
+			} else if (img == "") {
+				alert("You must enter an image url.");
+			}
+			
+		},
+		
+		cancelAdding: function() {
+			var input = document.getElementById('add-training-input');
+			input.classList.add('invisible');
+		}
 		
 	}
 	

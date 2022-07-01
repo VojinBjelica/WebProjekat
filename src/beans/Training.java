@@ -10,7 +10,7 @@ public class Training {
 	private int duration;//u minutama
 	private Coach trainer;// ako postoji
 	private String description;
-	private Image picture;
+	private String picture;
 	
 	
 	public Training(String name, TrainingTypeEnum type, SportObject sportObject, int duration, Coach trainer,
@@ -25,7 +25,7 @@ public class Training {
 	}
 
 	public Training(String name, TrainingTypeEnum type, SportObject sportObject, int duration, Coach trainer,
-			String description, Image picture) {
+			String description, String picture) {
 		super();
 		this.name = name;
 		this.type = type;
@@ -84,11 +84,11 @@ public class Training {
 		this.description = description;
 	}
 
-	public Image getPicture() {
+	public String getPicture() {
 		return picture;
 	}
 
-	public void setPicture(Image picture) {
+	public void setPicture(String picture) {
 		this.picture = picture;
 	}
 	

@@ -312,7 +312,12 @@ public class CustomerController {
 	}
 	
 	
-	
+	public static void getAllTrainers() {
+		get("customers/getAllTrainers", (req, res) -> {
+			System.out.println("Broj trenera: " + cs.readCoaches().size());
+			return g.toJson(cs.readCoaches());
+		});
+	}
 	
 	
 	public static void logoutCustomer()
