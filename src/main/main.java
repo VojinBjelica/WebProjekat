@@ -38,6 +38,7 @@ public class main {
 		CustomerController.getMyTrainings();
 		CustomerController.getMyPersonal();
 		CustomerController.getMyGroup();
+		CustomerController.getAllTrainers();
 		
 		new SportObjectController();
 		SportObjectController.readSportObjects();
