@@ -20,6 +20,7 @@ Vue.component("coachTraining", {
 	    				<th style="min-width:50px">Duration</th>
 	    				<th style="min-width:50px">Coach</th>
 	    				<th style="min-width:50px">Description</th>
+	    				<th style="min-width:50px">Date</th>
 	    				
 	    			</tr>
 	    			
@@ -30,6 +31,8 @@ Vue.component("coachTraining", {
 	    				<td >{{sTraining.duration}}</td>
 	    				<td >{{sTraining.trainer.name}}</td>
 	    				<td >{{sTraining.description}}</td>
+	    				<td >{{sTraining.trainingDate}}</td>
+	    				
 	    			</tr>
 	    		</table>
 	    		</div>
@@ -45,6 +48,8 @@ Vue.component("coachTraining", {
 	    				<th style="min-width:50px">Duration</th>
 	    				<th style="min-width:50px">Coach</th>
 	    				<th style="min-width:50px">Description</th>
+	    				<th style="min-width:50px">Date</th>
+	    				<th style="min-width:50px">&nbsp</th>
 	    				
 	    			</tr>
 	    			
@@ -55,6 +60,8 @@ Vue.component("coachTraining", {
 	    				<td >{{sTraining.duration}}</td>
 	    				<td >{{sTraining.trainer.name}}</td>
 	    				<td >{{sTraining.description}}</td>
+	    				<td >{{sTraining.trainingDate}}</td>
+	    				<td ><button v-on:click="cancelTraining(sTraining);ruterIdi();">Cancel</button></td>
 	    			</tr>
 	    		</table>
 	    		</div>
@@ -71,6 +78,7 @@ Vue.component("coachTraining", {
 	    				<th style="min-width:50px">Duration</th>
 	    				<th style="min-width:50px">Coach</th>
 	    				<th style="min-width:50px">Description</th>
+	    				<th style="min-width:50px">Date</th>
 	    				
 	    			</tr>
 	    			
@@ -81,6 +89,7 @@ Vue.component("coachTraining", {
 	    				<td >{{sTraining.duration}}</td>
 	    				<td >{{sTraining.trainer.name}}</td>
 	    				<td >{{sTraining.description}}</td>
+	    				<td >{{sTraining.trainingDate}}</td>
 	    			</tr>
 	    		</table>
 	    		</div>
@@ -94,6 +103,15 @@ Vue.component("coachTraining", {
 	methods : {
 		goBack : function() {
 			router.push(`/`);
+		},
+		cancelTraining : function (training) {
+			axios
+			.post('customer/cancelTraining', {"id":''+training.id})
+			.then(response => (toast('Training ' + training.name + " has been canceled")))
+		},
+		ruterIdi : function()
+		{
+			router.go(0);
 		}
 		
 	},
