@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
@@ -925,11 +926,49 @@ public class CustomerFileStorage {
 	public Training cancelTraining(Training t)
 	{
 		//t.setDeleted(1);
+		LocalDate localDate = LocalDate.now();
+		Date date = Date.from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
 		readTraining();
 		for(Training tt : trainingList)
 		{
 			if(tt.getId() == t.getId())
-			tt.setDeleted(1);
+			{
+				if(tt.getTrainingDate().after(date))
+				{
+					if(tt.getTrainingDate().getDay() - date.getDay() >= 2)
+					{
+						tt.setDeleted(1);
+					}
+					else
+					{
+						if(tt.getTrainingDate().getMonth() - date.getMonth() != 0)
+						{
+						if(tt.getTrainingDate().getMonth() %2 == 0 && tt.getTrainingDate().getMonth() != 2)
+						{
+							if(date.getMonth() - tt.getTrainingDate().getMonth() <= 28  )
+							{
+								tt.setDeleted(1);
+							}
+						}
+						else if (tt.getTrainingDate().getMonth() %2 == 0 && tt.getTrainingDate().getMonth() == 2)
+						{
+							if(date.getMonth() - tt.getTrainingDate().getMonth() <= 26  )
+							{
+								tt.setDeleted(1);
+							}
+						}
+						else
+						{
+							if(date.getMonth() - tt.getTrainingDate().getMonth() <= 29  )
+							{
+								tt.setDeleted(1);
+							}
+						}
+						}
+						
+					}
+				}
+			}
 		}
 		addTrainingsInFile();
 		return null;
