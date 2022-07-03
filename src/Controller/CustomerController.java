@@ -351,6 +351,16 @@ public class CustomerController {
 		});
 	}
 	
+	public static void addTraining() {
+		post("customers/addTraining", (req, res) -> {
+			System.out.println("Usao u dodavanje novog treninga!!!");
+			String payload = req.body();
+			Training tr = g.fromJson(payload, Training.class);
+			cs.addTraining(tr);
+			return("OK");
+		});
+	}
+	
 	
 	public static void logoutCustomer()
 	{

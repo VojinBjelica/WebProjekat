@@ -179,6 +179,44 @@ public class CustomerFileStorage {
         }
         return customers;
     }
+	
+	public boolean addTraining(Training training) {
+		if (training.getName() != null && training.getType() != null && training.getPicture() != null
+				&& training.getTrainer() != null) {
+			trainingList = readTraining();
+			System.out.println("Traininga ima: " + trainingList.size());
+			
+			boolean nameDuplicate = true;
+			for (Training tr : trainingList) {
+				if (tr.getName().equals(training.getName())) {
+					nameDuplicate = false;
+				}
+			}
+			
+			boolean nameReg = false;
+			boolean durationReg = false;
+			
+			if (training.getName().matches("[a-zA-Z0-9 ]+")) {
+				nameReg = true;
+			}
+			if (Integer.toString(training.getDuration()).matches("[0-9]+")) {
+				durationReg = true;
+			}
+			
+			if (nameReg == true && durationReg == true && nameDuplicate == true) {
+				trainingList.add(training);
+				System.out.println("Dodajem trening: " + training.getName());
+				addTrainingsInFile();
+				return true;
+			}
+			else {
+				System.out.println("Invalid training data.");
+			}
+		}
+		return false;
+	}
+	
+	
 	public Training findTrainingById(int id)
 	{
 		for(Training t : readTraining())
