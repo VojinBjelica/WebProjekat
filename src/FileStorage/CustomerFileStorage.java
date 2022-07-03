@@ -31,6 +31,7 @@ import beans.User;
 public class CustomerFileStorage {
 	
 	public static ArrayList<Customer> customerList = new ArrayList<Customer>();
+	public static ArrayList<Customer> customerTraining = new ArrayList<Customer>();
 	public static ArrayList<Customer> customerViewList = new ArrayList<Customer>();
 	public static ArrayList<Manager> managerList = new ArrayList<Manager>();
 	public static ArrayList<Coach> coachList = new ArrayList<Coach>();
@@ -67,6 +68,46 @@ public class CustomerFileStorage {
                     Customer customer = new Customer(username,password,name,surname, dt,gen);
                     customers.add(customer);
                     customerList = customers;
+                }
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        finally {
+            if ( in != null ) {
+                try {
+                    in.close();
+                }
+                catch (Exception e) { }
+            }
+        }
+        return customers;
+    }
+	public ArrayList<Customer> readCustomerTrainings() {
+        ArrayList<Customer> customers = new ArrayList<Customer>();
+        BufferedReader in = null;
+        try {
+            File file = new File("./customerTraining.txt");
+            in = new BufferedReader(new FileReader(file));
+            String line, username = "",trainingID = "";
+            StringTokenizer st;
+            try {
+                while ((line = in.readLine()) != null) {
+                    line = line.trim();
+                    if (line.equals("") || line.indexOf('#') == 0)
+                        continue;
+                    st = new StringTokenizer(line, ";");
+                    while (st.hasMoreTokens()) {
+                        username = st.nextToken().trim();
+                        trainingID = st.nextToken().trim();              
+                        }
+                    User user = findCustomerByUsername(username);
+                    
+                    Customer customer = new Customer(username,user.getPassword(),user.getName(),user.getSurname(),user.getDateOfBirth(),user.getGender(),Integer.parseInt(trainingID));
+                    customers.add(customer);
+                    customerTraining = customers;
                 }
             } catch (Exception ex) {
                 ex.printStackTrace();
@@ -862,6 +903,34 @@ public class CustomerFileStorage {
 		}
 		return cust;
 	}
+	public User findCustomerByUsername(String username)
+	{
+		ArrayList<User> customerList = readUsers();
+		System.out.println(customerList.size());
+		User cust = null;
+		for(User c : customerList)
+		{
+			if(c.getUsername().equals(username))
+			{
+				cust = c;
+			}
+		}
+		return cust;
+	}
+	public User findUserByUsername(String username)
+	{
+		ArrayList<User> customerList = readUsers();
+		System.out.println(customerList.size());
+		User cust = null;
+		for(User c : customerList)
+		{
+			if(c.getUsername().equals(username))
+			{
+				cust = c;
+			}
+		}
+		return cust;
+	}
 	
 	//Koristim da dobijem ulogovanog menadzera
 	public Manager findManagerByUsername(String username) {
@@ -1042,6 +1111,23 @@ public class CustomerFileStorage {
 			{
 				if(t.getType() == TrainingTypeEnum.Group)
 				retList.add(t);
+			}
+		}
+		return retList;
+	}
+	public ArrayList<Training> findTrainingsForCustomer(User u)
+	{
+		LocalDate localDate = LocalDate.now();
+		Date date = Date.from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
+		ArrayList<Training> retList = new ArrayList<Training>();
+		readCustomerTrainings();
+		for(Customer c : customerTraining)
+		{
+			if(c.getUsername().equals(u.getUsername()))
+			{
+				Training t = findTrainingById(c.getTrainingID());
+				if(t.getTrainingDate().getMonth() == date.getMonth())
+					retList.add(t);
 			}
 		}
 		return retList;
