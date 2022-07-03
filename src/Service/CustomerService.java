@@ -25,6 +25,14 @@ public class CustomerService {
 	{
 		return cfs.findTrainingById(id);
 	}
+	public User findUserByUsername(String username)
+	{
+		return cfs.findUserByUsername(username);
+	}
+	public ArrayList<Training> findTrainingsForCustomer(User u)
+	{
+		return cfs.findTrainingsForCustomer(u);
+	}
 	public Training cancelTraining(Training t)
 	{
 		return cfs.cancelTraining(t);

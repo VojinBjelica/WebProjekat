@@ -76,6 +76,25 @@ public class CustomerController {
 			return g.toJson(retList);
 		});
 	}
+	public static void showCustomerTrainings() {
+		get("customer/showcustomertrainings", (req, res) -> {
+			Session ss = req.session(true);
+			User user = ss.attribute("user");
+			ArrayList<Training> retList = new ArrayList<Training>();
+			User u = cs.findUserByUsername(user.getUsername());
+			
+			if(u.getRole() == RoleEnum.Customer)
+			{
+				
+				retList = cs.findTrainingsForCustomer(u);
+				System.out.println(retList.size() + " duzina liste treninga za " + u.getName());
+				
+			}
+			System.out.println(retList.size() + " duzina liste treninga 2 za " + u.getName());
+			
+			return g.toJson(retList);
+		});
+	}
 	public static void findViewers() {
 		get("customer/getViewers", (req, res) -> {
 			Session ss = req.session(true);

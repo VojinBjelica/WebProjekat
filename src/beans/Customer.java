@@ -6,6 +6,7 @@ public class Customer extends User {
 	
 	private String roles;
 	private String sportObjectNick;
+	private int trainingID;
 	
 	public Customer()
 	{
@@ -14,15 +15,23 @@ public class Customer extends User {
 	public Customer(String username, String password, String name, String surname, Date dateOfBirth, GenderEnum gender) {
 		super(username,password,name,surname,dateOfBirth,gender);
 		this.roles = "Customer";
+		this.trainingID = -1;
 	}
 	public Customer(String username, String password, String name, String surname, Date dateOfBirth, GenderEnum gender,RoleEnum role) {
 		super(username,password,name,surname,dateOfBirth,gender,role);
 		this.roles = "Customer";
+		this.trainingID = -1;
 	}
 	public Customer(String username, String password, String name, String surname, Date dateOfBirth, GenderEnum gender,String nick) {
 		super(username,password,name,surname,dateOfBirth,gender);
 		this.roles = "Customer";
 		this.sportObjectNick = nick;
+		this.trainingID = -1;
+	}
+	public Customer(String username, String password, String name, String surname, Date dateOfBirth, GenderEnum gender,int trainingID) {
+		super(username,password,name,surname,dateOfBirth,gender);
+		this.roles = "Customer";
+		this.trainingID = trainingID;
 	}
 
 
@@ -39,6 +48,13 @@ public class Customer extends User {
 	public void setSportObjectNick(String sportObjectNick) {
 		this.sportObjectNick = sportObjectNick;
 	}
+	public int getTrainingID() {
+		return trainingID;
+	}
+	public void setTrainingID(int trainingID) {
+		this.trainingID = trainingID;
+	}
+	
 	
 
 }

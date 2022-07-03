@@ -7,6 +7,7 @@ const EditProfile = { template: '<editprofile></editprofile>'}
 const UserView = { template: '<userview></userview>'}
 const ManagersSportObject = { template: '<managersSportObject></managersSportObject>' }
 const CoachTrainings = { template: '<coachTraining></coachTraining>' }
+const CustomerTrainings = { template: '<customerTraining></customerTraining>' }
 
 
 const router = new VueRouter({
@@ -20,7 +21,8 @@ const router = new VueRouter({
 	    { path: '/editprofile', component: EditProfile },
 	    { path: '/userview', component: UserView },
 	    { path: '/managersSportObject', component: ManagersSportObject },
-	    { path: '/coachTraining', component: CoachTrainings }
+	    { path: '/coachTraining', component: CoachTrainings },
+	    { path: '/customerTraining', component: CustomerTrainings }
 	    
 	  ]
 });
