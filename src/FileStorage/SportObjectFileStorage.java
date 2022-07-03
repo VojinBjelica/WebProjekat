@@ -147,7 +147,6 @@ public class SportObjectFileStorage {
 	public boolean addSportObject(SportObject sportObject) {
 		if (sportObject.getObjectName() != null && sportObject.getObjectType() != null) {
 			sportObjectList = readSportObjects();
-			System.out.println("Gornja duzina: " + sportObjectList.size() );
 			
 			boolean nameDuplicate = true;
 			for (SportObject so : sportObjectList) {
@@ -162,15 +161,12 @@ public class SportObjectFileStorage {
 			
 			if (sportObject.getObjectName().matches("[a-zA-Z0-9 ]*")) {
 				nameReg = true;
-				System.out.println("Dobro ime");
 			}
 			if (sportObject.getLocation().getAddress().getStreetAndNumber().matches("[a-zA-Z ]+[0-9 ]+[a-zA-Z ]?")) {
 				streetReg = true;
-				System.out.println("Dobra ulica i broj");
 			}
 			if (sportObject.getLocation().getAddress().getCity().matches("[a-zA-Z ]+")) {
 				cityReg = true;
-				System.out.println("Dobar grad");
 			}
 			if (sportObject.getWorkHour().matches("([01]?[0-9]|2[0-3]):?[0-5]?[0-9]?-([01]?[0-9]|2[0-3]):?[0-5]?[0-9]?")) {
 				workHourReg = true;

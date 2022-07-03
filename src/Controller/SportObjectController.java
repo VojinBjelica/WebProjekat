@@ -169,11 +169,7 @@ public class SportObjectController {
 		post("sportObjects/add", (req, res) -> {
 			String payload = req.body();
 			SportObject so = g.fromJson(payload, SportObject.class);
-			System.out.println("USAO U DODAVANJE NOVOG SO");
 			boolean valid = sos.addSportObject(so);
-			System.out.println("*******************");
-			System.out.println("TEMP MANAGER JE: " + tempManager.getName() + " " + tempManager.getSurname());
-			System.out.println("Objekat SO je: " + so.getObjectName());
 			if (valid) {
 				cs.setManagerSportObject(tempManager.getUsername(), so.getObjectName());
 			}

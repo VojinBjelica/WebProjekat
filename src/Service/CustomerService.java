@@ -134,5 +134,9 @@ public class CustomerService {
 	public Manager setManagerSportObject(String username, String sportObject) {
 		return cfs.setManagerSportObject(username, sportObject);
 	}
-
+	
+	public boolean addTraining(Training training) {
+		return cfs.addTraining(training);
+	}
+	
 }

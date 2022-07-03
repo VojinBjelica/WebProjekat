@@ -41,6 +41,7 @@ public class main {
 		CustomerController.getAllTrainers();
 		CustomerController.cancelTraining();
 		CustomerController.showCustomerTrainings();
+		CustomerController.addTraining();
 		
 		new SportObjectController();
 		SportObjectController.readSportObjects();

@@ -1,5 +1,7 @@
 Trening;Gym;XFit;30;kelja123;blabla;2022-06-14;1;0
 Treningg;Personal;XFit;30;kelja123;blabla;2022-06-14;2;0
 Treninggg;Group;XFit;30;kelja123;blabla;2022-06-14;3;0
-Treningg;Personal;XFit;30;kelja123;blabla;2022-07-04;4;0
-Treningg;Personal;XFit;30;kelja123;blabla;2022-07-05;5;0
+Treningggg;Personal;XFit;30;kelja123;blabla;2022-07-04;4;0
+Treninggggg;Personal;XFit;30;kelja123;blabla;2022-07-05;5;0
+Trening3;Personal;XFit;0;kelja123;None;2022-07-27;76;0
+Trening4;Gym;XFit;0;kelja123;None;2022-07-30;76;0

@@ -4,6 +4,7 @@ Vue.component("managersSportObject", {
 			sportObject: {objectName:null, objectType:null, objectOffer:null, status:null, location:null, logo:null, avarageMark:null, workHour:null},
 			coaches : null,
 			viewers : null,
+			training: {name:null, type:null, sportObject:null, duration:null, trainer:null, description:null, picture:null, trainingDate:null, id:null, deleted:null},
 			allCoaches: null
 		}
 	},
@@ -91,7 +92,7 @@ Vue.component("managersSportObject", {
 								<p>Name: </p>
 							</td>
 							<td>
-								<input id="add-training-name" class="form-control" type="text" />
+								<input id="add-training-name" v-model="training.name" class="form-control" type="text" />
 							</td>
 						</tr>
 						<tr>
@@ -99,7 +100,7 @@ Vue.component("managersSportObject", {
 								<p>Type:</p>
 							</td>
 							<td>
-								<select id="add-training-type"  class="form-select">
+								<select id="add-training-type" v-model="training.type"  class="form-select">
 									<option value="Personal" >Personal training</option>
 									<option value="Group" >Group training</option>
 									<option value="Gym" >Gym</option>
@@ -112,7 +113,7 @@ Vue.component("managersSportObject", {
 								<p>Image url: </p>
 							</td>
 							<td>
-								<input id="add-training-img" class="form-control"  type="text" />
+								<input id="add-training-img" v-model="training.picture" class="form-control"  type="text" />
 							</td>
 						</tr>
 				
@@ -121,7 +122,7 @@ Vue.component("managersSportObject", {
 								<p>Description: </p>
 							</td>
 							<td>
-								<input class="form-control" type="text" />
+								<input class="form-control" id="add-training-description" v-model="training.description" type="text" />
 							</td>
 						</tr>
 				
@@ -131,7 +132,16 @@ Vue.component("managersSportObject", {
 								<p>Duration (in minutes): </p>
 							</td>
 							<td>
-								<input class="form-control"  type="text" />
+								<input class="form-control" id="add-training-duration" v-model="training.duration"  type="text" />
+							</td>
+						</tr>
+						
+						<tr>
+							<td>
+								<p>Date: </p>
+							</td>
+							<td>
+								<input id="add-training-date" v-model="training.trainingDate" class="form-control"  type="date" />
 							</td>
 						</tr>
 						
@@ -140,8 +150,8 @@ Vue.component("managersSportObject", {
 								<p>Select a coach:</p>
 							</td>
 							<td>
-								<select class="form-select" >
-									<option v-for="co in allCoaches" v-bind:value="co" >{{co.name}} {{co.surname}}</option>
+								<select class="form-select" v-model="training.trainer" >
+									<option v-for="co in allCoaches"  v-bind:value="co" >{{co.name}} {{co.surname}}</option>
 								</select>
 							</td>
 						</tr>
@@ -198,6 +208,8 @@ Vue.component("managersSportObject", {
 			var name = document.getElementById('add-training-name').value;
 			var type = document.getElementById('add-training-type').value;
 			var img = document.getElementById('add-training-img').value;
+			var date = document.getElementById('add-training-date').value;
+			
 			
 			if (name == "") {
 				alert("You must enter a name.");
@@ -205,8 +217,43 @@ Vue.component("managersSportObject", {
 				alert("You must enter a type.");
 			} else if (img == "") {
 				alert("You must enter an image url.");
+			} else if (date == "") {
+				alert("You must select a date.");
+			} else {
+				alert("Usao u validate adding");
+				this.addTraining();
 			}
 			
+		},
+		
+		addTraining : function() {
+			this.training.sportObject = this.sportObject;
+			this.training.id = 76; //ZA SAD DOK NE IZBACIMO ID
+			this.training.deleted = 0;
+			
+			if (document.getElementById('add-training-duration').value == "") {
+				this.training.duration = 0;
+			}
+			
+			if (document.getElementById('add-training-description').value == "") {
+				this.training.description = "None";
+			}
+			
+			
+			/*alert("Dodao trening: " + this.training.name);
+			alert("Trajanje " + this.training.duration);
+			alert("Tip " + this.training.type);
+			alert("Sportski objekat " + this.training.sportObject.objectName);
+			alert("Ime trenera " + this.training.trainer.name);
+			alert("Description " + this.training.description);
+			alert("Slika " + this.training.picture);
+			alert("Date " + this.trainingDate);
+			alert("ID " + this.training.id);
+			alert("Deleted: " + this.training.deleted);*/
+			
+			axios
+				.post('customers/addTraining', this.training)
+				.then(response => alert(response.data));
 		},
 		
 		cancelAdding: function() {
