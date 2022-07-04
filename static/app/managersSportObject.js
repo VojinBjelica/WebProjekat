@@ -4,6 +4,7 @@ Vue.component("managersSportObject", {
 			sportObject: {objectName:null, objectType:null, objectOffer:null, status:null, location:null, logo:null, avarageMark:null, workHour:null},
 			coaches : null,
 			viewers : null,
+			trainingsSO : null,
 			training: {name:null, type:null, sportObject:null, duration:null, trainer:null, description:null, picture:null, trainingDate:null, id:null, deleted:null},
 			allCoaches: null
 		}
@@ -169,6 +170,34 @@ Vue.component("managersSportObject", {
 	    		</div>
 	    	</div>
 	    	
+	    	<div>
+	    		<p>All trainings in {{sportObject.objectName}}:</p>
+	    		<table >
+	    			<tr bgcolor="grey">
+	    				<th style="min-width:100px">Name </th>
+	    				<th style="min-width:100px">Type</th>
+	    				<th style="min-width:100px">Object</th>
+	    				<th style="min-width:100px">Duration</th>
+	    				<th style="min-width:100px">Coach</th>
+	    				<th style="min-width:100px; max-width:200px">Description</th>
+	    				<th style="min-width:100px">Date</th>
+	    				<th style="min-width:100px"></th>
+	    			</tr>
+	    			
+	    			<tr class="data" v-for="sTraining in trainingsSO">
+	    				<td >{{sTraining.name}}</td>
+	    				<td >{{sTraining.type}}</td>
+	    				<td >{{sTraining.sportObject.objectName}}</td>
+	    				<td >{{sTraining.duration}}</td>
+	    				<td >{{sTraining.trainer.name}} {{sTraining.trainer.surname}}</td>
+	    				<td >{{sTraining.description}}</td>
+	    				<td >{{sTraining.trainingDate}}</td>
+	    				<td style="text-align:center" ><button class="btn btn-primary" v-on:click="showSelectedTraining(sTraining)" >Edit</button></td>
+	    			</tr>
+	    		</table>
+	    	</div>
+	    	
+	    	
 		</div>
 		
 	`,
@@ -186,13 +215,14 @@ Vue.component("managersSportObject", {
 		axios
 			.get('customers/getAllTrainers', this.allCoaches)
 			.then(response => this.allCoaches = response.data);
+		axios
+			.get('sportObject/getTrainingsForSO')
+			.then(response => this.trainingsSO = response.data);
 			
 	},
 	
 	methods: {
-		testiram: function() {
-			alert("Broj svih trenera: " + this.allCoaches.length);
-		},
+		
 		
 		toggleAddTraining : function() {
 			var input = document.getElementById('add-training-input');
@@ -202,6 +232,14 @@ Vue.component("managersSportObject", {
 			} else {
 				input.classList.add('invisible');
 			}
+		},
+		
+		showSelectedTraining : function(sTraining) {
+			/*axios
+				.post('sportObject/editShow', sTraining)
+				.then(response => response.data);*/
+				
+			router.push('/editTraining');
 		},
 		
 		validateAdding: function() {
@@ -225,6 +263,8 @@ Vue.component("managersSportObject", {
 			}
 			
 		},
+		
+		
 		
 		addTraining : function() {
 			this.training.sportObject = this.sportObject;
@@ -254,6 +294,8 @@ Vue.component("managersSportObject", {
 			axios
 				.post('customers/addTraining', this.training)
 				.then(response => alert(response.data));
+				
+			router.go(0);
 		},
 		
 		cancelAdding: function() {

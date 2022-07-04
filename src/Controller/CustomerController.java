@@ -344,16 +344,15 @@ public class CustomerController {
 	}
 	
 	
+	
 	public static void getAllTrainers() {
 		get("customers/getAllTrainers", (req, res) -> {
-			System.out.println("Broj trenera: " + cs.readCoaches().size());
 			return g.toJson(cs.readCoaches());
 		});
 	}
 	
 	public static void addTraining() {
 		post("customers/addTraining", (req, res) -> {
-			System.out.println("Usao u dodavanje novog treninga!!!");
 			String payload = req.body();
 			Training tr = g.fromJson(payload, Training.class);
 			cs.addTraining(tr);

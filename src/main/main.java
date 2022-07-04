@@ -43,6 +43,7 @@ public class main {
 		CustomerController.showCustomerTrainings();
 		CustomerController.addTraining();
 		
+		
 		new SportObjectController();
 		SportObjectController.readSportObjects();
 		SportObjectController.searchObjectsByName();
@@ -57,6 +58,7 @@ public class main {
 		SportObjectController.addViewInFile();
 		SportObjectController.addNewManager();
 		SportObjectController.hide();
+		SportObjectController.findTrainingsBySportObject();
 		// TODO Auto-generated method stub
 
 	}

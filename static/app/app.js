@@ -8,7 +8,7 @@ const UserView = { template: '<userview></userview>'}
 const ManagersSportObject = { template: '<managersSportObject></managersSportObject>' }
 const CoachTrainings = { template: '<coachTraining></coachTraining>' }
 const CustomerTrainings = { template: '<customerTraining></customerTraining>' }
-
+const EditTraining = { template: '<editTraining></editTraining>' }
 
 const router = new VueRouter({
 	  mode: 'hash',
@@ -22,8 +22,8 @@ const router = new VueRouter({
 	    { path: '/userview', component: UserView },
 	    { path: '/managersSportObject', component: ManagersSportObject },
 	    { path: '/coachTraining', component: CoachTrainings },
-	    { path: '/customerTraining', component: CustomerTrainings }
-	    
+	    { path: '/customerTraining', component: CustomerTrainings },
+	    { path: '/editTraining', component: EditTraining }
 	  ]
 });
 
