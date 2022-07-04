@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import FileStorage.CustomerFileStorage;
 import beans.Coach;
 import beans.Customer;
+import beans.Dues;
 import beans.Manager;
 import beans.SportObject;
 import beans.Training;
@@ -20,6 +21,22 @@ public class CustomerService {
 	public ArrayList<Customer> readCustomers()
 	{
 		return cfs.readCustomers("customers");
+	}
+	public void addDues(Dues due)
+	{
+		cfs.addDues(due);
+	}
+	public String generateID()
+	{
+		return cfs.generateID();
+	}
+	public ArrayList<Dues> readDues()
+	{
+		return cfs.readDues();
+	}
+	public boolean addDuesInFile()
+	{
+		return cfs.addDuesInFile();
 	}
 	public Training findTrainingById(int id)
 	{
