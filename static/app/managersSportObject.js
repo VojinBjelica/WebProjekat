@@ -235,11 +235,12 @@ Vue.component("managersSportObject", {
 		},
 		
 		showSelectedTraining : function(sTraining) {
-			/*axios
+			axios
 				.post('sportObject/editShow', sTraining)
-				.then(response => response.data);*/
+				.then(response => response.data);
 				
 			router.push('/editTraining');
+			router.go(0);
 		},
 		
 		validateAdding: function() {

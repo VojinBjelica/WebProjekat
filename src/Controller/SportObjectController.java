@@ -27,6 +27,7 @@ public class SportObjectController {
 	public static SportObject tempObject;
 	public static String temp;
 	public static Manager tempManager;
+	public static Training editableTraining;
 	
 	public static ArrayList<SportObject> objList;
 	
@@ -46,6 +47,7 @@ public class SportObjectController {
 		tempObject = new SportObject();
 		temp = "";
 		tempManager = new Manager();
+		editableTraining = new Training();
 	}
 	
 	public static void readSportObjects() {
@@ -224,6 +226,31 @@ public class SportObjectController {
 			Manager manager = new Manager(pd.getUsername(),pd.getPassword(),pd.getName(),pd.getSurname(),pd.getDateOfBirth(),pd.getGender(),RoleEnum.Manager);
 			tempManager = manager;
 			cs.addManagers(manager);
+			return "OK";
+		});
+	}
+	
+	
+	public static void showEditTraining() {
+		post("sportObject/editShow", (req, res) -> {
+			String payload = req.body();
+			Training tr = g.fromJson(payload, Training.class);
+			editableTraining = tr;
+			return "OK";
+		});
+	}
+	
+	public static void showEditableTraining() {
+		post("sportObject/showEditableTraining", (req, res) -> {
+			return g.toJson(editableTraining);
+		});
+	}
+	
+	public static void editTraining() {
+		post("sportObject/editTraining", (req, res) -> {
+			String payload = req.body();
+			Training train = g.fromJson(payload, Training.class);
+			cs.editTraining(editableTraining, train);
 			return "OK";
 		});
 	}

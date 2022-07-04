@@ -54,6 +54,8 @@ public class Training {
 		this.id = id;
 		this.deleted = deleted;
 	}
+	
+	public Training() {}
 
 	public String getName() {
 		return name;
