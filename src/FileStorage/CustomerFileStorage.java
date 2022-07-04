@@ -6,6 +6,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.security.SecureRandom;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.ZoneId;
@@ -14,12 +15,15 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
 import java.util.StringTokenizer;
+import java.util.UUID;
 
 import javax.swing.JOptionPane;
 
 import Service.SportObjectService;
 import beans.Coach;
 import beans.Customer;
+import beans.Dues;
+import beans.DuesTypeEnum;
 import beans.GenderEnum;
 import beans.Manager;
 import beans.RoleEnum;
@@ -36,6 +40,7 @@ public class CustomerFileStorage {
 	public static ArrayList<Manager> managerList = new ArrayList<Manager>();
 	public static ArrayList<Coach> coachList = new ArrayList<Coach>();
 	public static ArrayList<Coach> coachObjectList = new ArrayList<Coach>();
+	public static ArrayList<Dues> duesList = new ArrayList<Dues>();
 	public static ArrayList<User> userList = new ArrayList<User>();
 	public static ArrayList<Training> trainingList = new ArrayList<Training>();
 	public ArrayList<Customer> readCustomers(String way) {
@@ -103,7 +108,7 @@ public class CustomerFileStorage {
                         username = st.nextToken().trim();
                         trainingID = st.nextToken().trim();              
                         }
-                    User user = findCustomerByUsername(username);
+                    User user = findUserByUsername(username);
                     
                     Customer customer = new Customer(username,user.getPassword(),user.getName(),user.getSurname(),user.getDateOfBirth(),user.getGender(),Integer.parseInt(trainingID));
                     customers.add(customer);
@@ -162,6 +167,60 @@ public class CustomerFileStorage {
                     Training train = new Training(name,typeEnum,so,Integer.parseInt(duration),c,description,dt,Integer.parseInt(id),Integer.parseInt(deleted));
                     customers.add(train);
                     trainingList = customers;
+                }
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        finally {
+            if ( in != null ) {
+                try {
+                    in.close();
+                }
+                catch (Exception e) { }
+            }
+        }
+        return customers;
+    }
+	public ArrayList<Dues> readDues() {
+        ArrayList<Dues> customers = new ArrayList<Dues>();
+        BufferedReader in = null;
+        try {
+            File file = new File("./dues.txt");
+            in = new BufferedReader(new FileReader(file));
+            String line, ID="" , type = "" , paydate = "" , expdate = "",price = "",customer = "",status = "", number = "";
+            StringTokenizer st;
+            try {
+                while ((line = in.readLine()) != null) {
+                    line = line.trim();
+                    if (line.equals("") || line.indexOf('#') == 0)
+                        continue;
+                    st = new StringTokenizer(line, ";");
+                    while (st.hasMoreTokens()) {
+                    	ID = st.nextToken().trim();
+                    	type = st.nextToken().trim();
+                    	paydate = st.nextToken().trim();
+                    	expdate = st.nextToken().trim();
+                    	price = st.nextToken().trim();
+                    	customer = st.nextToken().trim();
+                    	status = st.nextToken().trim();
+                    	number = st.nextToken().trim();
+                    	
+                        }
+                    SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+                    Date dt = formatter.parse(paydate);
+                    Date dtex = formatter.parse(expdate);
+                    DuesTypeEnum typeEnum = DuesTypeEnum.Month;
+                    if(type.equals("Month")) typeEnum = DuesTypeEnum.Month;
+                    else typeEnum = DuesTypeEnum.Year;
+                    Customer cust = findCustByUsername(customer);
+                    Dues retDue = new Dues(ID,typeEnum,dt,dtex,Integer.parseInt(price),cust,Boolean.parseBoolean(status),Integer.parseInt(number));
+                    
+                    
+                    customers.add(retDue);
+                    duesList = customers;
                 }
             } catch (Exception ex) {
                 ex.printStackTrace();
@@ -597,6 +656,62 @@ public class CustomerFileStorage {
         }
         return true;
     }
+	public boolean addDuesInFile() 
+    {
+		
+        FileWriter fileWriter;
+        try {
+            fileWriter = new FileWriter("./dues.txt");
+        PrintWriter output = new PrintWriter(fileWriter, true);
+        for(Dues customer : duesList)
+        {
+            String outputString = "";
+            outputString += customer.getID() + ";";
+            if(customer.getDuesType() == DuesTypeEnum.Month)
+                outputString += "Month" + ";";
+                else 
+                outputString += "Year" + ";";
+            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+            outputString += formatter.format(customer.getPayDate()) + ";";
+            outputString += formatter.format(customer.getExpirationDateAndTime()) + ";";
+            outputString += customer.getPrice() + ";";
+            outputString += customer.getCustomer().getUsername() + ";";
+            outputString += customer.isStatus() + ";";
+            outputString += customer.getNumberOfAppointments();
+            output.println(outputString);
+        }
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        return true;
+    }
+	public void addDues(Dues due)
+	{
+		ArrayList<Dues> duesTempList = readDues();
+		for(Dues d : duesTempList)
+		{
+			if(d.getCustomer().getUsername().equals(due.getCustomer().getUsername()))
+			{
+				d.setStatus(false);
+			}
+		}
+		duesList.add(due);
+		addDuesInFile();
+	}
+	public String generateID()
+	{
+		final String AB = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+		SecureRandom rnd = new SecureRandom();
+
+		
+		   StringBuilder sb = new StringBuilder(10);
+		   for(int i = 0; i < 10; i++)
+		      sb.append(AB.charAt(rnd.nextInt(AB.length())));
+		   System.out.println(sb.toString());
+		   return sb.toString();
+		
+	}
 	public boolean addManagersInFile(String who) 
     {
 		
@@ -963,7 +1078,21 @@ public class CustomerFileStorage {
 		}
 		return cust;
 	}
-	public User findCustomerByUsername(String username)
+//	public User findCustomerByUsername(String username)
+//	{
+//		ArrayList<User> customerList = readUsers();
+//		System.out.println(customerList.size());
+//		User cust = null;
+//		for(User c : customerList)
+//		{
+//			if(c.getUsername().equals(username))
+//			{
+//				cust = c;
+//			}
+//		}
+//		return cust;
+//	}
+	public User findUserByUsername(String username)
 	{
 		ArrayList<User> customerList = readUsers();
 		System.out.println(customerList.size());
@@ -977,12 +1106,12 @@ public class CustomerFileStorage {
 		}
 		return cust;
 	}
-	public User findUserByUsername(String username)
+	public Customer findCustByUsername(String username)
 	{
-		ArrayList<User> customerList = readUsers();
+		ArrayList<Customer> customerList = readCustomers("customers");
 		System.out.println(customerList.size());
-		User cust = null;
-		for(User c : customerList)
+		Customer cust = null;
+		for(Customer c : customerList)
 		{
 			if(c.getUsername().equals(username))
 			{

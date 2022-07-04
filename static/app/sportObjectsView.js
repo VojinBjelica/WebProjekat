@@ -18,6 +18,7 @@ Vue.component("sportObjectsView", {
     			<button v-on:click="goToManagersSO()" class="login-btn" id="btn-managers-s-o" >My sport object</button>
     			<button v-on:click="goToMyTrainings()" class="login-btn" id="btn-coach-training" >My trainings</button>
     			<button v-on:click="goToCustomerTrainings()" class="login-btn" id="btn-customer-training" >My trainings customer</button>
+    			<button v-on:click="goToDues()" class="login-btn" id="btn-customer-dues" >Dues</button>
     			
     		</div>
     		<div class="sport-objects-view">
@@ -360,6 +361,10 @@ Vue.component("sportObjectsView", {
 		goToCustomerTrainings : function()
 		{
 			router.push(`/customerTraining`);
+		},
+		goToDues : function()
+		{
+			router.push(`/duesPayment`);
 		},
 		sortAvgMarkFunction : function() {
 			this.sportObjectList.sort(this.compareNum);

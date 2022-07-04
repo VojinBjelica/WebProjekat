@@ -16,6 +16,8 @@ import Service.CustomerService;
 import beans.Coach;
 import beans.Customer;
 import beans.CustomerAdapter;
+import beans.Dues;
+import beans.DuesTypeEnum;
 import beans.LocalDateAdapter;
 import beans.Manager;
 import beans.RoleEnum;
@@ -57,6 +59,27 @@ public class CustomerController {
 	{
 		post("customer/write", (req, res) -> {
 			cs.writeCustomers();
+			return "OK";
+		});
+	}
+	public static void addDue()
+	{
+		post("customer/due", (req, res) -> {
+			String payload = req.body();
+			Session ss = req.session(true);
+			User user = ss.attribute("user");
+			User u = cs.findUserByUsername(user.getUsername());
+			Customer c = new Customer(u.getUsername(),u.getPassword(),u.getName(),u.getSurname(),u.getDateOfBirth(),u.getGender(),"Customer");
+			Dues pd = g.fromJson(payload, Dues.class);
+			String duestype = "";
+			String id = cs.generateID();
+			Dues due = null;
+			if(pd.getDuesType() == DuesTypeEnum.Month)
+				due = new Dues(id,pd.getDuesType(),pd.getPayDate(),pd.getExpirationDateAndTime(),pd.getPrice(),c,true,30);
+			else
+				due = new Dues(id,pd.getDuesType(),pd.getPayDate(),pd.getExpirationDateAndTime(),pd.getPrice(),c,true,365);
+			
+			cs.addDues(due);
 			return "OK";
 		});
 	}

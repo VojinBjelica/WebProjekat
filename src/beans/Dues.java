@@ -1,18 +1,19 @@
 package beans;
 
 import java.time.LocalDate;
+import java.util.Date;
 
 public class Dues {
 	
-	private char ID; // 10 karaktera, unique
+	private String ID; // 10 karaktera, unique
 	private DuesTypeEnum duesType;
-	private LocalDate payDate;
-	private LocalDate expirationDateAndTime;
+	private Date payDate;
+	private Date expirationDateAndTime;
 	private int price;
 	private Customer customer;
 	private boolean status;//aktivna/neaktivna
 	private int numberOfAppointments;//dnevni
-	public Dues(char iD, DuesTypeEnum duesType, LocalDate payDate, LocalDate expirationDateAndTime, int price,
+	public Dues(String iD, DuesTypeEnum duesType, Date payDate, Date expirationDateAndTime, int price,
 			Customer customer, boolean status, int numberOfAppointments) {
 		super();
 		ID = iD;
@@ -24,10 +25,10 @@ public class Dues {
 		this.status = status;
 		this.numberOfAppointments = numberOfAppointments;
 	}
-	public char getID() {
+	public String getID() {
 		return ID;
 	}
-	public void setID(char iD) {
+	public void setID(String iD) {
 		ID = iD;
 	}
 	public DuesTypeEnum getDuesType() {
@@ -36,16 +37,16 @@ public class Dues {
 	public void setDuesType(DuesTypeEnum duesType) {
 		this.duesType = duesType;
 	}
-	public LocalDate getPayDate() {
+	public Date getPayDate() {
 		return payDate;
 	}
-	public void setPayDate(LocalDate payDate) {
+	public void setPayDate(Date payDate) {
 		this.payDate = payDate;
 	}
-	public LocalDate getExpirationDateAndTime() {
+	public Date getExpirationDateAndTime() {
 		return expirationDateAndTime;
 	}
-	public void setExpirationDateAndTime(LocalDate expirationDateAndTime) {
+	public void setExpirationDateAndTime(Date expirationDateAndTime) {
 		this.expirationDateAndTime = expirationDateAndTime;
 	}
 	public int getPrice() {

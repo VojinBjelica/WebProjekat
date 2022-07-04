@@ -9,6 +9,7 @@ const ManagersSportObject = { template: '<managersSportObject></managersSportObj
 const CoachTrainings = { template: '<coachTraining></coachTraining>' }
 const CustomerTrainings = { template: '<customerTraining></customerTraining>' }
 const EditTraining = { template: '<editTraining></editTraining>' }
+const DuesPayment = { template: '<duesPayment></duesPayment>' }
 
 const router = new VueRouter({
 	  mode: 'hash',
@@ -23,7 +24,8 @@ const router = new VueRouter({
 	    { path: '/managersSportObject', component: ManagersSportObject },
 	    { path: '/coachTraining', component: CoachTrainings },
 	    { path: '/customerTraining', component: CustomerTrainings },
-	    { path: '/editTraining', component: EditTraining }
+	    { path: '/editTraining', component: EditTraining },
+	    { path: '/duesPayment', component: DuesPayment }
 	  ]
 });
 
