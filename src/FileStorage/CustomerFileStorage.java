@@ -839,6 +839,28 @@ public class CustomerFileStorage {
 		return returnUser;
       
 	}
+	
+	public Training editTraining(Training tr1, Training tr2) {
+		System.out.println("Editujem trening u file storage");
+		Training retTraining = null;
+		ArrayList<Training> trList = new ArrayList<Training>();
+		trList = readTraining();
+		for(Training t : trList) {
+			if (t.getName().equals(tr1.getName())) {
+				t.setName(tr2.getName());
+				t.setType(tr2.getType());
+				t.setDuration(tr2.getDuration());
+				t.setDescription(tr2.getDescription());
+				t.setPicture(tr2.getPicture());
+				t.setTrainingDate(tr2.getTrainingDate());
+				t.setTrainer(tr2.getTrainer());
+				retTraining = t;
+			}
+		}
+		addTrainingsInFile();
+		return retTraining;
+	}
+	
 	public Manager addManager(Manager customer)
 	{
 		if(customer.getName() != null && customer.getSurname()!= null  && customer.getUsername() != null)

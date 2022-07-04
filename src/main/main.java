@@ -59,6 +59,9 @@ public class main {
 		SportObjectController.addNewManager();
 		SportObjectController.hide();
 		SportObjectController.findTrainingsBySportObject();
+		SportObjectController.showEditTraining();
+		SportObjectController.editTraining();
+		SportObjectController.showEditableTraining();
 		// TODO Auto-generated method stub
 
 	}

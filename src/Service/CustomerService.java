@@ -142,4 +142,8 @@ public class CustomerService {
 		return cfs.findTrainingsBySportObject(so);
 	}
 	
+	public Training editTraining(Training tr1, Training tr2) {
+		return cfs.editTraining(tr1, tr2);
+	}
+	
 }
