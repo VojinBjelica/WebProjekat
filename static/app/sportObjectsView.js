@@ -524,9 +524,8 @@ Vue.component("sportObjectsView", {
 			}
 		},
 		
-		//Ne koristim jos
+		
 		showSelectedObject : function (sObject) {
-			alert("Usao u prikaz selektovanog");
 			axios
 				.post('sportObject/getOne', sObject)
 				.then(response => response.data)

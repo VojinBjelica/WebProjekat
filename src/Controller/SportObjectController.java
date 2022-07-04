@@ -10,6 +10,7 @@ import beans.Customer;
 import beans.Manager;
 import beans.RoleEnum;
 import beans.SportObject;
+import beans.Training;
 import beans.User;
 import spark.Session;
 
@@ -194,6 +195,24 @@ public class SportObjectController {
 			Manager mana = cs.findManagerByUsername(user.getUsername());
 			SportObject sObject = sos.getSportObjectByManager(mana);
 			return g.toJson(sObject);
+		});
+	}
+	
+	//Nalazi treninge za sportski objekat (za menadzera)
+	public static void findTrainingsBySportObject() {
+		get("sportObject/getTrainingsForSO", (req, res) -> {
+			Session ss = req.session(true);
+			User user = ss.attribute("user");
+			Manager mana = cs.findManagerByUsername(user.getUsername());
+			SportObject so = sos.getSportObjectByManager(mana);
+			System.out.println("Trazim treninge za sportski objekat: " + so.getObjectName());
+			
+			ArrayList<Training> trList = new ArrayList<Training>();
+			trList = cs.findTrainingsBySportObject(so);
+			System.out.println("Broj treninga: " + trList.size());
+			
+			return g.toJson(trList);
+			
 		});
 	}
 	

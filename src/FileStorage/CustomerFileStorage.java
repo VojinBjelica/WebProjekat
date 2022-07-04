@@ -1171,6 +1171,24 @@ public class CustomerFileStorage {
 		return retList;
 	}
 	
+	//nalazi treninge za neki sportski objekat (za menadzera)
+	public ArrayList<Training> findTrainingsBySportObject(SportObject so) {
+		ArrayList<Training> trainingsSO = new ArrayList<Training>();
+		ArrayList<Training> retList = new ArrayList<Training>();
+		
+		trainingsSO = readTraining();
+		System.out.println("!!!!!! Broj svih treniniga: " + trainingsSO.size());
+		
+		
+		for (Training t : trainingsSO) {
+			System.out.println("Pokusavam za trening: " + t.getName());
+			if (t.getSportObject().getObjectName().equals(so.getObjectName()) && t.getDeleted() == 0) {
+				retList.add(t);
+				System.out.println("Nasao trening " + t.getName() + " u objektu " + so.getObjectName());
+			}
+		}
+		return retList;
+	}
 	
 
 }

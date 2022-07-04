@@ -138,5 +138,8 @@ public class CustomerService {
 	public boolean addTraining(Training training) {
 		return cfs.addTraining(training);
 	}
+	public ArrayList<Training> findTrainingsBySportObject(SportObject so) {
+		return cfs.findTrainingsBySportObject(so);
+	}
 	
 }
