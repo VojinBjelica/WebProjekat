@@ -19,6 +19,8 @@ Vue.component("sportObjectsView", {
     			<button v-on:click="goToMyTrainings()" class="login-btn" id="btn-coach-training" >My trainings</button>
     			<button v-on:click="goToCustomerTrainings()" class="login-btn" id="btn-customer-training" >My trainings customer</button>
     			<button v-on:click="goToDues()" class="login-btn" id="btn-customer-dues" >Dues</button>
+    			<button v-on:click="goToPromoCodes()" class="login-btn" id="btn-codes" >Codes</button>
+    			
     			
     		</div>
     		<div class="sport-objects-view">
@@ -90,6 +92,8 @@ Vue.component("sportObjectsView", {
 		document.getElementById("btn-userview").disabled= true;
 		document.getElementById("btn-managers-s-o").disabled = true;	
 		document.getElementById("btn-customer-training").disabled = true;
+		document.getElementById("btn-customer-dues").disabled = true;
+    			document.getElementById("btn-codes").disabled = true;
 		
 
 		this.hideCheck();
@@ -131,6 +135,8 @@ Vue.component("sportObjectsView", {
 					alert("pali register");
 				document.getElementById("btn-userview").disabled= false;
 				document.getElementById("btn-customer-training").disabled = true;
+				document.getElementById("btn-customer-dues").disabled = true;
+    			document.getElementById("btn-codes").disabled = false;
 		
 
 
@@ -147,6 +153,8 @@ Vue.component("sportObjectsView", {
 				    
 					document.getElementById("btn-coach-training").disabled= true;
 					document.getElementById("btn-customer-training").disabled = true;
+					document.getElementById("btn-customer-dues").disabled = true;
+    			document.getElementById("btn-codes").disabled = true;
 		
 
 
@@ -156,13 +164,16 @@ Vue.component("sportObjectsView", {
 					
 					document.getElementById("btn-coach-training").disabled= false;
 					document.getElementById("btn-customer-training").disabled = true;
+					document.getElementById("btn-customer-dues").disabled = true;
+    			document.getElementById("btn-codes").disabled = true;
 		
 
 				}
 				else
 				{
 					document.getElementById("btn-customer-training").disabled = false;
-		
+		document.getElementById("btn-customer-dues").disabled = false;
+    			document.getElementById("btn-codes").disabled = true;
 
 					document.getElementById("btn-userview").disabled= true;
 
@@ -183,6 +194,8 @@ Vue.component("sportObjectsView", {
 				document.getElementById("btn-managers-s-o").disabled = true;
 				document.getElementById("btn-managers-s-o").disabled = true;
 				document.getElementById("btn-customer-training").disabled = true;
+				document.getElementById("btn-customer-dues").disabled = true;
+    			document.getElementById("btn-codes").disabled = true;
 		
 
 				
@@ -197,6 +210,8 @@ Vue.component("sportObjectsView", {
 				document.getElementById("add-so-btn").classList.add("invisible");
 				document.getElementById("btn-userview").disabled= true;
 				document.getElementById("btn-managers-s-o").disabled = true;
+				document.getElementById("btn-customer-dues").disabled = true;
+    			document.getElementById("btn-codes").disabled = true;
 				document.getElementById("btn-customer-training").disabled = true;
 		
 
@@ -365,6 +380,10 @@ Vue.component("sportObjectsView", {
 		goToDues : function()
 		{
 			router.push(`/duesPayment`);
+		},
+		goToPromoCodes : function()
+		{
+			router.push(`/promoCodes`);
 		},
 		sortAvgMarkFunction : function() {
 			this.sportObjectList.sort(this.compareNum);

@@ -20,6 +20,7 @@ import beans.Dues;
 import beans.DuesTypeEnum;
 import beans.LocalDateAdapter;
 import beans.Manager;
+import beans.PromoCode;
 import beans.RoleEnum;
 import beans.SportObject;
 import beans.Training;
@@ -157,6 +158,40 @@ public class CustomerController {
 			return "OK";
 		});
 	}
+	public static void findDiscount()
+	{
+		post("customer/promoDisc", (req, res) -> {
+			String payload = req.body();
+			System.out.println("Usao u discount");
+			Dues pd = g.fromJson(payload, Dues.class);
+			int newPrice = 0;
+			int helpPrice = 0;
+			if(pd.getDuesType() == DuesTypeEnum.Month)helpPrice = 2500;
+			else helpPrice = 25000;
+			if(pd.getPrice() == 2500 || pd.getPrice() == 25000)
+			{
+				for(PromoCode pc : cs.readPromoCodes())
+				{
+					if(pc.getPromoCodeName().equals(pd.getPromoCode()))
+					{
+						if(pc.getUsed() <= pc.getNumberOfUsing())
+						{
+						newPrice = pd.getPrice() - (pd.getPrice() * pc.getDiscount() / 100);
+						cs.usedCode(pc.getPromoCodeName());
+						
+						}
+						else return "Vec je iskoriscen kod";
+					}
+				}
+
+				System.out.println("Nasao cenu:" + newPrice);
+				Dues retDue = new Dues(pd.getID(),pd.getDuesType(),pd.getPayDate(),pd.getExpirationDateAndTime(),newPrice,pd.getCustomer(),pd.isStatus(),pd.getNumberOfAppointments(),pd.getPromoCode());
+				return g.toJson(retDue);
+			}
+			else return "Nemoj biti bezobrazan vec si iskoristio popust";
+			
+		});
+	}
 	public static void cancelTraining()
 	{
 		post("customer/cancelTraining", (req, res) -> {
@@ -167,6 +202,16 @@ public class CustomerController {
 			System.out.println(t.getName());
 			cs.cancelTraining(t);
 			
+			return "OK";
+		});
+	}
+	public static void addPromoCode()
+	{
+		post("customer/addPromoCode", (req, res) -> {
+			String payload = req.body();
+			PromoCode pd = g.fromJson(payload, PromoCode.class);
+			PromoCode pc = new PromoCode(pd.getPromoCodeName(),pd.getFromDate(),pd.getToDate(),pd.getNumberOfUsing(),pd.getDiscount(),0);
+			cs.addPromoCode(pc);
 			return "OK";
 		});
 	}

@@ -7,6 +7,7 @@ import beans.Coach;
 import beans.Customer;
 import beans.Dues;
 import beans.Manager;
+import beans.PromoCode;
 import beans.SportObject;
 import beans.Training;
 import beans.User;
@@ -22,9 +23,24 @@ public class CustomerService {
 	{
 		return cfs.readCustomers("customers");
 	}
+	public ArrayList<PromoCode> readPromoCodes() {
+		return cfs.readPromoCodes();
+	}
+	public boolean addCodesInFile() 
+    {
+		return cfs.addCodesInFile();
+    }
+	public boolean usedCode(String codeName)
+	{
+		return cfs.usedCode(codeName);
+	}
 	public void addDues(Dues due)
 	{
 		cfs.addDues(due);
+	}
+	public boolean addPromoCode(PromoCode code)
+	{
+		return cfs.addPromoCode(code);
 	}
 	public String generateID()
 	{

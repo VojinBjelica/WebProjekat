@@ -2,17 +2,18 @@ Vue.component("duesPayment", {
 	
 	data: function() {
 		return {
-			due: {ID:null, duesType:null, payDate:null, expirationDateAndTime:null, price:null, customer:null, status:null, numberOfAppointments:null},
+			due: {ID:null, duesType:null, payDate:null, expirationDateAndTime:null, price:null, customer:null, status:null,promoCode:null},
 			selektovano:null,
 			tekst:null,
 			datum:null,
-			shower:null
+			shower:null,
+			price:null
 		}
 	},
 	template: `
 		<div style="background-color:gray;position: fixed;
   left:40%;
-  top:25%;
+  top:3%;
   width:25%;
   height:auto;
   text-align:center;">
@@ -33,9 +34,15 @@ Vue.component("duesPayment", {
 </select>
 </td>
 </tr>
+
 <tr>
 <td colspan="2">
 <p class="form-label" >{{this.tekst}}</p>
+</td>
+</tr>
+<tr>
+<td colspan="2">
+<p class="form-label" >Pay date:</p>
 </td>
 </tr>
 <tr >
@@ -45,19 +52,43 @@ Vue.component("duesPayment", {
 </tr>
 <tr>
 <td colspan="2">
+<p class="form-label" >Expiration:</p>
+</td>
+</tr>
+<tr>
+<td colspan="2">
 <input id="isticanje" v-model="due.expirationDateAndTime" class="form-control" type="date" />
 </td>
 </tr>
 <tr>
 <td colspan="2">
-<input id="cena" class="form-control"/>
+<p class="form-label" >Price:</p>
+</td>
+</tr>
+<tr>
+<td colspan="2">
+<input id="cena" v-model="due.price" class="form-control"/>
+</td>
+</tr>
+<tr>
+<td colspan="2">
+<p class="form-label" >Promo Code:</p>
+</td>
+</tr>
+<tr>
+<td colspan="2">
+<input id="kod" v-model="due.promoCode" class="form-control"/>
 </td>
 </tr>
 <tr>
 <td>
 <input  type="button" class="btn btn-primary" v-on:click="makeDue();" style="margin-top:10px" value="Pay"/>
+&nbsp
+<input  type="button" class="btn btn-primary" v-on:click="calculateNewPrice();" style="margin-top:10px" value="Discount"/>
+
 </td>
 <td>
+&nbsp
 <a href="#/"> <input  type="button" class="btn btn-primary" style="margin-top:10px" value="Cancel"/></a>
 </td>
 </tr>
@@ -70,6 +101,11 @@ Vue.component("duesPayment", {
 				axios  
 		          .post('customer/due',this.due)
 		          .then(response => alert(response.data))
+		          },
+		calculateNewPrice : function () {
+				axios  
+		          .post('customer/promoDisc',this.due)
+		          .then(response => this.due = response.data)
 		          },
 		selectChanged : function(temp)
 		{
@@ -102,8 +138,8 @@ var yyy = today.getFullYear();
 	}
 	this.due.expirationDateAndTime = yyy + '-' +  mmm + '-' + dd;
 	//document.getElementById("isticanje"). value = yyy + '-' +  mmm + '-' + dd;
-	document.getElementById("cena"). value = "2500";
-	
+	//document.getElementById("cena"). value = "2500";
+	this.due.price = 2500;
 		
 			}
 			else 
@@ -124,7 +160,8 @@ var yyy = today.getFullYear();
 	yyy = today.getFullYear() + 1;
 	
 	this.due.expirationDateAndTime = yyy + '-' +  mmm + '-' + dd;
-	document.getElementById("cena"). value = "25000";
+	//document.getElementById("cena"). value = "25000";
+		this.due.price = 25000;
 			}
 			}	 
 	}

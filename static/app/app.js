@@ -10,6 +10,7 @@ const CoachTrainings = { template: '<coachTraining></coachTraining>' }
 const CustomerTrainings = { template: '<customerTraining></customerTraining>' }
 const EditTraining = { template: '<editTraining></editTraining>' }
 const DuesPayment = { template: '<duesPayment></duesPayment>' }
+const PromoCodes = { template: '<promoCodes></promoCodes>' }
 
 const router = new VueRouter({
 	  mode: 'hash',
@@ -25,7 +26,8 @@ const router = new VueRouter({
 	    { path: '/coachTraining', component: CoachTrainings },
 	    { path: '/customerTraining', component: CustomerTrainings },
 	    { path: '/editTraining', component: EditTraining },
-	    { path: '/duesPayment', component: DuesPayment }
+	    { path: '/duesPayment', component: DuesPayment },
+	    { path: '/promoCodes', component: PromoCodes }
 	  ]
 });
 
