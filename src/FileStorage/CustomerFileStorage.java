@@ -26,6 +26,7 @@ import beans.Dues;
 import beans.DuesTypeEnum;
 import beans.GenderEnum;
 import beans.Manager;
+import beans.PromoCode;
 import beans.RoleEnum;
 import beans.SportObject;
 import beans.Training;
@@ -43,6 +44,7 @@ public class CustomerFileStorage {
 	public static ArrayList<Dues> duesList = new ArrayList<Dues>();
 	public static ArrayList<User> userList = new ArrayList<User>();
 	public static ArrayList<Training> trainingList = new ArrayList<Training>();
+	public static ArrayList<PromoCode> promoCodeList = new ArrayList<PromoCode>();
 	public ArrayList<Customer> readCustomers(String way) {
         ArrayList<Customer> customers = new ArrayList<Customer>();
         BufferedReader in = null;
@@ -113,6 +115,52 @@ public class CustomerFileStorage {
                     Customer customer = new Customer(username,user.getPassword(),user.getName(),user.getSurname(),user.getDateOfBirth(),user.getGender(),Integer.parseInt(trainingID));
                     customers.add(customer);
                     customerTraining = customers;
+                }
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        finally {
+            if ( in != null ) {
+                try {
+                    in.close();
+                }
+                catch (Exception e) { }
+            }
+        }
+        return customers;
+    }
+	public ArrayList<PromoCode> readPromoCodes() {
+        ArrayList<PromoCode> customers = new ArrayList<PromoCode>();
+        BufferedReader in = null;
+        try {
+            File file = new File("./promoCodes.txt");
+            in = new BufferedReader(new FileReader(file));
+            String line,name="", fromDate = "",toDate = "",using= "",discount = "",used="";
+            StringTokenizer st;
+            try {
+                while ((line = in.readLine()) != null) {
+                    line = line.trim();
+                    if (line.equals("") || line.indexOf('#') == 0)
+                        continue;
+                    st = new StringTokenizer(line, ";");
+                    while (st.hasMoreTokens()) {
+                    	name = st.nextToken().trim();
+                    	fromDate = st.nextToken().trim();
+                    	toDate = st.nextToken().trim(); 
+                    	using = st.nextToken().trim(); 
+                    	discount = st.nextToken().trim(); 
+                    	used = st.nextToken().trim(); 
+                    	
+                        }
+                    SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+                    Date dt = formatter.parse(fromDate);
+                    Date dtt = formatter.parse(toDate);
+                    PromoCode customer = new PromoCode(name,dt,dtt,Integer.parseInt(using),Integer.parseInt(discount),Integer.parseInt(used));
+                    customers.add(customer);
+                    promoCodeList = customers;
                 }
             } catch (Exception ex) {
                 ex.printStackTrace();
@@ -656,6 +704,44 @@ public class CustomerFileStorage {
         }
         return true;
     }
+	public boolean addCodesInFile() 
+    {
+		
+        FileWriter fileWriter;
+        try {
+            fileWriter = new FileWriter("./promoCodes.txt");
+        PrintWriter output = new PrintWriter(fileWriter, true);
+        for(PromoCode customer : promoCodeList)
+        {
+            String outputString = "";
+            outputString += customer.getPromoCodeName() + ";";
+            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+            outputString += formatter.format(customer.getFromDate()) + ";";
+            outputString += formatter.format(customer.getToDate()) + ";";
+            outputString += customer.getNumberOfUsing() + ";";
+            outputString += customer.getDiscount() + ";";
+            outputString += customer.getUsed() + ";";
+            output.println(outputString);
+        }
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        return true;
+    }
+	public boolean usedCode(String codeName)
+	{
+		for(PromoCode code : promoCodeList)
+		{
+			if(code.getPromoCodeName().equals(codeName))
+			{
+				code.setUsed(code.getUsed() + 1);
+			}
+		}
+		addCodesInFile();
+		return true;
+		
+	}
 	public boolean addDuesInFile() 
     {
 		
@@ -807,6 +893,17 @@ public class CustomerFileStorage {
         }
         return true;
     }
+	public boolean addPromoCode(PromoCode code)
+	{
+		ArrayList<PromoCode> codeList = readPromoCodes();
+//		for(PromoCode code : codeList)
+//		{
+//			
+//		}
+		promoCodeList.add(code);
+		addCodesInFile();
+		return true;
+	}
 	public boolean addCoachesObjectInFile() 
     {
 		

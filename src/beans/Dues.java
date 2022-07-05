@@ -13,6 +13,7 @@ public class Dues {
 	private Customer customer;
 	private boolean status;//aktivna/neaktivna
 	private int numberOfAppointments;//dnevni
+	private String promoCode;
 	public Dues(String iD, DuesTypeEnum duesType, Date payDate, Date expirationDateAndTime, int price,
 			Customer customer, boolean status, int numberOfAppointments) {
 		super();
@@ -24,6 +25,26 @@ public class Dues {
 		this.customer = customer;
 		this.status = status;
 		this.numberOfAppointments = numberOfAppointments;
+	}
+	public Dues(String iD, DuesTypeEnum duesType, Date payDate, Date expirationDateAndTime, int price,
+			Customer customer, boolean status, int numberOfAppointments,String promoCode) {
+		super();
+		ID = iD;
+		this.duesType = duesType;
+		this.payDate = payDate;
+		this.expirationDateAndTime = expirationDateAndTime;
+		this.price = price;
+		this.customer = customer;
+		this.status = status;
+		this.numberOfAppointments = numberOfAppointments;
+		this.promoCode = promoCode;
+	}
+	
+	public String getPromoCode() {
+		return promoCode;
+	}
+	public void setPromoCode(String promoCode) {
+		this.promoCode = promoCode;
 	}
 	public String getID() {
 		return ID;

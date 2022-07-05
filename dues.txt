@@ -1,3 +1,1 @@
-j44K7iozRm;Month;2022-07-04;2022-08-04;0;joca123;false;30
-BTimheaIoB;Month;2022-07-04;2022-08-04;0;joca123;false;30
-3TnRWY7bfI;Year;2022-07-04;2023-07-04;0;joca123;true;365
+qHsiTT6gqC;Month;2022-07-05;2022-08-05;1875;joca123;true;30
