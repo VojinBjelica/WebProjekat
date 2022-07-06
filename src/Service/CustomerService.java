@@ -26,6 +26,10 @@ public class CustomerService {
 	public ArrayList<PromoCode> readPromoCodes() {
 		return cfs.readPromoCodes();
 	}
+	public boolean calculatePoints()
+	{
+		return cfs.calculatePoints();
+	}
 	public boolean addCodesInFile() 
     {
 		return cfs.addCodesInFile();

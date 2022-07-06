@@ -63,6 +63,13 @@ public class CustomerController {
 			return "OK";
 		});
 	}
+	public static void calculatePoints()
+	{
+		post("customer/calculatePoints", (req, res) -> {
+			cs.calculatePoints();
+			return "OK";
+		});
+	}
 	public static void addDue()
 	{
 		post("customer/due", (req, res) -> {

@@ -98,5 +98,5 @@ Vue.component("login", {
 		}
 }
 ,mounted(){}
-
+		
 })
