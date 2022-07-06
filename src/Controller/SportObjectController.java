@@ -207,11 +207,10 @@ public class SportObjectController {
 			User user = ss.attribute("user");
 			Manager mana = cs.findManagerByUsername(user.getUsername());
 			SportObject so = sos.getSportObjectByManager(mana);
-			System.out.println("Trazim treninge za sportski objekat: " + so.getObjectName());
 			
 			ArrayList<Training> trList = new ArrayList<Training>();
 			trList = cs.findTrainingsBySportObject(so);
-			System.out.println("Broj treninga: " + trList.size());
+			System.out.println("*********************************************Broj treninga: " + trList.size());
 			
 			return g.toJson(trList);
 			
@@ -255,5 +254,46 @@ public class SportObjectController {
 		});
 	}
 	
+	public static void deleteTraining() {
+		post("sportObject/deleteTraining", (req, res) -> {
+			String payload = req.body();
+			Training train = g.fromJson(payload, Training.class);
+			cs.deleteTraining(train);
+			System.out.println("Deleted training: " + train.getName());
+			return "OK";
+		});
+	}
+	
+	public static void sortTrainingsDateAscending() {
+		post("sportObject/sortDateUp", (req, res) -> {
+			Session ss = req.session(true);
+			User user = ss.attribute("user");
+			Manager mana = cs.findManagerByUsername(user.getUsername());
+			SportObject so = sos.getSportObjectByManager(mana);
+			
+			
+			
+			ArrayList<Training> sortedList = new ArrayList<Training>();
+			sortedList = cs.sortTrainingsDateAscending(so);
+			
+			
+			return g.toJson(sortedList);
+			
+		});
+	}
+	
+	public static void sortTrainingsDateDescending() {
+		post("sportObject/sortDateDown", (req, res) -> {
+			Session ss = req.session(true);
+			User user = ss.attribute("user");
+			Manager mana = cs.findManagerByUsername(user.getUsername());
+			SportObject so = sos.getSportObjectByManager(mana);
+
+			ArrayList<Training> sortedList = new ArrayList<Training>();
+			sortedList = cs.sortTrainingsDateDescending(so);
+			return g.toJson(sortedList);
+			
+		});
+	}
 
 }

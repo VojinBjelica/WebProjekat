@@ -12,7 +12,10 @@ import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 import java.util.StringTokenizer;
 import java.util.UUID;
@@ -289,9 +292,8 @@ public class CustomerFileStorage {
 	
 	public boolean addTraining(Training training) {
 		if (training.getName() != null && training.getType() != null && training.getPicture() != null
-				&& training.getTrainer() != null) {
+				&& training.getTrainer() != null && training.getTrainingDate() != null) {
 			trainingList = readTraining();
-			System.out.println("Traininga ima: " + trainingList.size());
 			
 			boolean nameDuplicate = true;
 			for (Training tr : trainingList) {
@@ -1073,6 +1075,20 @@ public class CustomerFileStorage {
 		return retTraining;
 	}
 	
+	public boolean deleteTraining(Training t) {
+		ArrayList<Training> trList = new ArrayList<Training>();
+		trList = readTraining();
+		for (Training tr : trList) {
+			if (tr.getName().equals(t.getName())) {
+				tr.setDeleted(1);
+				addTrainingsInFile();
+				return true;
+			}
+		}
+		return false;
+		
+	}
+	
 	public Manager addManager(Manager customer)
 	{
 		if(customer.getName() != null && customer.getSurname()!= null  && customer.getUsername() != null)
@@ -1425,16 +1441,40 @@ public class CustomerFileStorage {
 		ArrayList<Training> retList = new ArrayList<Training>();
 		
 		trainingsSO = readTraining();
-		System.out.println("!!!!!! Broj svih treniniga: " + trainingsSO.size());
 		
 		
 		for (Training t : trainingsSO) {
-			System.out.println("Pokusavam za trening: " + t.getName());
 			if (t.getSportObject().getObjectName().equals(so.getObjectName()) && t.getDeleted() == 0) {
 				retList.add(t);
-				System.out.println("Nasao trening " + t.getName() + " u objektu " + so.getObjectName());
 			}
 		}
+		return retList;
+	}
+	
+	//za sortiranje liste po datumu u prikazu menadzerovog sportskog objekta
+	public ArrayList<Training> sortTrainingsDateAscending(SportObject so) {
+		ArrayList<Training> trainingsSO = new ArrayList<Training>();
+		ArrayList<Training> retList = new ArrayList<>();
+		trainingsSO = readTraining();
+		for (Training t : trainingsSO) {
+			if (t.getSportObject().getObjectName().equals(so.getObjectName()) && t.getDeleted() == 0) {
+				retList.add(t);
+			}
+		}
+		retList.sort((d1, d2) -> d1.getTrainingDate().compareTo(d2.getTrainingDate()));
+		return retList;
+	}
+	
+	public ArrayList<Training> sortTrainingsDateDescending(SportObject so) {
+		ArrayList<Training> trainingsSO = new ArrayList<Training>();
+		ArrayList<Training> retList = new ArrayList<>();
+		trainingsSO = readTraining();
+		for (Training t : trainingsSO) {
+			if (t.getSportObject().getObjectName().equals(so.getObjectName()) && t.getDeleted() == 0) {
+				retList.add(t);
+			}
+		}
+		retList.sort((d1, d2) -> d2.getTrainingDate().compareTo(d1.getTrainingDate()));
 		return retList;
 	}
 	

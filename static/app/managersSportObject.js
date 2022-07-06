@@ -5,12 +5,13 @@ Vue.component("managersSportObject", {
 			coaches : null,
 			viewers : null,
 			trainingsSO : null,
+			sortedList : null,
 			training: {name:null, type:null, sportObject:null, duration:null, trainer:null, description:null, picture:null, trainingDate:null, id:null, deleted:null},
 			allCoaches: null
 		}
 	},
 	template: `
-		<div  >
+		<div  v-if="sortedList">
 			<div class="mso-container " style="width:70%">
 				<img v-bind:src="sportObject.logo" style="width:20%"/>
 				<div style="display:flex;flex-direction:column;">
@@ -180,11 +181,12 @@ Vue.component("managersSportObject", {
 	    				<th style="min-width:100px">Duration</th>
 	    				<th style="min-width:100px">Coach</th>
 	    				<th style="min-width:100px; max-width:200px">Description</th>
-	    				<th style="min-width:100px">Date</th>
+	    				<th style="min-width:100px">Date <button v-on:click="sortDateAscending()" >&uarr;</button><button v-on:click="sortDateDescending()" >&darr;</button></th>
+	    				<th style="min-width:100px"></th>
 	    				<th style="min-width:100px"></th>
 	    			</tr>
 	    			
-	    			<tr class="data" v-for="sTraining in trainingsSO">
+	    			<tr class="data" v-for="sTraining in sortedList">
 	    				<td >{{sTraining.name}}</td>
 	    				<td >{{sTraining.type}}</td>
 	    				<td >{{sTraining.sportObject.objectName}}</td>
@@ -193,6 +195,7 @@ Vue.component("managersSportObject", {
 	    				<td >{{sTraining.description}}</td>
 	    				<td >{{sTraining.trainingDate}}</td>
 	    				<td style="text-align:center" ><button class="btn btn-primary" v-on:click="showSelectedTraining(sTraining)" >Edit</button></td>
+	    				<td style="text-align:center" ><button class="btn btn-danger" v-on:click="deleteTraining(sTraining)" >Delete</button></td>
 	    			</tr>
 	    		</table>
 	    	</div>
@@ -217,7 +220,8 @@ Vue.component("managersSportObject", {
 			.then(response => this.allCoaches = response.data);
 		axios
 			.get('sportObject/getTrainingsForSO')
-			.then(response => this.trainingsSO = response.data);
+			.then(response =>  { this.trainingsSO = response.data 
+								 this.sortedList = this.trainingsSO	});
 			
 	},
 	
@@ -302,7 +306,36 @@ Vue.component("managersSportObject", {
 		cancelAdding: function() {
 			var input = document.getElementById('add-training-input');
 			input.classList.add('invisible');
+		},
+		
+		deleteTraining : async function(sTraining) {
+			await axios
+				.post('sportObject/deleteTraining', sTraining)
+				.then(response => response.data);
+				
+			this.updateTrainingTable();
+			//router.go(0);
+		},
+		
+		updateTrainingTable : function() {
+			axios
+				.get('sportObject/getTrainingsForSO')
+				.then(response => this.trainingsSO = response.data);
+		},
+		
+		sortDateAscending : async function() {
+			await axios
+				.post('sportObject/sortDateUp', this.sortedList)
+				.then(response => this.sortedList = response.data);
+				
+		},
+		
+		sortDateDescending : function() {
+			axios
+				.post('sportObject/sortDateDown', this.sortedList)
+				.then(response => this.sortedList = response.data);
 		}
+		
 		
 	}
 	

@@ -179,4 +179,17 @@ public class CustomerService {
 		return cfs.editTraining(tr1, tr2);
 	}
 	
+	public boolean deleteTraining(Training t) {
+		return cfs.deleteTraining(t);
+	}
+	
+	public ArrayList<Training> sortTrainingsDateAscending(SportObject so) {
+		return cfs.sortTrainingsDateAscending(so);
+	}
+	
+	public ArrayList<Training> sortTrainingsDateDescending(SportObject so) {
+		return cfs.sortTrainingsDateDescending(so);
+	}
+	
+	
 }

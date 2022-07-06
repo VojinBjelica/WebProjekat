@@ -65,6 +65,9 @@ public class main {
 		SportObjectController.showEditTraining();
 		SportObjectController.editTraining();
 		SportObjectController.showEditableTraining();
+		SportObjectController.deleteTraining();
+		SportObjectController.sortTrainingsDateAscending();
+		SportObjectController.sortTrainingsDateDescending();
 		// TODO Auto-generated method stub
 
 	}
