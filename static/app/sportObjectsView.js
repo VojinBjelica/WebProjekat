@@ -95,7 +95,10 @@ Vue.component("sportObjectsView", {
 		document.getElementById("btn-customer-dues").disabled = true;
     			document.getElementById("btn-codes").disabled = true;
 		
-
+		axios  
+		    .post('customer/calculatePoints',this.user)
+		    .then(response => alert(response.data))
+       
 		this.hideCheck();
 		axios
 			.get('sportObjects/read', this.sportObjectList)

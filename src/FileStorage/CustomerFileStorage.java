@@ -29,6 +29,7 @@ import beans.Dues;
 import beans.DuesTypeEnum;
 import beans.GenderEnum;
 import beans.Manager;
+import beans.Points;
 import beans.PromoCode;
 import beans.RoleEnum;
 import beans.SportObject;
@@ -48,6 +49,7 @@ public class CustomerFileStorage {
 	public static ArrayList<User> userList = new ArrayList<User>();
 	public static ArrayList<Training> trainingList = new ArrayList<Training>();
 	public static ArrayList<PromoCode> promoCodeList = new ArrayList<PromoCode>();
+	public static ArrayList<Points> pointsList = new ArrayList<Points>();
 	public ArrayList<Customer> readCustomers(String way) {
         ArrayList<Customer> customers = new ArrayList<Customer>();
         BufferedReader in = null;
@@ -118,6 +120,44 @@ public class CustomerFileStorage {
                     Customer customer = new Customer(username,user.getPassword(),user.getName(),user.getSurname(),user.getDateOfBirth(),user.getGender(),Integer.parseInt(trainingID));
                     customers.add(customer);
                     customerTraining = customers;
+                }
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        finally {
+            if ( in != null ) {
+                try {
+                    in.close();
+                }
+                catch (Exception e) { }
+            }
+        }
+        return customers;
+    }
+	public ArrayList<Points> readPoints() {
+        ArrayList<Points> customers = new ArrayList<Points>();
+        BufferedReader in = null;
+        try {
+            File file = new File("./customerPoints.txt");
+            in = new BufferedReader(new FileReader(file));
+            String line, username = "",points = "";
+            StringTokenizer st;
+            try {
+                while ((line = in.readLine()) != null) {
+                    line = line.trim();
+                    if (line.equals("") || line.indexOf('#') == 0)
+                        continue;
+                    st = new StringTokenizer(line, ";");
+                    while (st.hasMoreTokens()) {
+                        username = st.nextToken().trim();
+                        points = st.nextToken().trim();              
+                        }
+                    Points point = new Points(username,Float.parseFloat(points));
+                     customers.add(point);
+                    pointsList = customers;
                 }
             } catch (Exception ex) {
                 ex.printStackTrace();
@@ -669,6 +709,27 @@ public class CustomerFileStorage {
         }
         return true;
     }
+	public boolean addPointsInFile(ArrayList<Points> thisList) 
+    {
+		
+        FileWriter fileWriter;
+        try {
+            fileWriter = new FileWriter("./customerPoints.txt");
+        PrintWriter output = new PrintWriter(fileWriter, true);
+        for(Points customer : thisList)
+        {
+            String outputString = "";
+            outputString += customer.getUserUsername() + ";";
+            outputString += customer.getPoints() + ";";
+            
+            output.println(outputString);
+        }
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        return true;
+    }
 	public boolean addViewSecret(Customer cust, String objectName)
 	{
 		customerViewList = readCustomersView();
@@ -676,6 +737,113 @@ public class CustomerFileStorage {
 		addCustomerViewInFile();
 		return true;
 		
+	}
+	public boolean calculatePoints()
+	{
+		LocalDate localDate = LocalDate.now();
+		Date date = Date.from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
+		float bodovi = 0;
+		ArrayList<Points> retList = new ArrayList<Points>();
+		ArrayList<Points> pointsList = readPoints();
+		ArrayList<Dues> duesList = readDues();
+		for(Dues d : duesList)
+		{
+			if(d.getExpirationDateAndTime().before(date))
+			{
+				System.out.println("Pre datuma");
+				for(Points p : pointsList)
+				{
+					if(d.getCustomer().getUsername().equals(p.getUserUsername()))
+					{
+						bodovi = p.getPoints();
+						retList.remove(new Points(p.getUserUsername(),p.getPoints()));
+					}
+				}
+				if(d.getExpirationDateAndTime().getDay() - date.getDay() == -1)
+				{
+					System.out.println("razlika 1 dan");
+					bodovi += d.getPrice()/1000 * d.getNumberOfAppointments();
+					Points p = new Points(d.getCustomer().getUsername(),bodovi);
+					retList.add(p);
+				}
+				else
+				{
+					System.out.println("razlika vise dan");
+					if(d.getExpirationDateAndTime().getMonth() - date.getMonth() != 0)
+					{
+					if(d.getExpirationDateAndTime().getMonth() %2 == 0 && d.getExpirationDateAndTime().getMonth() != 2)
+					{
+						if(date.getDay() - d.getExpirationDateAndTime().getDay() <= 29  )
+						{
+							System.out.println("Parni mesec");
+							bodovi += d.getPrice()/1000 * d.getNumberOfAppointments();
+							Points p = new Points(d.getCustomer().getUsername(),bodovi);
+							retList.add(p);
+						}
+					}
+					else if (d.getExpirationDateAndTime().getMonth() %2 == 0 &&d.getExpirationDateAndTime().getMonth() == 2)
+					{
+						System.out.println("februar");
+						if(date.getDay() - d.getExpirationDateAndTime().getDay() <= 27  )
+						{
+							bodovi += d.getPrice()/1000 * d.getNumberOfAppointments();
+							Points p = new Points(d.getCustomer().getUsername(),bodovi);
+							retList.add(p);
+						}
+					}
+					else
+					{
+						System.out.println("neparni mesec");
+						if(date.getDay() - d.getExpirationDateAndTime().getDay() <= 30  )
+						{
+							bodovi += d.getPrice()/1000 * d.getNumberOfAppointments();
+							Points p = new Points(d.getCustomer().getUsername(),bodovi);
+							retList.add(p);
+						}
+					}
+					}
+					else
+					{
+						if(d.getExpirationDateAndTime().getMonth() %2 == 0 && d.getExpirationDateAndTime().getMonth() != 2)
+						{
+							if(date.getDay() - d.getExpirationDateAndTime().getDay() <= 29  )
+							{
+								System.out.println("Parni mesec");
+								bodovi += d.getPrice()/1000 * d.getNumberOfAppointments();
+								Points p = new Points(d.getCustomer().getUsername(),bodovi);
+								retList.add(p);
+							}
+						}
+						else if (d.getExpirationDateAndTime().getMonth() %2 == 0 &&d.getExpirationDateAndTime().getMonth() == 2)
+						{
+							System.out.println("februar");
+							if(date.getDay() - d.getExpirationDateAndTime().getDay() <= 27  )
+							{
+								bodovi += d.getPrice()/1000 * d.getNumberOfAppointments();
+								Points p = new Points(d.getCustomer().getUsername(),bodovi);
+								retList.add(p);
+							}
+						}
+						else
+						{
+							System.out.println("neparni mesec");
+							if(date.getDay() - d.getExpirationDateAndTime().getDay() <= 30  )
+							{
+								bodovi += d.getPrice()/1000 * d.getNumberOfAppointments();
+								Points p = new Points(d.getCustomer().getUsername(),bodovi);
+								retList.add(p);
+							}
+						}
+						
+						
+					}
+					
+				}
+			}
+		}
+		System.out.println(retList.size());
+		addPointsInFile(retList);
+		return true;
 	}
 	public boolean addCustomerViewInFile() 
     {
