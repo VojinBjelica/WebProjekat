@@ -1,8 +1,10 @@
-Trening;Gym;XFit;34;ivan123;blabla;2022-06-14;1;0
-Treningg;Personal;XFit;30;kelja123;blabla;2022-06-09;2;0
-Treninggg;Group;XFit;30;kelja123;blabla;2022-06-22;3;0
-Treningggg;Personal;XFit;30;kelja123;blabla;2022-07-04;4;0
-Treninggggg;Personal;XFit;30;kelja123;blabla;2022-07-01;5;0
-Trening3;Personal;XFit;0;kelja123;None;2022-07-27;74;0
-Trening4;Gym;XFit;0;kelja123;None;2022-07-20;77;0
-CrossfitLmao;Group;XFit;25;jeca123;Evo neki malo duzi opis cisto reda radi;2022-07-28;76;0
+Trening;Gym;XFit;34;ivan123;blabla;2022-06-14;0.0;https://img.freepik.com/free-vector/gym-logo_219982-7.jpg;1;0
+Treningg;Personal;XFit;30;kelja123;blabla;2022-06-09;0.0;https://img.freepik.com/free-vector/gym-logo_219982-7.jpg;2;0
+Treninggg;Group;XFit;30;kelja123;blabla;2022-06-22;0.0;https://img.freepik.com/free-vector/gym-logo_219982-7.jpg;3;0
+Treningggg;Personal;XFit;30;kelja123;blabla;2022-07-04;0.0;https://img.freepik.com/free-vector/gym-logo_219982-7.jpg;4;0
+Treninggggg;Personal;XFit;30;kelja123;blabla;2022-07-01;600.0;https://img.freepik.com/free-vector/gym-logo_219982-7.jpg;5;0
+Trening3;Personal;XFit;0;kelja123;None;2022-07-27;0.0;https://img.freepik.com/free-vector/gym-logo_219982-7.jpg;74;0
+Trening4;Gym;XFit;0;kelja123;None;2022-07-20;300.0;https://img.freepik.com/free-vector/gym-logo_219982-7.jpg;77;0
+CrossfitLmao;Group;XFit;25;jeca123;Evo neki malo duzi opis cisto reda radi;2022-07-28;0.0;https://img.freepik.com/free-vector/gym-logo_219982-7.jpg;76;0
+Zoomba;Group;XFit;45;coa;Dance dance dance;2022-07-22;200.0;https://img.freepik.com/free-vector/gym-logo_219982-7.jpg;76;0
+Thenx;Gym;XFit;35;ivan123;Bars;2022-07-27;200.0;https://img.freepik.com/free-vector/gym-logo_219982-7.jpg;76;0

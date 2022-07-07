@@ -6,7 +6,7 @@ Vue.component("managersSportObject", {
 			viewers : null,
 			trainingsSO : null,
 			sortedList : null,
-			training: {name:null, type:null, sportObject:null, duration:null, trainer:null, description:null, picture:null, trainingDate:null, id:null, deleted:null},
+			training: {name:null, type:null, sportObject:null, duration:null, trainer:null, description:null, price:null, picture:null, trainingDate:null, id:null, deleted:null},
 			allCoaches: null
 		}
 	},
@@ -140,6 +140,15 @@ Vue.component("managersSportObject", {
 						
 						<tr>
 							<td>
+								<p>Price: </p>
+							</td>
+							<td>
+								<input class="form-control" id="add-training-price" v-model="training.price"  type="text" />
+							</td>
+						</tr>
+						
+						<tr>
+							<td>
 								<p>Date: </p>
 							</td>
 							<td>
@@ -252,18 +261,30 @@ Vue.component("managersSportObject", {
 			var type = document.getElementById('add-training-type').value;
 			var img = document.getElementById('add-training-img').value;
 			var date = document.getElementById('add-training-date').value;
+			var price = document.getElementById('add-training-price').value;
+			var duration = document.getElementById('add-training-duration').value;
 			
+			var patternName = /^[A-Za-z0-9 ]+$/;
+			var patternPrice = /^[0-9]+(.?[0-9]+)?$/;
+			var patternDuration = /^[0-9]+$/;
 			
 			if (name == "") {
 				alert("You must enter a name.");
+			} else if (!patternName.test(name)) {
+				alert("Name is in incorrect format (must contain only letters and numbers).");
 			} else if (type == "") {
 				alert("You must enter a type.");
 			} else if (img == "") {
 				alert("You must enter an image url.");
+			} else if (duration != "" && !patternDuration.test(duration)) {
+				alert("Duration is in incorrect format.")
+			} else if (price == "") {
+				alert("You must enter a price");
+			} else if (!patternPrice.test(price)) {
+				alert("Price is in incorrect format.")
 			} else if (date == "") {
 				alert("You must select a date.");
 			} else {
-				alert("Usao u validate adding");
 				this.addTraining();
 			}
 			
