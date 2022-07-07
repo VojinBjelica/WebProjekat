@@ -1,2 +1,4 @@
-wbirSOCzDV;Month;2022-06-05;2022-07-05;2500;joca123;true;30
-DK2SlkxlAt;Month;2022-06-03;2022-07-03;2500;maca;true;30
+wbirSOCzDV;Month;2022-06-05;2022-07-05;2500;joca123;false;30;1
+DK2SlkxlAt;Month;2022-06-03;2022-07-03;2500;maca;true;30;1
+dhVs8H5HtQ;Month;2022-06-06;2022-07-06;2500;joca123;false;30;1
+1oNQZKWxDx;Month;2022-07-07;2022-08-07;2500;joca123;true;30;0

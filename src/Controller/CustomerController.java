@@ -77,17 +77,22 @@ public class CustomerController {
 			Session ss = req.session(true);
 			User user = ss.attribute("user");
 			User u = cs.findUserByUsername(user.getUsername());
+			boolean checker = cs.dueActive(user.getUsername());
 			Customer c = new Customer(u.getUsername(),u.getPassword(),u.getName(),u.getSurname(),u.getDateOfBirth(),u.getGender(),"Customer");
 			Dues pd = g.fromJson(payload, Dues.class);
 			String duestype = "";
 			String id = cs.generateID();
-			Dues due = null;
-			if(pd.getDuesType() == DuesTypeEnum.Month)
-				due = new Dues(id,pd.getDuesType(),pd.getPayDate(),pd.getExpirationDateAndTime(),pd.getPrice(),c,true,30);
+			if(checker == true) return "Your due is still active";
 			else
-				due = new Dues(id,pd.getDuesType(),pd.getPayDate(),pd.getExpirationDateAndTime(),pd.getPrice(),c,true,365);
-			
-			cs.addDues(due);
+			{
+				Dues due = null;
+				if(pd.getDuesType() == DuesTypeEnum.Month)
+					due = new Dues(id,pd.getDuesType(),pd.getPayDate(),pd.getExpirationDateAndTime(),pd.getPrice(),c,true,30,0);
+				else
+					due = new Dues(id,pd.getDuesType(),pd.getPayDate(),pd.getExpirationDateAndTime(),pd.getPrice(),c,true,365,0);
+				
+				cs.addDues(due);
+			}
 			return "OK";
 		});
 	}
@@ -173,8 +178,14 @@ public class CustomerController {
 			Dues pd = g.fromJson(payload, Dues.class);
 			int newPrice = 0;
 			int helpPrice = 0;
+			Session ss = req.session(true);
+			User user = ss.attribute("user");
+			boolean checker = cs.dueActive(user.getUsername());
 			if(pd.getDuesType() == DuesTypeEnum.Month)helpPrice = 2500;
 			else helpPrice = 25000;
+			if(checker == true) System.out.println("Your due is still active");
+			else
+			{
 			if(pd.getPrice() == 2500 || pd.getPrice() == 25000)
 			{
 				for(PromoCode pc : cs.readPromoCodes())
@@ -187,7 +198,7 @@ public class CustomerController {
 						cs.usedCode(pc.getPromoCodeName());
 						
 						}
-						else return "Vec je iskoriscen kod";
+						else System.out.println("Vec je iskoriscen kod"); 
 					}
 				}
 
@@ -195,7 +206,9 @@ public class CustomerController {
 				Dues retDue = new Dues(pd.getID(),pd.getDuesType(),pd.getPayDate(),pd.getExpirationDateAndTime(),newPrice,pd.getCustomer(),pd.isStatus(),pd.getNumberOfAppointments(),pd.getPromoCode());
 				return g.toJson(retDue);
 			}
-			else return "Nemoj biti bezobrazan vec si iskoristio popust";
+			else System.out.println("Nemoj biti bezobrazan vec si iskoristio popust");   
+			}
+			return null;
 			
 		});
 	}
