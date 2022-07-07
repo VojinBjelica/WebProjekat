@@ -97,6 +97,36 @@ public class CustomerFileStorage {
         }
         return customers;
     }
+	public boolean expirationChecker()
+	{
+		LocalDate localDate = LocalDate.now();
+		Date date = Date.from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
+		
+		for(Dues d : readDues())
+		{
+			if(d.getExpirationDateAndTime().before(date))
+			{
+				d.setStatus(false);
+			}
+		}
+		return true;
+		
+	}
+	public boolean dueActive(String username)
+	{
+		LocalDate localDate = LocalDate.now();
+		Date date = Date.from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
+		
+		for(Dues d : readDues())
+		{
+			if(d.getCustomer().getUsername().equals(username) && d.getExpirationDateAndTime().after(date))
+			{
+				return true;
+			}
+		}
+		return false;
+		
+	}
 	public ArrayList<Customer> readCustomerTrainings() {
         ArrayList<Customer> customers = new ArrayList<Customer>();
         BufferedReader in = null;
@@ -281,7 +311,7 @@ public class CustomerFileStorage {
         try {
             File file = new File("./dues.txt");
             in = new BufferedReader(new FileReader(file));
-            String line, ID="" , type = "" , paydate = "" , expdate = "",price = "",customer = "",status = "", number = "";
+            String line, ID="" , type = "",done = "" , paydate = "" , expdate = "",price = "",customer = "",status = "", number = "";
             StringTokenizer st;
             try {
                 while ((line = in.readLine()) != null) {
@@ -298,6 +328,7 @@ public class CustomerFileStorage {
                     	customer = st.nextToken().trim();
                     	status = st.nextToken().trim();
                     	number = st.nextToken().trim();
+                    	done = st.nextToken().trim();
                     	
                         }
                     SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
@@ -307,7 +338,7 @@ public class CustomerFileStorage {
                     if(type.equals("Month")) typeEnum = DuesTypeEnum.Month;
                     else typeEnum = DuesTypeEnum.Year;
                     Customer cust = findCustByUsername(customer);
-                    Dues retDue = new Dues(ID,typeEnum,dt,dtex,Integer.parseInt(price),cust,Boolean.parseBoolean(status),Integer.parseInt(number));
+                    Dues retDue = new Dues(ID,typeEnum,dt,dtex,Integer.parseInt(price),cust,Boolean.parseBoolean(status),Integer.parseInt(number),Integer.parseInt(done));
                     
                     
                     customers.add(retDue);
@@ -740,64 +771,91 @@ public class CustomerFileStorage {
 	}
 	public boolean calculatePoints()
 	{
+		expirationChecker();
 		LocalDate localDate = LocalDate.now();
 		Date date = Date.from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
 		float bodovi = 0;
-		ArrayList<Points> retList = new ArrayList<Points>();
+		float broj_izgubljenih_bodova = 0;
+
+		ArrayList<Points> retList = readPoints();
 		ArrayList<Points> pointsList = readPoints();
 		ArrayList<Dues> duesList = readDues();
 		for(Dues d : duesList)
 		{
+			bodovi = 0;
+			broj_izgubljenih_bodova = 0;
+			if(d.getDone() == 0)
+			{
 			if(d.getExpirationDateAndTime().before(date))
 			{
-				System.out.println("Pre datuma");
+				d.setDone(1);
+				
+				int i = 0;
 				for(Points p : pointsList)
 				{
 					if(d.getCustomer().getUsername().equals(p.getUserUsername()))
 					{
 						bodovi = p.getPoints();
+
+						retList.remove(i);
+						i++;
 						retList.remove(new Points(p.getUserUsername(),p.getPoints()));
 					}
 				}
 				if(d.getExpirationDateAndTime().getDay() - date.getDay() == -1)
 				{
-					System.out.println("razlika 1 dan");
-					bodovi += d.getPrice()/1000 * d.getNumberOfAppointments();
+					
+					bodovi += (d.getPrice()/1000.0) * d.getNumberOfAppointments();
+					if(d.getNumberOfAppointments() < 10)
+					{
+					broj_izgubljenih_bodova = d.getPrice()/1000 * 133 * 4;
+					bodovi = bodovi - broj_izgubljenih_bodova;
+					}
 					Points p = new Points(d.getCustomer().getUsername(),bodovi);
 					retList.add(p);
 				}
 				else
 				{
-					System.out.println("razlika vise dan");
+					
 					if(d.getExpirationDateAndTime().getMonth() - date.getMonth() != 0)
 					{
 					if(d.getExpirationDateAndTime().getMonth() %2 == 0 && d.getExpirationDateAndTime().getMonth() != 2)
 					{
 						if(date.getDay() - d.getExpirationDateAndTime().getDay() <= 29  )
 						{
-							System.out.println("Parni mesec");
-							bodovi += d.getPrice()/1000 * d.getNumberOfAppointments();
+							bodovi += (d.getPrice()/1000.0) * d.getNumberOfAppointments();
+							if(d.getNumberOfAppointments() < 10)
+							{
+							broj_izgubljenih_bodova = d.getPrice()/1000 * 133 * 4;
+							bodovi = bodovi - broj_izgubljenih_bodova;
+							}
 							Points p = new Points(d.getCustomer().getUsername(),bodovi);
 							retList.add(p);
 						}
 					}
 					else if (d.getExpirationDateAndTime().getMonth() %2 == 0 &&d.getExpirationDateAndTime().getMonth() == 2)
 					{
-						System.out.println("februar");
 						if(date.getDay() - d.getExpirationDateAndTime().getDay() <= 27  )
 						{
-							bodovi += d.getPrice()/1000 * d.getNumberOfAppointments();
-							Points p = new Points(d.getCustomer().getUsername(),bodovi);
+							bodovi += (d.getPrice()/1000.0) * d.getNumberOfAppointments();
+							if(d.getNumberOfAppointments() < 10)
+							{
+							broj_izgubljenih_bodova = d.getPrice()/1000 * 133 * 4;
+							bodovi = bodovi - broj_izgubljenih_bodova;
+							}Points p = new Points(d.getCustomer().getUsername(),bodovi);
 							retList.add(p);
 						}
 					}
 					else
 					{
-						System.out.println("neparni mesec");
 						if(date.getDay() - d.getExpirationDateAndTime().getDay() <= 30  )
 						{
-							bodovi += d.getPrice()/1000 * d.getNumberOfAppointments();
-							Points p = new Points(d.getCustomer().getUsername(),bodovi);
+							bodovi += (d.getPrice()/1000.0) * d.getNumberOfAppointments();
+							if(d.getNumberOfAppointments() < 10)
+							{
+							broj_izgubljenih_bodova = d.getPrice()/1000 * 133 * 4;
+							bodovi = bodovi - broj_izgubljenih_bodova;
+							}Points p = new Points(d.getCustomer().getUsername(),bodovi);
 							retList.add(p);
 						}
 					}
@@ -808,28 +866,39 @@ public class CustomerFileStorage {
 						{
 							if(date.getDay() - d.getExpirationDateAndTime().getDay() <= 29  )
 							{
-								System.out.println("Parni mesec");
-								bodovi += d.getPrice()/1000 * d.getNumberOfAppointments();
-								Points p = new Points(d.getCustomer().getUsername(),bodovi);
+								
+								bodovi += (d.getPrice()/1000.0) * d.getNumberOfAppointments();
+								if(d.getNumberOfAppointments() < 10)
+								{
+								broj_izgubljenih_bodova = d.getPrice()/1000 * 133 * 4;
+								bodovi = bodovi - broj_izgubljenih_bodova;
+								}Points p = new Points(d.getCustomer().getUsername(),bodovi);
 								retList.add(p);
 							}
 						}
 						else if (d.getExpirationDateAndTime().getMonth() %2 == 0 &&d.getExpirationDateAndTime().getMonth() == 2)
 						{
-							System.out.println("februar");
 							if(date.getDay() - d.getExpirationDateAndTime().getDay() <= 27  )
 							{
-								bodovi += d.getPrice()/1000 * d.getNumberOfAppointments();
-								Points p = new Points(d.getCustomer().getUsername(),bodovi);
+								bodovi += (d.getPrice()/1000.0) * d.getNumberOfAppointments();
+								if(d.getNumberOfAppointments() < 10)
+								{
+								broj_izgubljenih_bodova = d.getPrice()/1000 * 133 * 4;
+								bodovi = bodovi - broj_izgubljenih_bodova;
+								}Points p = new Points(d.getCustomer().getUsername(),bodovi);
 								retList.add(p);
 							}
 						}
 						else
 						{
-							System.out.println("neparni mesec");
 							if(date.getDay() - d.getExpirationDateAndTime().getDay() <= 30  )
 							{
-								bodovi += d.getPrice()/1000 * d.getNumberOfAppointments();
+								bodovi += (d.getPrice()/1000.0) * d.getNumberOfAppointments();
+								if(d.getNumberOfAppointments() < 10)
+								{
+								broj_izgubljenih_bodova = d.getPrice()/1000 * 133 * 4;
+								bodovi = bodovi - broj_izgubljenih_bodova;
+								}
 								Points p = new Points(d.getCustomer().getUsername(),bodovi);
 								retList.add(p);
 							}
@@ -841,7 +910,9 @@ public class CustomerFileStorage {
 				}
 			}
 		}
+		}
 		System.out.println(retList.size());
+		addDuesInFile();
 		addPointsInFile(retList);
 		return true;
 	}
@@ -933,7 +1004,8 @@ public class CustomerFileStorage {
             outputString += customer.getPrice() + ";";
             outputString += customer.getCustomer().getUsername() + ";";
             outputString += customer.isStatus() + ";";
-            outputString += customer.getNumberOfAppointments();
+            outputString += customer.getNumberOfAppointments() + ";";
+            outputString += customer.getDone();
             output.println(outputString);
         }
         } catch (IOException e) {

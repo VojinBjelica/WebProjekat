@@ -23,6 +23,10 @@ public class CustomerService {
 	{
 		return cfs.readCustomers("customers");
 	}
+	public boolean dueActive(String username)
+	{
+		return cfs.dueActive(username);
+	}
 	public ArrayList<PromoCode> readPromoCodes() {
 		return cfs.readPromoCodes();
 	}
