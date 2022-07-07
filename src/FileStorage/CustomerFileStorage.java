@@ -257,7 +257,7 @@ public class CustomerFileStorage {
         try {
             File file = new File("./trainings.txt");
             in = new BufferedReader(new FileReader(file));
-            String line, name = "", type = "",deleted = "", sportObject = "",date = "",id = "",duration = "",coach = "",description = "";
+            String line, name = "", type = "",deleted = "", sportObject = "",date = "",id = "",duration = "",coach = "",description = "",price="",picture="";
             StringTokenizer st;
             try {
                 while ((line = in.readLine()) != null) {
@@ -273,8 +273,11 @@ public class CustomerFileStorage {
                     	coach = st.nextToken().trim();
                     	description = st.nextToken().trim();
                     	date = st.nextToken().trim();
+                    	price = st.nextToken().trim();
+                    	picture = st.nextToken().trim();
                     	id = st.nextToken().trim();
                     	deleted = st.nextToken().trim();
+                    	
                         }
                     SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
                     Date dt = formatter.parse(date);
@@ -285,7 +288,7 @@ public class CustomerFileStorage {
                     SportObjectService sos = new SportObjectService();
                     SportObject so = sos.getSportObjectByName(sportObject);
                     Coach c = getCoachByUsername(coach);
-                    Training train = new Training(name,typeEnum,so,Integer.parseInt(duration),c,description,dt,Integer.parseInt(id),Integer.parseInt(deleted));
+                    Training train = new Training(name,typeEnum,so,Integer.parseInt(duration),c,description,picture,dt,Integer.parseInt(id),Integer.parseInt(deleted),Double.parseDouble(price));
                     customers.add(train);
                     trainingList = customers;
                 }
@@ -1093,9 +1096,11 @@ public class CustomerFileStorage {
             outputString += customer.getDescription() + ";";
             
             SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-            outputString += formatter.format(customer.getTrainingDate()) + ";"; //dodao ;
-            outputString += customer.getId() + ";"; //dodao i iscitavanje sportskog objekta
-            outputString += customer.getDeleted(); //dodao i iscitavanje sportskog objekta
+            outputString += formatter.format(customer.getTrainingDate()) + ";";
+            outputString += customer.getPrice() + ";";
+            outputString += customer.getPicture() + ";";
+            outputString += customer.getId() + ";"; 
+            outputString += customer.getDeleted(); 
             output.println(outputString);
         }
         //addCustomersToUsers();
