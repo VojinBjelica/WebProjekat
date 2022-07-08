@@ -5,7 +5,9 @@ import static spark.Spark.post;
 
 import java.text.DateFormat;
 import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.UUID;
 
 import com.google.gson.FieldNamingPolicy;
@@ -24,6 +26,8 @@ import beans.PromoCode;
 import beans.RoleEnum;
 import beans.SportObject;
 import beans.Training;
+import beans.TrainingHistory;
+import beans.TrainingTypeEnum;
 import beans.User;
 import spark.Request;
 import spark.Response;
@@ -109,6 +113,27 @@ public class CustomerController {
 			ArrayList<Coach> retList = new ArrayList<Coach>();
 			retList = cs.findCoachesByObject(mana.getSportObject());
 			System.out.println(retList.size());
+			return g.toJson(retList);
+		});
+	}
+	public static void getTrainings() {
+		get("customer/scheduleTrainings", (req, res) -> {
+			Session ss = req.session(true);
+			User user = ss.attribute("user");
+			
+			ArrayList<Training> retList = new ArrayList<Training>();
+			ArrayList<Training> tempList = cs.readTraining();
+			for(Training t : tempList)
+			{
+				if(t.getType() == TrainingTypeEnum.Personal)
+				{
+					if(t.getCheck() == 0)retList.add(t);
+				}
+				else
+				{
+					if(t.getCheck() < 30)retList.add(t);
+				}
+			}
 			return g.toJson(retList);
 		});
 	}
@@ -222,6 +247,37 @@ public class CustomerController {
 			System.out.println(t.getName());
 			cs.cancelTraining(t);
 			
+			return "OK";
+		});
+	}
+	public static void scheduleTraining()
+	{
+		post("customer/scheduleTraining", (req, res) -> {
+			LocalDate localDate = LocalDate.now();
+			Date date = Date.from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
+			
+			String payload = req.body();
+			Training pd = g.fromJson(payload, Training.class);
+			Session ss = req.session(true);
+			User user = ss.attribute("user");
+			Training t = cs.findTrainingByName(pd.getName());
+			Customer cust = cs.findCustomerByUsername(user.getUsername());
+			Coach c = cs.findCoachByTraining(t);
+			boolean check = cs.pickTraining(user.getUsername(),t);
+			
+			if(check == true)
+			{
+				System.out.println("True je");
+				cs.scheduleCheck(t.getName());
+				TrainingHistory th = new TrainingHistory(date,t,cust,c);
+				cs.addTrainingHistory(th);
+			}
+			else
+			{
+
+				System.out.println("nije true ");
+				return "Korisnik nema clanarinu ili termin";
+			}
 			return "OK";
 		});
 	}

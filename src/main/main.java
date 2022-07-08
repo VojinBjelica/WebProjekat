@@ -46,6 +46,8 @@ public class main {
 		CustomerController.addPromoCode();
 		CustomerController.findDiscount();
 		CustomerController.calculatePoints();
+		CustomerController.getTrainings();
+		CustomerController.scheduleTraining();
 		
 		
 		new SportObjectController();

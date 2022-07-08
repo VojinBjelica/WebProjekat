@@ -106,7 +106,7 @@ Vue.component("coachTraining", {
 		},
 		cancelTraining : function (training) {
 			axios
-			.post('customer/cancelTraining', {"id":''+training.id})
+			.post('customer/cancelTraining', {"name":training.name})
 			.then(response => (toast('Training ' + training.name + " has been canceled")))
 		},
 		ruterIdi : function()
