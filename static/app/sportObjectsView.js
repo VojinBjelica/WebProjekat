@@ -20,11 +20,12 @@ Vue.component("sportObjectsView", {
     			<button v-on:click="goToCustomerTrainings()" class="login-btn" id="btn-customer-training" >My trainings customer</button>
     			<button v-on:click="goToDues()" class="login-btn" id="btn-customer-dues" >Dues</button>
     			<button v-on:click="goToPromoCodes()" class="login-btn" id="btn-codes" >Codes</button>
+    			<button v-on:click="goToSchedule()" class="login-btn" id="btn-schedule" >Schedule Trainings</button>
     			
     			
     		</div>
     		<div class="sport-objects-view">
-    			<table id="soTable"  style="margin:auto">
+    			<table id="soTable"  style="margin:auto;">
 	    			<tr bgcolor="grey">
 	    				<th style="min-width:50px">Name <button v-on:click="sortNameFunction()" >&uarr;</button> <button v-on:click="sortNameDown()" >&darr;</button></th>
 	    				<th style="min-width:50px">Type</th>
@@ -387,6 +388,10 @@ Vue.component("sportObjectsView", {
 		goToPromoCodes : function()
 		{
 			router.push(`/promoCodes`);
+		},
+		goToSchedule : function()
+		{
+			router.push(`/scheduleTraining`);
 		},
 		sortAvgMarkFunction : function() {
 			this.sportObjectList.sort(this.compareNum);

@@ -1,25 +1,26 @@
 package beans;
 
 import java.time.LocalDate;
+import java.util.Date;
 
 public class TrainingHistory {
 	
-	private LocalDate checkInDateAndTime;
+	private Date checkInDate;
 	private Training training;
 	private Customer customer;
 	private Coach trainer;
-	public TrainingHistory(LocalDate checkInDateAndTime, Training training, Customer customer, Coach trainer) {
+	public TrainingHistory(Date checkInDateAndTime, Training training, Customer customer, Coach trainer) {
 		super();
-		this.checkInDateAndTime = checkInDateAndTime;
+		this.checkInDate = checkInDateAndTime;
 		this.training = training;
 		this.customer = customer;
 		this.trainer = trainer;
 	}
-	public LocalDate getCheckInDateAndTime() {
-		return checkInDateAndTime;
+	public Date getCheckInDate() {
+		return checkInDate;
 	}
-	public void setCheckInDateAndTime(LocalDate checkInDateAndTime) {
-		this.checkInDateAndTime = checkInDateAndTime;
+	public void setCheckInDate(Date checkInDateAndTime) {
+		this.checkInDate = checkInDateAndTime;
 	}
 	public Training getTraining() {
 		return training;

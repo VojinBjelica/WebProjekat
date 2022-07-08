@@ -10,6 +10,7 @@ import beans.Manager;
 import beans.PromoCode;
 import beans.SportObject;
 import beans.Training;
+import beans.TrainingHistory;
 import beans.User;
 
 public class CustomerService {
@@ -23,9 +24,37 @@ public class CustomerService {
 	{
 		return cfs.readCustomers("customers");
 	}
+	public boolean addTrainingsInFile() 
+    {
+		return cfs.addTrainingsInFile();
+    }
+	public boolean scheduleCheck(String name)
+	{
+		return cfs.scheduleCheck(name);
+	}
+	public boolean pickTraining(String u,Training tr)
+	{
+		return cfs.pickTraining(u, tr);
+	}
 	public boolean dueActive(String username)
 	{
 		return cfs.dueActive(username);
+	}
+	public TrainingHistory addTrainingHistory(TrainingHistory th)
+	{
+		return cfs.addTrainingHistory(th);
+	}
+	public Customer findCustomerByUsername(String username)
+	{
+		return cfs.findCustomerByUsername(username);
+	}
+	public Coach findCoachByTraining(Training t)
+	{
+		return cfs.findCoachByTraining(t);
+	}
+	public Training findTrainingByName(String name)
+	{
+		return cfs.findTrainingByName(name);
 	}
 	public ArrayList<PromoCode> readPromoCodes() {
 		return cfs.readPromoCodes();

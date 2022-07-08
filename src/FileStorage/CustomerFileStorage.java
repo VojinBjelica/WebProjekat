@@ -34,6 +34,7 @@ import beans.PromoCode;
 import beans.RoleEnum;
 import beans.SportObject;
 import beans.Training;
+import beans.TrainingHistory;
 import beans.TrainingTypeEnum;
 import beans.User;
 
@@ -49,6 +50,7 @@ public class CustomerFileStorage {
 	public static ArrayList<User> userList = new ArrayList<User>();
 	public static ArrayList<Training> trainingList = new ArrayList<Training>();
 	public static ArrayList<PromoCode> promoCodeList = new ArrayList<PromoCode>();
+	public static ArrayList<TrainingHistory> trainingHistory = new ArrayList<TrainingHistory>();
 	public static ArrayList<Points> pointsList = new ArrayList<Points>();
 	public ArrayList<Customer> readCustomers(String way) {
         ArrayList<Customer> customers = new ArrayList<Customer>();
@@ -97,6 +99,56 @@ public class CustomerFileStorage {
         }
         return customers;
     }
+	public ArrayList<TrainingHistory> readTrainingHistory() {
+        ArrayList<TrainingHistory> customers = new ArrayList<TrainingHistory>();
+        BufferedReader in = null;
+        try {
+            File file = new File("./trainingHistory.txt");
+            in = new BufferedReader(new FileReader(file));
+            String line, date = "",training = "", customer = "", coach = "";
+            StringTokenizer st;
+            try {
+                while ((line = in.readLine()) != null) {
+                    line = line.trim();
+                    if (line.equals("") || line.indexOf('#') == 0)
+                        continue;
+                    st = new StringTokenizer(line, ";");
+                    while (st.hasMoreTokens()) {
+                        date = st.nextToken().trim();
+                        training = st.nextToken().trim();
+                        customer = st.nextToken().trim();
+                        coach = st.nextToken().trim();
+                   
+                        }
+                    SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+                    Date dt = formatter.parse(date);
+                    GenderEnum gen = GenderEnum.Male;
+                    Customer cust = findCustomerByUsername(customer);
+                    Training t = findTrainingByName(training);
+                    Coach c = findCoachByTraining(t);
+                    TrainingHistory th = new TrainingHistory(dt,t,cust,c);
+                    customers.add(th);
+                    trainingHistory = customers;
+                }
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        finally {
+            if ( in != null ) {
+                try {
+                    in.close();
+                }
+                catch (Exception e) 
+                {
+                	
+                }
+                }
+        }
+        return customers;
+    }
 	public boolean expirationChecker()
 	{
 		LocalDate localDate = LocalDate.now();
@@ -109,9 +161,11 @@ public class CustomerFileStorage {
 				d.setStatus(false);
 			}
 		}
+		addDuesInFile();
 		return true;
 		
 	}
+	
 	public boolean dueActive(String username)
 	{
 		LocalDate localDate = LocalDate.now();
@@ -257,7 +311,7 @@ public class CustomerFileStorage {
         try {
             File file = new File("./trainings.txt");
             in = new BufferedReader(new FileReader(file));
-            String line, name = "", type = "",deleted = "", sportObject = "",date = "",id = "",duration = "",coach = "",description = "",price="",picture="";
+            String line, name = "", type = "",check="",deleted = "", sportObject = "",date = "",id = "",duration = "",coach = "",description = "",price="",picture="";
             StringTokenizer st;
             try {
                 while ((line = in.readLine()) != null) {
@@ -277,6 +331,7 @@ public class CustomerFileStorage {
                     	picture = st.nextToken().trim();
                     	id = st.nextToken().trim();
                     	deleted = st.nextToken().trim();
+                    	check = st.nextToken().trim();
                     	
                         }
                     SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
@@ -288,7 +343,7 @@ public class CustomerFileStorage {
                     SportObjectService sos = new SportObjectService();
                     SportObject so = sos.getSportObjectByName(sportObject);
                     Coach c = getCoachByUsername(coach);
-                    Training train = new Training(name,typeEnum,so,Integer.parseInt(duration),c,description,picture,dt,Integer.parseInt(id),Integer.parseInt(deleted),Double.parseDouble(price));
+                    Training train = new Training(name,typeEnum,so,Integer.parseInt(duration),c,description,picture,dt,Integer.parseInt(id),Integer.parseInt(deleted),Double.parseDouble(price),Integer.parseInt(check));
                     customers.add(train);
                     trainingList = customers;
                 }
@@ -405,6 +460,17 @@ public class CustomerFileStorage {
 		for(Training t : readTraining())
 		{
 			if(t.getId() == id)
+			{
+				return t;
+			}
+		}
+		return null;
+	}
+	public Training findTrainingByName(String name)
+	{
+		for(Training t : readTraining())
+		{
+			if(t.getName().equals(name))
 			{
 				return t;
 			}
@@ -764,6 +830,30 @@ public class CustomerFileStorage {
         }
         return true;
     }
+	public boolean addTrainingHistoryInFile() 
+    {
+		readTrainingHistory();
+        FileWriter fileWriter;
+        try {
+            fileWriter = new FileWriter("./trainingHistory.txt");
+        PrintWriter output = new PrintWriter(fileWriter, true);
+        for(TrainingHistory customer : trainingHistory)
+        {
+            String outputString = "";
+            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+            outputString += formatter.format(customer.getCheckInDate()) + ";";
+            outputString += customer.getTraining().getName() + ";";
+            outputString += customer.getCustomer().getUsername() + ";";
+            outputString += customer.getTrainer().getName();
+            
+            output.println(outputString);
+        }
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        return true;
+    }
 	public boolean addViewSecret(Customer cust, String objectName)
 	{
 		customerViewList = readCustomersView();
@@ -771,6 +861,20 @@ public class CustomerFileStorage {
 		addCustomerViewInFile();
 		return true;
 		
+	}
+	public boolean turnOffDue()
+	{
+		LocalDate localDate = LocalDate.now();
+		Date date = Date.from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
+		
+		for(Dues d : readDues())
+		{
+			if(d.getExpirationDateAndTime().before(date))
+			{
+				d.setStatus(false);
+			}
+		}
+		return true;
 	}
 	public boolean calculatePoints()
 	{
@@ -1043,6 +1147,7 @@ public class CustomerFileStorage {
 		   return sb.toString();
 		
 	}
+	
 	public boolean addManagersInFile(String who) 
     {
 		
@@ -1100,7 +1205,8 @@ public class CustomerFileStorage {
             outputString += customer.getPrice() + ";";
             outputString += customer.getPicture() + ";";
             outputString += customer.getId() + ";"; 
-            outputString += customer.getDeleted(); 
+            outputString += customer.getDeleted() + ";"; 
+            outputString += customer.getCheck();
             output.println(outputString);
         }
         //addCustomersToUsers();
@@ -1110,6 +1216,66 @@ public class CustomerFileStorage {
         }
         return true;
     }
+	public boolean pickTraining(String u,Training tr)
+	{
+		System.out.println("Usao u pick training");
+		LocalDate localDate = LocalDate.now();
+		Date date = Date.from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
+		Training t = tr;
+		boolean trainingCheck = false;
+		Dues d = findDueByUsername(u);
+		if(d == null)
+		{
+			trainingCheck = false;
+		}
+		else if(d.isStatus() == true && d.getNumberOfAppointments() != 0)
+		{
+			System.out.println("Smanjujem numApp");
+			trainingCheck = true;
+			decrementApp(d.getID());
+		}
+		
+		return trainingCheck;
+		
+	}
+	public Dues findDueByUsername(String username)
+	{
+		ArrayList<Dues> dues = readDues();
+		for(Dues due : dues)
+		{
+			if(due.getCustomer().getUsername().equals(username) && due.isStatus() == true)
+			{
+				return due;
+			}
+		}
+		return null;
+	}
+	public boolean scheduleCheck(String name)
+	{
+		for(Training t : readTraining())
+		{
+			if(t.getName().equals(name))
+			{
+				t.setCheck(t.getCheck()+1);
+			}
+		}
+		System.out.println("Zakazao");
+		addTrainingsInFile();
+		return true;
+	}
+	public boolean decrementApp(String due)
+	{
+		for(Dues t : readDues())
+		{
+			if(t.getID().equals(due))
+			{
+				t.setNumberOfAppointments(t.getNumberOfAppointments()-1);
+			}
+		}
+		System.out.println("Smanjio numapp");
+		addDuesInFile();
+		return true;
+	}
 	public boolean addCoachesInFile() 
     {
 		
@@ -1212,6 +1378,19 @@ public class CustomerFileStorage {
         }
         return true;
     }
+	public Coach findCoachByTraining(Training t)
+	{
+		Coach c = null;
+		for(Training tr : readTraining())
+		{
+			if(tr.getName().equals(t.getName()))
+			{
+				c = tr.getTrainer();
+				return c;
+			}
+		}
+		return null;
+	}
 	public boolean addCustomersToUsers()
 	{
 		FileWriter fileWriter;
@@ -1277,6 +1456,17 @@ public class CustomerFileStorage {
 		addCustomerInFile("customers");
 		}
 		return customer;
+	}
+	public TrainingHistory addTrainingHistory(TrainingHistory th)
+	{
+		trainingHistory = readTrainingHistory();
+		boolean usernameDuplicate = true;
+		
+		
+		trainingHistory.add(th);
+		addTrainingHistoryInFile();
+		
+		return th;
 	}
 	public User editProfile(User user,User usertwo)
 	{
@@ -1430,6 +1620,20 @@ public class CustomerFileStorage {
 		for(User c : customerList)
 		{
 			if(c.getUsername().equals(username) && c.getPassword().equals(password))
+			{
+				cust = c;
+			}
+		}
+		return cust;
+	}
+	public Customer findCustomerByUsername(String username)
+	{
+		ArrayList<Customer> customerList = readCustomers("customers");
+		System.out.println(customerList.size());
+		Customer cust = null;
+		for(Customer c : customerList)
+		{
+			if(c.getUsername().equals(username))
 			{
 				cust = c;
 			}
