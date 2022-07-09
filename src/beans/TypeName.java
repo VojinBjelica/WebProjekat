@@ -4,6 +4,7 @@ public enum TypeName {
 	
 	Gold,
 	Silver,
-	Bronze
+	Bronze,
+	No
 
 }

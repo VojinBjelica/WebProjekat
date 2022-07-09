@@ -2,19 +2,19 @@ package beans;
 
 public class CustomerType {
 	
-	private CustomerType customerType;
+	private TypeName customerType;
 	private int discount;
 	private int neededPoints;
-	public CustomerType(CustomerType customerType, int discount, int neededPoints) {
+	public CustomerType(TypeName customerType, int discount, int neededPoints) {
 		super();
 		this.customerType = customerType;
 		this.discount = discount;
 		this.neededPoints = neededPoints;
 	}
-	public CustomerType getCustomerType() {
+	public TypeName getCustomerType() {
 		return customerType;
 	}
-	public void setCustomerType(CustomerType customerType) {
+	public void setCustomerType(TypeName customerType) {
 		this.customerType = customerType;
 	}
 	public int getDiscount() {

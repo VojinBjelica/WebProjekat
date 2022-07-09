@@ -28,7 +28,7 @@ Vue.component("duesPayment", {
 </tr>
 <tr>
 <td colspan="2">
-<select v-model="due.duesType" v-on:change="selectChanged(due.duesType)"  >
+<select v-model="due.duesType" v-on:change="selectChanged(due.duesType);disByType();"  >
 <option value="Month">Month</option>
 <option value="Year">Year</option>
 </select>
@@ -102,6 +102,11 @@ Vue.component("duesPayment", {
 		          .post('customer/due',this.due)
 		          .then(response => alert(response.data))
 		          },
+		disByType : function () {
+				axios  
+		          .post('customer/calcdis',this.due)
+		          .then(response => this.due = response.data)
+		          },          
 		calculateNewPrice : function () {
 				axios  
 		          .post('customer/promoDisc',this.due)
@@ -167,7 +172,9 @@ var yyy = today.getFullYear();
 	}
 	
 ,mounted(){
-	
+		axios  
+		    .post('customer/calculateType',this.due)
+		    .then(response => alert(response.data))
 }
 })
 	
