@@ -1,0 +1,4 @@
+Zlatni;5;5000
+Srebrni;4;4000
+Bronzani;3;3000
+No;0;0

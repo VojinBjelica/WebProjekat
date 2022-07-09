@@ -18,6 +18,7 @@ import Service.CustomerService;
 import beans.Coach;
 import beans.Customer;
 import beans.CustomerAdapter;
+import beans.CustomerType;
 import beans.Dues;
 import beans.DuesTypeEnum;
 import beans.LocalDateAdapter;
@@ -193,6 +194,41 @@ public class CustomerController {
 			cs.addCustomerInFile();
 			
 			return "OK";
+		});
+	}
+	public static void calculateType()
+	{
+		post("customer/calculateType", (req, res) -> {
+			System.out.println("Pozvan calculateType iz kontrolera");
+			Session ss = req.session(true);
+			User user = ss.attribute("user");
+			if(user != null)
+			{
+				CustomerType ct = cs.checkForTypeName(user);
+				return "Vi ste " + ct.getCustomerType() + " korisnik!";
+			}
+			
+			return "Uloguj se";
+		});
+	}
+	public static void calculateDis()
+	{
+		post("customer/calcdis", (req, res) -> {
+			System.out.println("Pozvan calcDis iz kontrolera");
+			String payload = req.body();
+			Dues pd = g.fromJson(payload, Dues.class);
+			Session ss = req.session(true);
+			User user = ss.attribute("user");
+			int newprice = 0;
+			if(user != null)
+			{
+				Customer c = cs.findCustomerByUsername(user.getUsername());
+				int discount = cs.calculateDiscountByType(c);
+				newprice = pd.getPrice() - pd.getPrice()*discount/1000;
+			}
+			Dues retDue = new Dues(pd.getID(),pd.getDuesType(),pd.getPayDate(),pd.getExpirationDateAndTime(),newprice,pd.getCustomer(),pd.isStatus(),pd.getNumberOfAppointments(),pd.getPromoCode());
+			return g.toJson(retDue);
+
 		});
 	}
 	public static void findDiscount()

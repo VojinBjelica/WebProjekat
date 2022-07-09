@@ -25,6 +25,7 @@ import javax.swing.JOptionPane;
 import Service.SportObjectService;
 import beans.Coach;
 import beans.Customer;
+import beans.CustomerType;
 import beans.Dues;
 import beans.DuesTypeEnum;
 import beans.GenderEnum;
@@ -36,6 +37,7 @@ import beans.SportObject;
 import beans.Training;
 import beans.TrainingHistory;
 import beans.TrainingTypeEnum;
+import beans.TypeName;
 import beans.User;
 
 public class CustomerFileStorage {
@@ -52,13 +54,15 @@ public class CustomerFileStorage {
 	public static ArrayList<PromoCode> promoCodeList = new ArrayList<PromoCode>();
 	public static ArrayList<TrainingHistory> trainingHistory = new ArrayList<TrainingHistory>();
 	public static ArrayList<Points> pointsList = new ArrayList<Points>();
+	public static ArrayList<CustomerType> customerTypeList = new ArrayList<CustomerType>();
+	
 	public ArrayList<Customer> readCustomers(String way) {
         ArrayList<Customer> customers = new ArrayList<Customer>();
         BufferedReader in = null;
         try {
             File file = new File("./"+ way + ".txt");
             in = new BufferedReader(new FileReader(file));
-            String line, username = "", password = "", name = "",surname = "",gender = "",date = "";
+            String line, username = "", password = "", name = "",type= "",surname = "",gender = "",date = "";
             StringTokenizer st;
             try {
                 while ((line = in.readLine()) != null) {
@@ -72,14 +76,19 @@ public class CustomerFileStorage {
                         name = st.nextToken().trim();
                         surname = st.nextToken().trim();
                         gender = st.nextToken().trim();
-                        date = st.nextToken().trim();             
+                        date = st.nextToken().trim();  
+                        type = st.nextToken().trim();
                         }
                     SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
                     Date dt = formatter.parse(date);
+                    TypeName typee = TypeName.No;
+                    if(type.equals("Zlatni"))typee = TypeName.Gold;
+                    else if (type.equals("Srebrni")) typee = TypeName.Silver;
+                    else if(type.equals("Bronzani")) typee = TypeName.Bronze;
                     GenderEnum gen = GenderEnum.Male;
                     if(gender.equals("Male")) gen = GenderEnum.Male;
                     else if(gender.equals("Female")) gen = GenderEnum.Female;
-                    Customer customer = new Customer(username,password,name,surname, dt,gen);
+                    Customer customer = new Customer(username,password,name,surname, dt,gen,typee);
                     customers.add(customer);
                     customerList = customers;
                 }
@@ -129,6 +138,54 @@ public class CustomerFileStorage {
                     TrainingHistory th = new TrainingHistory(dt,t,cust,c);
                     customers.add(th);
                     trainingHistory = customers;
+                }
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        finally {
+            if ( in != null ) {
+                try {
+                    in.close();
+                }
+                catch (Exception e) 
+                {
+                	
+                }
+                }
+        }
+        return customers;
+    }
+	public ArrayList<CustomerType> readCustomerType() {
+        ArrayList<CustomerType> customers = new ArrayList<CustomerType>();
+        BufferedReader in = null;
+        try {
+            File file = new File("./customerType.txt");
+            in = new BufferedReader(new FileReader(file));
+            String line, type = "",discount = "", points = "";
+            StringTokenizer st;
+            try {
+                while ((line = in.readLine()) != null) {
+                    line = line.trim();
+                    if (line.equals("") || line.indexOf('#') == 0)
+                        continue;
+                    st = new StringTokenizer(line, ";");
+                    while (st.hasMoreTokens()) {
+                    	type = st.nextToken().trim();
+                    	discount = st.nextToken().trim();
+                    	points = st.nextToken().trim();
+                      
+                        }
+                   
+                    TypeName typee = TypeName.No;
+                    if(type.equals("Zlatni"))typee = TypeName.Gold;
+                    else if (type.equals("Srebrni")) typee = TypeName.Silver;
+                    else if(type.equals("Bronzani")) typee = TypeName.Bronze;
+                    CustomerType ct = new CustomerType(typee,Integer.parseInt(discount),Integer.parseInt(points));
+                    customers.add(ct);
+                    customerTypeList = customers;
                 }
             } catch (Exception ex) {
                 ex.printStackTrace();
@@ -800,7 +857,15 @@ public class CustomerFileStorage {
             else if(customer.getGender() == GenderEnum.Female)
             outputString += "Female" + ";";
             SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-            outputString += formatter.format(customer.getDateOfBirth());
+            outputString += formatter.format(customer.getDateOfBirth()) + ";";
+            if(customer.getUserType() == TypeName.Gold)
+                outputString += "Zlatni" + ";";
+                else if(customer.getUserType() == TypeName.Silver)
+                outputString += "Srebrni" + ";";
+                else if(customer.getUserType() == TypeName.Bronze)
+                    outputString += "Bronzani" + ";";
+                else  
+                    outputString += "None" + ";";
             output.println(outputString);
         }
         } catch (IOException e) {
@@ -1954,6 +2019,72 @@ public class CustomerFileStorage {
 			}
 		}
 		return retList;
+	}
+	public CustomerType checkForTypeName(User u)
+	{
+		ArrayList<Points> pointList = readPoints();
+		Points point = null;
+		ArrayList<CustomerType> typeList = readCustomerType();
+		for(Points p : pointList)
+		{
+			if(p.getUserUsername().equals(u.getUsername()))
+			{
+				point = p;
+			}
+		}
+		TypeName custType = null;
+		for(CustomerType ct : typeList)
+		{
+			System.out.println(ct.getCustomerType());
+			String s = ct.getNeededPoints() +"";
+			System.out.println(ct.getNeededPoints() + " znak " + point.getPoints());
+			if(Float.parseFloat(s) <= point.getPoints())
+			{
+				System.out.println("Usao jednom cust uzima:" + ct.getCustomerType());
+				custType = ct.getCustomerType();
+				break;
+			}
+			else custType = TypeName.No;
+		}
+		for(Customer c : readCustomers("customers"))
+		{
+			if(c.getUsername().equals(u.getUsername()))
+			{
+				c.setUserType(custType);
+			}
+		}
+		System.out.println("Type:" + custType);
+		addCustomerInFile("customers");
+		CustomerType tc = null;
+		for(CustomerType ct : readCustomerType())
+		{
+			if(ct.getCustomerType() == custType)
+				tc = ct;
+		}
+		return tc;
+	}
+	public int calculateDiscountByType(Customer cu)
+	{
+		TypeName tn = null;
+		for(Customer c : readCustomers("customers"))
+		{
+			if(c.getUsername().equals(cu.getUsername()))
+			{
+				if(c.getUserType().equals(TypeName.Gold))tn = TypeName.Gold;
+				else if (c.getUserType().equals(TypeName.Silver))tn = TypeName.Silver;
+				else if(c.getUserType().equals(TypeName.Bronze))tn = TypeName.Bronze;
+				else tn = TypeName.No;
+			}
+		}
+		int discount = 0;
+		for(CustomerType ct : readCustomerType())
+		{
+			if(ct.getCustomerType().equals(tn))
+			{
+				discount = ct.getDiscount();
+			}
+		}
+		return discount;
 	}
 
 }

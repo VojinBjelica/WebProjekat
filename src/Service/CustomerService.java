@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import FileStorage.CustomerFileStorage;
 import beans.Coach;
 import beans.Customer;
+import beans.CustomerType;
 import beans.Dues;
 import beans.Manager;
 import beans.PromoCode;
@@ -24,6 +25,14 @@ public class CustomerService {
 	public ArrayList<Customer> readCustomers()
 	{
 		return cfs.readCustomers("customers");
+	}
+	public CustomerType checkForTypeName(User u)
+	{
+		return cfs.checkForTypeName(u);
+	}
+	public int calculateDiscountByType(Customer cu)
+	{
+		return cfs.calculateDiscountByType(cu);
 	}
 	public boolean addTrainingsInFile() 
     {

@@ -48,6 +48,8 @@ public class main {
 		CustomerController.calculatePoints();
 		CustomerController.getTrainings();
 		CustomerController.scheduleTraining();
+		CustomerController.calculateType();
+		CustomerController.calculateDis();
 		
 		
 		new SportObjectController();
