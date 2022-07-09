@@ -6,6 +6,7 @@ Vue.component("managersSportObject", {
 			viewers : null,
 			trainingsSO : null,
 			sortedList : null,
+			searchData: {name: null, type:null, priceFrom:null, priceTo:null},
 			training: {name:null, type:null, sportObject:null, duration:null, trainer:null, description:null, price:null, picture:null, trainingDate:null, id:null, deleted:null},
 			allCoaches: null
 		}
@@ -180,7 +181,8 @@ Vue.component("managersSportObject", {
 	    		</div>
 	    	</div>
 	    	
-	    	<div>
+	    	<div class="d-flex">
+	    		<div>
 	    		<p>All trainings in {{sportObject.objectName}}:</p>
 	    		<table >
 	    			<tr bgcolor="grey">
@@ -189,8 +191,8 @@ Vue.component("managersSportObject", {
 	    				<th style="min-width:100px">Object</th>
 	    				<th style="min-width:100px">Duration</th>
 	    				<th style="min-width:100px">Coach</th>
-	    				<th style="min-width:100px; max-width:200px">Description</th>
-	    				<th style="min-width:100px">Date <button v-on:click="sortDateAscending()" >&uarr;</button><button v-on:click="sortDateDescending()" >&darr;</button></th>
+	    				<th style="min-width:100px">Price <button v-on:click="sortPriceDescending()" >&uarr;</button><button v-on:click="sortPriceAscending()" >&darr;</button></th>
+	    				<th style="min-width:100px">Date <button v-on:click="sortDateDescending()" >&uarr;</button><button v-on:click="sortDateAscending()" >&darr;</button></th>
 	    				<th style="min-width:100px"></th>
 	    				<th style="min-width:100px"></th>
 	    			</tr>
@@ -201,12 +203,46 @@ Vue.component("managersSportObject", {
 	    				<td >{{sTraining.sportObject.objectName}}</td>
 	    				<td >{{sTraining.duration}}</td>
 	    				<td >{{sTraining.trainer.name}} {{sTraining.trainer.surname}}</td>
-	    				<td >{{sTraining.description}}</td>
+	    				<td >{{sTraining.price}}</td>
 	    				<td >{{sTraining.trainingDate}}</td>
 	    				<td style="text-align:center" ><button class="btn btn-primary" v-on:click="showSelectedTraining(sTraining)" >Edit</button></td>
 	    				<td style="text-align:center" ><button class="btn btn-danger" v-on:click="deleteTraining(sTraining)" >Delete</button></td>
 	    			</tr>
 	    		</table>
+	    		</div>
+	    		<div style="margin-left:20px">
+	    			<div class="container">
+	    				<p style="margin-top:10px">Search by name: </p>
+	    				<input id="search-training-name" v-model="searchData.name" class="form-control"  type="text" placeholder="Search...">
+	    				
+	    			</div>
+	    			
+	    			<div class="container">
+	    				<p style="margin-top:10px">Price from: </p>
+	    				<input id="search-training-price-from" v-model="searchData.priceFrom" class="form-control"  type="text" placeholder="Search...">
+	    				
+	    			</div>
+	    			
+	    			<div class="container">
+	    				<p style="margin-top:10px">Price to: </p>
+	    				<input id="search-training-price-to" v-model="searchData.priceTo" class="form-control"  type="text" placeholder="Search...">
+	    				
+	    			</div>
+	    			
+	    			<div class="container">
+	    				<p style="margin-top:10px">Search by type: </p>
+	    				<select id="search-training-type" v-model="searchData.type" class="form-select">
+	    					<option value="None" selected > </option>
+	    					<option value="Personal">Personal trainings</option>
+	    					<option value="Group">Group trainings</option>
+	    					<option value="Gym">Gym</option>
+	    				</select>
+	    			</div>
+	    			<div class="search-btn-wrapper">
+	    				
+	    				<button class="btn btn-secondary" v-on:click="searchTrainings()" >Search</button>
+	    			</div>
+	    		</div>
 	    	</div>
 	    	
 	    	
@@ -344,18 +380,86 @@ Vue.component("managersSportObject", {
 				.then(response => this.trainingsSO = response.data);
 		},
 		
-		sortDateAscending : async function() {
-			await axios
-				.post('sportObject/sortDateUp', this.sortedList)
-				.then(response => this.sortedList = response.data);
+		comparePriceUp : function (a,b) {
+			return a.price - b.price;
+		},
+		comparePriceDown : function (a,b) {
+			return b.price - a.price;
+		},
+		/*convertDate : function(d) {
+			var p = d.split("/");
+			return (p[2] + p[1] + p[0]);
+		},*/
+		compareDateUp : function(a,b) {
+			return new Date(a.trainingDate) -  new Date(b.trainingDate);
+		},
+		
+		compareDateDown : function (a,b) {
+			return new Date(b.trainingDate) - new Date(a.trainingDate);
+		},
+		
+		sortDateAscending :  function() {
+			
+				this.sortedList.sort(this.compareDateUp);
 				
 		},
 		
 		sortDateDescending : function() {
+			this.sortedList.sort(this.compareDateDown);
+		},
+		
+		sortPriceAscending : function() {
+			
+				this.sortedList.sort(this.comparePriceUp);
+		},
+		
+		sortPriceDescending : function() {
+			this.sortedList.sort(this.comparePriceDown);
+		},
+		
+		validateSearch : function() {
+			var priceFromSearch = document.getElementById('search-training-price-from').value;
+			var priceToSearch = document.getElementById('search-training-price-to').value;
+			var patternPrice = /^[0-9]+(.?[0-9]+)?$/;
+			
+			if (!patternPrice.test(priceFromSearch)) {
+				alert("Price must be a number (example: 4.8)");
+			} else if (!patternPrice.test(priceToSearch)) {
+				alert("Price must be a number (example: 4.8)");
+			} else {
+				this.searchTrainings();
+			}
+		},
+		
+		searchTrainings: function() {
+			var nameSearch = document.getElementById('search-training-name').value;
+			var typeSearch = document.getElementById('search-training-type').value;
+			var priceFromSearch = document.getElementById('search-training-price-from').value;
+			var priceToSearch = document.getElementById('search-training-price-to').value;
+			
+			
+			
+			if (nameSearch == "") {
+				this.searchData.name = "None";
+			}
+			
+			if (priceFromSearch == "") {
+				this.searchData.priceFrom = "None";
+			}
+			
+			if (priceToSearch == "") {
+				this.searchData.priceTo = "None";
+			}
+			
+			if (typeSearch == "") {
+				this.searchData.type = "None";
+			}
+			
 			axios
-				.post('sportObject/sortDateDown', this.sortedList)
+				.post('sportObject/searchManagersTrainings', this.searchData)
 				.then(response => this.sortedList = response.data);
-		}
+			
+		}	
 		
 		
 	}

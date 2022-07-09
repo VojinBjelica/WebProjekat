@@ -9,15 +9,17 @@ Vue.component("coachTraining", {
 	},
 	template: `
 		<div class="add-so d-flex justify-content-center" >
-		<div class="add-so-body ">
+		<div >
 			<p class="h3 ms-5 mb-3">My trainings</p>
 			<div class="a">
     			<table id="a" style="margin:auto;width:auto;">
 	    			<tr bgcolor="grey">
 	    				<th style="min-width:50px">Name </th>
 	    				<th style="min-width:50px">Type</th>
-	    				<th style="min-width:50px">Object</th>
+	    				<th style="min-width:50px">Object <button v-on:click="sortNameDown()" >&uarr;</button><button v-on:click="sortNameUp()" >&darr;</button></th>
+	    				<th style="min-width:50px">Object type</th>
 	    				<th style="min-width:50px">Duration</th>
+	    				<th style="min-width:50px">Price  <button v-on:click="sortPriceDescending()" >&uarr;</button><button v-on:click="sortPriceAscending()" >&darr;</button></th>
 	    				<th style="min-width:50px">Coach</th>
 	    				<th style="min-width:50px">Description</th>
 	    				<th style="min-width:50px">Date</th>
@@ -28,7 +30,9 @@ Vue.component("coachTraining", {
 	    				<td >{{sTraining.name}}</td>
 	    				<td >{{sTraining.type}}</td>
 	    				<td >{{sTraining.sportObject.objectName}}</td>
+	    				<td >{{sTraining.sportObject.objectType}}</td>
 	    				<td >{{sTraining.duration}}</td>
+	    				<td >{{sTraining.price}}</td>
 	    				<td >{{sTraining.trainer.name}}</td>
 	    				<td >{{sTraining.description}}</td>
 	    				<td >{{sTraining.trainingDate}}</td>
@@ -44,8 +48,10 @@ Vue.component("coachTraining", {
 	    			<tr bgcolor="grey">
 	    				<th style="min-width:50px">Name </th>
 	    				<th style="min-width:50px">Type</th>
-	    				<th style="min-width:50px">Object</th>
+	    				<th style="min-width:50px">Object <button v-on:click="sortNameDownPersonal()" >&uarr;</button><button v-on:click="sortNameUpPersonal()" >&darr;</button></th>
+	    				<th style="min-width:50px">Object type</th>
 	    				<th style="min-width:50px">Duration</th>
+	    				<th style="min-width:50px">Price  <button v-on:click="sortPriceDescendingPersonal()" >&uarr;</button><button v-on:click="sortPriceAscendingPersonal()" >&darr;</button></th>
 	    				<th style="min-width:50px">Coach</th>
 	    				<th style="min-width:50px">Description</th>
 	    				<th style="min-width:50px">Date</th>
@@ -57,7 +63,9 @@ Vue.component("coachTraining", {
 	    				<td >{{sTraining.name}}</td>
 	    				<td >{{sTraining.type}}</td>
 	    				<td >{{sTraining.sportObject.objectName}}</td>
+	    				<td >{{sTraining.sportObject.objectType}}</td>
 	    				<td >{{sTraining.duration}}</td>
+	    				<td >{{sTraining.price}}</td>
 	    				<td >{{sTraining.trainer.name}}</td>
 	    				<td >{{sTraining.description}}</td>
 	    				<td >{{sTraining.trainingDate}}</td>
@@ -74,8 +82,10 @@ Vue.component("coachTraining", {
 	    			<tr bgcolor="grey">
 	    				<th style="min-width:50px">Name </th>
 	    				<th style="min-width:50px">Type</th>
-	    				<th style="min-width:50px">Object</th>
+	    				<th style="min-width:50px">Object <button v-on:click="sortNameDownGroup()" >&uarr;</button><button v-on:click="sortNameUpGroup()" >&darr;</button></th>
+	    				<th style="min-width:50px">Object type</th>
 	    				<th style="min-width:50px">Duration</th>
+	    				<th style="min-width:50px">Price <button v-on:click="sortPriceDescending()" >&uarr;</button><button v-on:click="sortPriceAscending()" >&darr;</button></th>
 	    				<th style="min-width:50px">Coach</th>
 	    				<th style="min-width:50px">Description</th>
 	    				<th style="min-width:50px">Date</th>
@@ -86,7 +96,9 @@ Vue.component("coachTraining", {
 	    				<td >{{sTraining.name}}</td>
 	    				<td >{{sTraining.type}}</td>
 	    				<td >{{sTraining.sportObject.objectName}}</td>
+	    				<td >{{sTraining.sportObject.objectType}}</td>
 	    				<td >{{sTraining.duration}}</td>
+	    				<td >{{sTraining.price}}</td>
 	    				<td >{{sTraining.trainer.name}}</td>
 	    				<td >{{sTraining.description}}</td>
 	    				<td >{{sTraining.trainingDate}}</td>
@@ -112,7 +124,80 @@ Vue.component("coachTraining", {
 		ruterIdi : function()
 		{
 			router.go(0);
+		},
+		comparePriceUp : function (a,b) {
+			return a.price - b.price;
+		},
+		comparePriceDown : function (a,b) {
+			return b.price - a.price;
+		},
+		sortPriceAscending : function() {
+			
+				this.trainingList.sort(this.comparePriceUp);
+		},
+		
+		sortPriceDescending : function() {
+			this.trainingList.sort(this.comparePriceDown);
+		},
+		
+		sortPriceAscendingPersonal : function() {
+			this.personalList.sort(this.comparePriceUp);
+		},
+		
+		sortPriceDescendingPersonal : function() {
+			this.personalList.sort(this.comparePriceDown);
+		},
+		sortPriceAscendingGroup : function() {
+			this.groupList.sort(this.comparePriceUp);
+		},
+		
+		sortPriceDescendingGroup : function() {
+			this.groupList.sort(this.comparePriceDown);
+		},
+		compareNameUp : function( a, b ) {
+			  if ( a.sportObject.objectName < b.sportObject.objectName ){
+			    return -1;
+			  }
+			  if ( a.sportObject.objectName > b.sportObject.objectName ){
+			    return 1;
+			  }
+			  return 0;
+			},
+			
+		compareNameDown : function(a,b) {
+			if ( a.sportObject.objectName < b.sportObject.objectName ){
+			    return 1;
+			 }
+			 if ( a.sportObject.objectName > b.sportObject.objectName ){
+			    return -1;
+			 }
+			 return 0;	
+		},
+		sortNameDown : function() {
+			this.trainingList.sort(this.compareNameDown);
+		},
+		
+		sortNameUp : function() {
+			this.trainingList.sort(this.compareNameDown)
+		},
+		
+		sortNameUpPersonal : function() {
+			this.personalList.sort(this.compareNameUp);
+		},
+		
+		sortNameDownPersonal : function() {
+			this.personalList.sort(this.compareNameDown);
+		},
+		
+		sortNameUpGroup : function() {
+			this.groupList.sort(this.compareNameUp);
+		},
+		
+		sortNameDownGroup : function() {
+			this.groupList.sort(this.compareNameDown);
 		}
+		
+		
 		
 	},
 	

@@ -1900,32 +1900,60 @@ public class CustomerFileStorage {
 		return retList;
 	}
 	
-	//za sortiranje liste po datumu u prikazu menadzerovog sportskog objekta
-	public ArrayList<Training> sortTrainingsDateAscending(SportObject so) {
+
+	public ArrayList<Training> searchTrainingsNameTypePrice(String name, TrainingTypeEnum type, String priceFrom, String priceTo, SportObject so) {
 		ArrayList<Training> trainingsSO = new ArrayList<Training>();
 		ArrayList<Training> retList = new ArrayList<>();
+		
+		String searchName;
+		TrainingTypeEnum searchType;
+		double searchPriceFrom;
+		double searchPriceTo;
+		
+		if (name.equals("None")) {
+			searchName = " ";
+		} else {
+			searchName = name;
+		}
+		
+		if (priceFrom.equals("None")) {
+			searchPriceFrom = 0;
+		} else {
+			searchPriceFrom = Double.parseDouble(priceFrom);
+		}
+		
+		if (priceTo.equals("None")) {
+			searchPriceTo = 1000000;
+		} else {
+			searchPriceTo = Double.parseDouble(priceTo);
+		}
+		
+		System.out.println(" Search Name : " + searchName);
+		System.out.println(" Search type : " + type);
+		System.out.println(" Search price from : " + searchPriceFrom);
+		System.out.println(" Search price to : " + searchPriceTo);
+		
 		trainingsSO = readTraining();
 		for (Training t : trainingsSO) {
-			if (t.getSportObject().getObjectName().equals(so.getObjectName()) && t.getDeleted() == 0) {
+			if(type != TrainingTypeEnum.None) {
+				if (t.getSportObject().getObjectName().equals(so.getObjectName()) &&
+						t.getDeleted() == 0 &&
+						t.getName().toLowerCase().trim().contains(searchName.toLowerCase().trim()) &&
+						t.getType() == type && t.getPrice() >= searchPriceFrom && t.getPrice() <= searchPriceTo) {
+							retList.add(t);
+						}
+			} else if (t.getSportObject().getObjectName().equals(so.getObjectName()) && t.getDeleted() == 0 && type == TrainingTypeEnum.None && name.equals("None") && priceTo.equals("None") && priceFrom.equals("None")) {
 				retList.add(t);
+			} else {
+				if (t.getSportObject().getObjectName().equals(so.getObjectName()) &&
+						t.getDeleted() == 0 &&
+						t.getName().toLowerCase().trim().contains(searchName.toLowerCase().trim()) &&
+						t.getPrice() >= searchPriceFrom && t.getPrice() <= searchPriceTo) {
+							retList.add(t);
+						}
 			}
 		}
-		retList.sort((d1, d2) -> d1.getTrainingDate().compareTo(d2.getTrainingDate()));
 		return retList;
 	}
-	
-	public ArrayList<Training> sortTrainingsDateDescending(SportObject so) {
-		ArrayList<Training> trainingsSO = new ArrayList<Training>();
-		ArrayList<Training> retList = new ArrayList<>();
-		trainingsSO = readTraining();
-		for (Training t : trainingsSO) {
-			if (t.getSportObject().getObjectName().equals(so.getObjectName()) && t.getDeleted() == 0) {
-				retList.add(t);
-			}
-		}
-		retList.sort((d1, d2) -> d2.getTrainingDate().compareTo(d1.getTrainingDate()));
-		return retList;
-	}
-	
 
 }

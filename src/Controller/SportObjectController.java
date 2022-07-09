@@ -11,6 +11,7 @@ import beans.Manager;
 import beans.RoleEnum;
 import beans.SportObject;
 import beans.Training;
+import beans.TrainingsSearchDTO;
 import beans.User;
 import spark.Session;
 
@@ -274,7 +275,7 @@ public class SportObjectController {
 			
 			
 			ArrayList<Training> sortedList = new ArrayList<Training>();
-			sortedList = cs.sortTrainingsDateAscending(so);
+			//sortedList = cs.sortTrainingsDateAscending(so);
 			
 			
 			return g.toJson(sortedList);
@@ -282,18 +283,21 @@ public class SportObjectController {
 		});
 	}
 	
-	public static void sortTrainingsDateDescending() {
-		post("sportObject/sortDateDown", (req, res) -> {
+	
+	public static void searchTrainingsNameTypePrice() {
+		post("sportObject/searchManagersTrainings", (req, res) -> {
 			Session ss = req.session(true);
 			User user = ss.attribute("user");
 			Manager mana = cs.findManagerByUsername(user.getUsername());
 			SportObject so = sos.getSportObjectByManager(mana);
-
-			ArrayList<Training> sortedList = new ArrayList<Training>();
-			sortedList = cs.sortTrainingsDateDescending(so);
-			return g.toJson(sortedList);
+			String payload = req.body();
+			TrainingsSearchDTO train = g.fromJson(payload, TrainingsSearchDTO.class);
 			
+			
+			ArrayList<Training> sortedList = new ArrayList<Training>();
+			sortedList = cs.searchTrainingsNameTypePrice(train.getName(), train.getType(), train.getPriceFrom(), train.getPriceTo(), so);
+			return g.toJson(sortedList);
 		});
 	}
-
+	
 }
