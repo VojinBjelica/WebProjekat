@@ -72,6 +72,7 @@ public class main {
 		SportObjectController.showEditableTraining();
 		SportObjectController.deleteTraining();
 		SportObjectController.searchTrainingsNameTypePrice();
+		SportObjectController.findTrainingsForObject();
 		// TODO Auto-generated method stub
 
 	}

@@ -1,7 +1,8 @@
 Vue.component("oneSportObject", {
 	data: function() {
 		return {
-			sportObject: {objectName:null, objectType:null, objectOffer:null, status:null, location:null, logo:null, avarageMark:null, workHour:null}
+			sportObject: {objectName:null, objectType:null, objectOffer:null, status:null, location:null, logo:null, avarageMark:null, workHour:null},
+			trainingList:null
 		}
 	},
 	template: `
@@ -29,7 +30,25 @@ Vue.component("oneSportObject", {
 				<div>
 					<p style="font-size:30">Dodati raspored treninga kad se implementira!!!!</p>
 				</div>
-				
+				<div class="sport-objects-view">
+    		
+				<table id="soTable"  style="margin:auto;width:auto;margin-left:50%;">
+	    			<tr bgcolor="grey">
+	    				<th style="min-width:50px">Picture</th>
+	    				<th style="min-width:50px">Description</th>
+	    				<th style="min-width:50px">Coach </th>
+	    				<th style="min-width:50px">Price</th>
+	    				
+	    			</tr>
+	    			
+	    			<tr class="data" v-for="sObject in trainingList">
+	    				<td ><img v-bind:src="sObject.picture" style="width:100px; height:100px;"></img></td>
+	    				<td >{{sObject.description}}</td>
+	    				<td >{{sObject.trainer.name}}</td>
+	    				<td >{{sObject.price}}</td>
+	    			</tr>
+	    		</table>
+	    		</div>
 			</div>
 		</div>
 	
@@ -38,7 +57,9 @@ Vue.component("oneSportObject", {
 		axios
 			.post('sportObject/showOne', this.sportObject)
 			.then(response => this.sportObject = response.data);
-		
+		axios
+			.post('sportObject/showtable', this.trainingList)
+			.then(response => this.trainingList = response.data);
 		axios
 			.get('sportObject/addView')
 			.then(response => alert(response.data));
