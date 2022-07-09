@@ -1816,7 +1816,7 @@ public class CustomerFileStorage {
 		readTraining();
 		for(Training tt : trainingList)
 		{
-			if(tt.getId() == t.getId())
+			if(tt.getName().equals(t.getName()))
 			{
 				if(tt.getTrainingDate().after(date))
 				{
@@ -2086,5 +2086,5 @@ public class CustomerFileStorage {
 		}
 		return discount;
 	}
-
+	
 }

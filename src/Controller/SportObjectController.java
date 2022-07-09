@@ -122,7 +122,14 @@ public class SportObjectController {
 			return true;
 		});
 	}
-	
+	public static void findTrainingsForObject()
+	{
+		post("sportObject/showtable", (req, res) -> {
+			ArrayList<Training> retList = sos.getTrainingForObject(tempObject);
+			
+			return g.toJson(retList);
+		});
+	}
 	public static void getSelectedObject() {
 		post("sportObject/getOne", (req, res) -> {
 			String payload = req.body();
@@ -145,8 +152,10 @@ public class SportObjectController {
 			System.out.println("Usao u dodavanje view");
 			Session ss = req.session(true);
 			User user = ss.attribute("user");
+			if(user != null)
+			{
 			User custo = cs.findCustomerByUsernameAndPassword(user.getUsername(), user.getPassword());
-			System.out.println("custov role:" + custo.getRole());
+			
 			ArrayList<Customer> tempList = cs.readCustomersView();
 			int help = 0;
 			for(Customer c : tempList)
@@ -164,7 +173,10 @@ public class SportObjectController {
 					cs.addViewSecret(cust, tempObject.getObjectName());
 				}
 			}
+			
 			return "View added";
+			}
+			return null;
 		});
 	}
 	

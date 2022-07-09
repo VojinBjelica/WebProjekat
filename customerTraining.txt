@@ -1,5 +1,5 @@
-joca123;1
-joca123;2
-joca123;5
-laca;1
-maca;2
+joca123;Treningg
+joca123;Trening
+joca123;Treningggg
+laca;Trening
+maca;Trening

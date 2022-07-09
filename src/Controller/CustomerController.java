@@ -3,6 +3,7 @@ package Controller;
 import static spark.Spark.get;
 import static spark.Spark.post;
 
+import java.net.Socket;
 import java.text.DateFormat;
 import java.time.LocalDate;
 import java.time.ZoneId;
@@ -196,6 +197,7 @@ public class CustomerController {
 			return "OK";
 		});
 	}
+	
 	public static void calculateType()
 	{
 		post("customer/calculateType", (req, res) -> {
@@ -279,7 +281,7 @@ public class CustomerController {
 			String payload = req.body();
 			Training pd = g.fromJson(payload, Training.class);
 			System.out.println(pd.getId());
-			Training t = cs.findTrainingById(pd.getId());
+			Training t = cs.findTrainingByName(pd.getName());
 			System.out.println(t.getName());
 			cs.cancelTraining(t);
 			

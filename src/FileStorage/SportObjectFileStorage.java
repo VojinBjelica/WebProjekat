@@ -21,6 +21,7 @@ import beans.Location;
 import beans.Manager;
 import beans.ObjectTypeEnum;
 import beans.SportObject;
+import beans.Training;
 
 public class SportObjectFileStorage {
 	public static ArrayList<SportObject> sportObjectList = new ArrayList<SportObject>();
@@ -186,6 +187,21 @@ public class SportObjectFileStorage {
 		}
 		return false;
 	}
+	public ArrayList<Training> getTrainingForObject(SportObject so)
+	{
+		CustomerFileStorage cfs = new CustomerFileStorage();
+		ArrayList<Training> retList = new ArrayList<Training>();
+		for(Training t : cfs.readTraining())
+		{
+			if(t.getSportObject().getObjectName().equals(so.getObjectName()))
+			{
+				retList.add(t);
+			}
+		}
+		return retList;
+	}
+	
+
 	
 	public boolean addSportObjectInFile(String who) {
 		FileWriter fileWriter;

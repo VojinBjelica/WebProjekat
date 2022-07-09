@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import FileStorage.SportObjectFileStorage;
 import beans.Manager;
 import beans.SportObject;
+import beans.Training;
 
 public class SportObjectService {
 	public SportObjectFileStorage sofs;
@@ -16,7 +17,10 @@ public class SportObjectService {
 	public ArrayList<SportObject> readSportObjects() {
 		return sofs.readSportObjects();
 	}
-	
+	public ArrayList<Training> getTrainingForObject(SportObject so)
+	{
+		return sofs.getTrainingForObject(so);
+	}
 	public ArrayList<SportObject> searchObjectsByName(String searchInput) {
 		return sofs.searchObjectsByName(searchInput);
 	}
