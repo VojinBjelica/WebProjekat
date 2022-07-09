@@ -11,6 +11,7 @@ import beans.PromoCode;
 import beans.SportObject;
 import beans.Training;
 import beans.TrainingHistory;
+import beans.TrainingTypeEnum;
 import beans.User;
 
 public class CustomerService {
@@ -220,13 +221,11 @@ public class CustomerService {
 		return cfs.deleteTraining(t);
 	}
 	
-	public ArrayList<Training> sortTrainingsDateAscending(SportObject so) {
-		return cfs.sortTrainingsDateAscending(so);
-	}
 	
-	public ArrayList<Training> sortTrainingsDateDescending(SportObject so) {
-		return cfs.sortTrainingsDateDescending(so);
-	}
 	
+	
+	public ArrayList<Training> searchTrainingsNameTypePrice(String name, TrainingTypeEnum type, String priceFrom, String priceTo, SportObject so) {
+		return cfs.searchTrainingsNameTypePrice(name, type, priceFrom, priceTo, so);
+	}
 	
 }

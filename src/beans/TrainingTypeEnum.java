@@ -4,6 +4,7 @@ public enum TrainingTypeEnum {
 	
 	Personal,
 	Group,
-	Gym
+	Gym,
+	None
 
 }

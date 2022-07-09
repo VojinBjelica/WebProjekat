@@ -69,8 +69,7 @@ public class main {
 		SportObjectController.editTraining();
 		SportObjectController.showEditableTraining();
 		SportObjectController.deleteTraining();
-		SportObjectController.sortTrainingsDateAscending();
-		SportObjectController.sortTrainingsDateDescending();
+		SportObjectController.searchTrainingsNameTypePrice();
 		// TODO Auto-generated method stub
 
 	}
