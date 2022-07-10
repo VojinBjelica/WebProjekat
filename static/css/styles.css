@@ -71,6 +71,24 @@ html, body {
 	background-color:lightblue;
 }
 
+#trTable {
+	display:block;
+	height:500px;
+	border: 2px solid;
+	border-collapse: collapse; 
+	overflow-y: scroll; 
+}
+
+#trTable th {
+	 border: 2px solid;
+	text-align: center; 
+}
+
+#trTable td {
+	 text-align: center;
+	 border: 2px solid; 
+}
+
 .login-btn {
 	margin-right: 1%;	
 	/* width: 80px; */

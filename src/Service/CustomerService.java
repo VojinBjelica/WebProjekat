@@ -8,6 +8,7 @@ import beans.Customer;
 import beans.CustomerType;
 import beans.Dues;
 import beans.Manager;
+import beans.ObjectTypeEnum;
 import beans.PromoCode;
 import beans.SportObject;
 import beans.Training;
@@ -230,11 +231,21 @@ public class CustomerService {
 		return cfs.deleteTraining(t);
 	}
 	
-	
+	public ArrayList<Training> searchTrainersGymTrainings(Coach c, String soName, ObjectTypeEnum soType, String priceFrom, String priceTo, TrainingTypeEnum type) {
+		return cfs.searchTrainersGymTrainings(c, soName, soType, priceFrom, priceTo, type);
+	}
 	
 	
 	public ArrayList<Training> searchTrainingsNameTypePrice(String name, TrainingTypeEnum type, String priceFrom, String priceTo, SportObject so) {
 		return cfs.searchTrainingsNameTypePrice(name, type, priceFrom, priceTo, so);
+	}
+	
+	public ArrayList<Training> searchTrainersPersonalTrainings(Coach c, String soName, ObjectTypeEnum soType, String priceFrom, String priceTo, TrainingTypeEnum type) {
+		return cfs.searchTrainersPersonalTrainings(c, soName, soType, priceFrom, priceTo, type);
+	}
+	
+	public ArrayList<Training> searchTrainersGroupTrainings(Coach c, String soName, ObjectTypeEnum soType, String priceFrom, String priceTo, TrainingTypeEnum type){
+		return cfs.searchTrainersGroupTrainings(c, soName, soType, priceFrom, priceTo, type);
 	}
 	
 }

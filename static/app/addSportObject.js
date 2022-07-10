@@ -23,7 +23,8 @@ Vue.component("addSportObject", {
 				}, 
 				logo:null, 
 				avarageMark:null, 
-				workHour:null}
+				workHour:null,
+				deleted:null}
 		}
 	},
 	template: `
@@ -224,7 +225,7 @@ Vue.component("addSportObject", {
 	`,
 	methods : {
 		addObject : function () {
-			alert("Usao u addObject 5");
+			this.sportObject.deleted = 0;
 			this.sportObject.avarageMark = 0;
 			axios
 				.post('sportObjects/addSOManager', this.selectedManager)
@@ -336,7 +337,7 @@ Vue.component("addSportObject", {
 					}
 				}
 				if (nameFlag == true) {
-					//this.addObject();
+					this.addObject();
 				} else {
 					alert("That name is already in use.");
 				}

@@ -22,6 +22,7 @@ import beans.Manager;
 import beans.ObjectTypeEnum;
 import beans.SportObject;
 import beans.Training;
+import beans.TrainingTypeEnum;
 
 public class SportObjectFileStorage {
 	public static ArrayList<SportObject> sportObjectList = new ArrayList<SportObject>();
@@ -37,7 +38,7 @@ public class SportObjectFileStorage {
             System.out.println(file.getCanonicalPath());
             in = new BufferedReader(new FileReader(file));
             String line, objectName = "", objectType = "", objectOffer = "",workHour = "",avarageMark = "",
-            		logo="", longitude="", latitude="", streetAndNumber="", city="", zipCode="", status="";
+            		logo="", longitude="", latitude="", streetAndNumber="", city="", zipCode="", status="", deleted="";
             StringTokenizer st;
             try {
                 while ((line = in.readLine()) != null) {
@@ -58,6 +59,7 @@ public class SportObjectFileStorage {
                     	city = st.nextToken().trim();
                     	zipCode = st.nextToken().trim();
                     	status = st.nextToken().trim();
+                    	deleted = st.nextToken().trim();
                     	
                     }
                     ObjectTypeEnum obType = ObjectTypeEnum.Gym;
@@ -76,12 +78,12 @@ public class SportObjectFileStorage {
                     	statusBool = false;
                     }
                     
+                    int del = Integer.parseInt(deleted);
                     
-                    
-                    SportObject sportObject = new SportObject(objectName, obType, objectOffer, statusBool, loc, logo, avgMark, workHour);
-                    if (sportObject.isStatus()) {
+                    SportObject sportObject = new SportObject(objectName, obType, objectOffer, statusBool, loc, logo, avgMark, workHour, del);
+                    if (sportObject.isStatus() && sportObject.getDeleted() == 0) {
                     	sportObjects.add(0, sportObject);
-                    } else {
+                    } else if (!sportObject.isStatus() && sportObject.getDeleted() == 0){
                     	sportObjects.add(sportObject);
                     }
                     
@@ -201,6 +203,45 @@ public class SportObjectFileStorage {
 		return retList;
 	}
 	
+	public ArrayList<Training> searchTrainingsOfObject(SportObject so, String priceFrom, String priceTo, TrainingTypeEnum type)
+	{
+		CustomerFileStorage cfs = new CustomerFileStorage();
+		ArrayList<Training> retList = new ArrayList<Training>();
+		
+		double searchPriceFrom;
+		double searchPriceTo;
+		
+		if (priceFrom.equals("None")) {
+			searchPriceFrom = 0;
+		} else {
+			searchPriceFrom = Double.parseDouble(priceFrom);
+		}
+		
+		if (priceTo.equals("None")) {
+			searchPriceTo = 1000000;
+		} else {
+			searchPriceTo = Double.parseDouble(priceTo);
+		}
+		
+		for(Training t : cfs.readTraining())
+		{
+			if(t.getSportObject().getObjectName().equals(so.getObjectName()))
+			{
+				if(type != TrainingTypeEnum.None) {
+					if (t.getPrice() >= searchPriceFrom && t.getPrice() <= searchPriceTo && t.getType() == type && t.getDeleted() == 0) {
+						retList.add(t);
+					}
+				} else if (priceFrom.equals("None") && priceTo.equals("None") && t.getDeleted() == 0) {
+					retList.add(t);
+				} else {
+					if (t.getPrice() >= searchPriceFrom && t.getPrice() <= searchPriceTo && t.getDeleted() == 0) {
+						retList.add(t);
+					}
+				}	
+			}
+		}
+		return retList;
+	}
 
 	
 	public boolean addSportObjectInFile(String who) {
@@ -231,10 +272,11 @@ public class SportObjectFileStorage {
 				outputString += so.getLocation().getAddress().getCity() + ";";
 				outputString += so.getLocation().getAddress().getZipCode() + ";";
 				if (so.isStatus() == true) {
-					outputString+="true";
+					outputString+="true;";
 				} else if (so.isStatus() == false) {
-					outputString+="false";
+					outputString+="false;";
 				}
+				outputString += so.getDeleted();
 				output.println(outputString);
 			}
 		} catch (IOException e) {
