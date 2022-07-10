@@ -17,6 +17,7 @@ public class User {
 	private int collectedPoints;
 	private String customerType;
 	private GenderEnum gender;
+	private int deleted;
 	public User() {
 		super();
 	}
@@ -55,6 +56,24 @@ public class User {
 		this.dateOfBirth = dateOfBirth;
 		this.gender = gender;
 		this.role = role;
+	}
+	public User(String username, String password, String name, String surname, Date dateOfBirth, GenderEnum gender,RoleEnum role,int deleted) {
+		super();
+		this.username = username;
+		this.password = password;
+		this.name = name;
+		this.surname = surname;
+		this.dateOfBirth = dateOfBirth;
+		this.gender = gender;
+		this.role = role;
+		this.deleted = deleted;
+	}
+	
+	public int getDeleted() {
+		return deleted;
+	}
+	public void setDeleted(int deleted) {
+		this.deleted = deleted;
 	}
 	public String getUsername() {
 		return username;

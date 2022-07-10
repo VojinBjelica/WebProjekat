@@ -50,6 +50,8 @@ public class main {
 		CustomerController.scheduleTraining();
 		CustomerController.calculateType();
 		CustomerController.calculateDis();
+		CustomerController.userIs();
+		CustomerController.deleted();
 		
 		
 		new SportObjectController();

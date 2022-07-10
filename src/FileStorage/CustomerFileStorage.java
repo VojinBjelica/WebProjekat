@@ -369,7 +369,7 @@ public class CustomerFileStorage {
         try {
             File file = new File("./trainings.txt");
             in = new BufferedReader(new FileReader(file));
-            String line, name = "", type = "",check="",deleted = "", sportObject = "",date = "",id = "",duration = "",coach = "",description = "",price="",picture="";
+            String line, name = "", type = "",check="",deleted = "",cancel="", sportObject = "",date = "",id = "",duration = "",coach = "",description = "",price="",picture="";
             StringTokenizer st;
             try {
                 while ((line = in.readLine()) != null) {
@@ -390,6 +390,7 @@ public class CustomerFileStorage {
                     	id = st.nextToken().trim();
                     	deleted = st.nextToken().trim();
                     	check = st.nextToken().trim();
+                    	cancel = st.nextToken().trim();
                     	
                         }
                     SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
@@ -401,7 +402,7 @@ public class CustomerFileStorage {
                     SportObjectService sos = new SportObjectService();
                     SportObject so = sos.getSportObjectByName(sportObject);
                     Coach c = getCoachByUsername(coach);
-                    Training train = new Training(name,typeEnum,so,Integer.parseInt(duration),c,description,picture,dt,Integer.parseInt(id),Integer.parseInt(deleted),Double.parseDouble(price),Integer.parseInt(check));
+                    Training train = new Training(name,typeEnum,so,Integer.parseInt(duration),c,description,picture,dt,Integer.parseInt(id),Integer.parseInt(deleted),Double.parseDouble(price),Integer.parseInt(check),Integer.parseInt(cancel));
                     customers.add(train);
                     trainingList = customers;
                 }
@@ -784,7 +785,7 @@ public class CustomerFileStorage {
         try {
             File file = new File("./users.txt");
             in = new BufferedReader(new FileReader(file));
-            String line, username = "", password = "", name = "",surname = "",gender = "",date = "",role="";
+            String line, username = "", password = "", name = "",surname = "",gender = "",date = "",role="",deleted = "";
             StringTokenizer st;
             try {
                 while ((line = in.readLine()) != null) {
@@ -800,6 +801,7 @@ public class CustomerFileStorage {
                         gender = st.nextToken().trim();
                         date = st.nextToken().trim();
                         role = st.nextToken().trim();
+                        deleted = st.nextToken().trim();
                         }
                     SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
                     Date dt = formatter.parse(date);
@@ -811,7 +813,7 @@ public class CustomerFileStorage {
                     else if(role.equals("Administrator")) rol = RoleEnum.Administrator;
                     else if(role.equals("Coach")) rol = RoleEnum.Coach;
                     else rol = RoleEnum.Manager;
-                    User user = new User(username,password,name,surname, dt,gen,rol);
+                    User user = new User(username,password,name,surname, dt,gen,rol,Integer.parseInt(deleted));
                     users.add(user);
                 }
             } catch (Exception ex) {
@@ -898,7 +900,6 @@ public class CustomerFileStorage {
     }
 	public boolean addTrainingHistoryInFile() 
     {
-		readTrainingHistory();
         FileWriter fileWriter;
         try {
             fileWriter = new FileWriter("./trainingHistory.txt");
@@ -1272,7 +1273,8 @@ public class CustomerFileStorage {
             outputString += customer.getPicture() + ";";
             outputString += customer.getId() + ";"; 
             outputString += customer.getDeleted() + ";"; 
-            outputString += customer.getCheck();
+            outputString += customer.getCheck() + ";";
+            outputString += customer.getCancel();
             output.println(outputString);
         }
         //addCustomersToUsers();
@@ -1434,7 +1436,8 @@ public class CustomerFileStorage {
             outputString += "Female" + ";";
             SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
             outputString += formatter.format(customer.getDateOfBirth());
-            outputString += ";" + customer.getRole();
+            outputString += ";" + customer.getRole() + ";";
+            outputString += customer.getDeleted();
             output.println(outputString);
         }
         //addCustomersToUsers();
@@ -1444,6 +1447,25 @@ public class CustomerFileStorage {
         }
         return true;
     }
+	public ArrayList<User> deleted(String username)
+	{
+		userList = readUsers();
+		ArrayList<User> retList = new ArrayList<User>();
+		System.out.println("USer list: " + userList.size());
+		for(User u : userList)
+		{
+			if(u.getUsername().equals(username))
+			{
+				u.setDeleted(1);
+				
+			}
+			retList.add(u);
+		}
+		System.out.println("USer list: " + userList.size());
+		System.out.println("RetList za deleted: " + retList.size());
+		addUsersInFile();
+		return retList;
+	}
 	public Coach findCoachByTraining(Training t)
 	{
 		Coach c = null;
@@ -1525,12 +1547,14 @@ public class CustomerFileStorage {
 	}
 	public TrainingHistory addTrainingHistory(TrainingHistory th)
 	{
+		System.out.println("usao u trening history");
 		trainingHistory = readTrainingHistory();
-		boolean usernameDuplicate = true;
-		
+
 		
 		trainingHistory.add(th);
 		addTrainingHistoryInFile();
+
+		System.out.println("dodao u trening history");
 		
 		return th;
 	}
@@ -1672,6 +1696,7 @@ public class CustomerFileStorage {
 		{
 			if(c.getUsername().equals(customer.getUsername()) && c.getPassword().equals(customer.getPassword()))
 			{
+				if(c.getDeleted() == 0)
 				cust = c;
 			}
 		}
@@ -1814,9 +1839,11 @@ public class CustomerFileStorage {
 		//t.setDeleted(1);
 		LocalDate localDate = LocalDate.now();
 		Date date = Date.from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
-		readTraining();
+		trainingList = readTraining();
+		int i = 0;
 		for(Training tt : trainingList)
 		{
+			System.out.println("Trening: " + tt.getName() + " == " + t.getName());
 			if(tt.getName().equals(t.getName()))
 			{
 				if(tt.getTrainingDate().after(date))
@@ -1824,7 +1851,7 @@ public class CustomerFileStorage {
 					if(tt.getTrainingDate().getDay() - date.getDay() >= 2)
 					{
 						//tt.setDeleted(1);
-						tt.setCheck(1);
+						tt.setCancel(1);
 					}
 					else
 					{
@@ -1835,7 +1862,7 @@ public class CustomerFileStorage {
 							if(date.getMonth() - tt.getTrainingDate().getMonth() <= 28  )
 							{
 								//tt.setDeleted(1);
-								tt.setCheck(1);
+								tt.setCancel(1);
 							}
 						}
 						else if (tt.getTrainingDate().getMonth() %2 == 0 && tt.getTrainingDate().getMonth() == 2)
@@ -1843,7 +1870,7 @@ public class CustomerFileStorage {
 							if(date.getMonth() - tt.getTrainingDate().getMonth() <= 26  )
 							{
 								//tt.setDeleted(1);
-								tt.setCheck(1);
+								tt.setCancel(1);
 							}
 						}
 						else
@@ -1851,7 +1878,7 @@ public class CustomerFileStorage {
 							if(date.getMonth() - tt.getTrainingDate().getMonth() <= 29  )
 							{
 								//tt.setDeleted(1);
-								tt.setCheck(1);
+								tt.setCancel(1);
 							}
 						}
 						}
@@ -1862,6 +1889,18 @@ public class CustomerFileStorage {
 		}
 		addTrainingsInFile();
 		return null;
+	}
+	public void cancelTr(Training t)
+	{
+		trainingList = readTraining();
+		for(Training tt : trainingList)
+		{
+			if(tt.getName().equals(t.getName()))
+				tt.setCancel(1);
+			System.out.println(tt.getCancel() + " cancel");
+		}
+		addTrainingsInFile();
+		
 	}
 	
 	//Nalazi menadzere koji nisu dodjeljeni sportskom objektu
@@ -1914,7 +1953,7 @@ public class CustomerFileStorage {
 			{
 				if(t.getType() == TrainingTypeEnum.Personal)
 				{
-					if(t.getCheck() == 0)
+					if(t.getCancel() == 0)
 						retList.add(t);
 				}
 			}

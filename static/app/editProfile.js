@@ -22,7 +22,7 @@ Vue.component("editprofile", {
 <p>Name:</p>
 </td>
 <td>
-<input id="name" class="form-control" v-model="user.name" v-on:blur="validateName" type="text" />
+<input id="name" class="form-control" v-model="user.name"  type="text" />
 </td>
 </tr>
 <tr>
@@ -30,15 +30,7 @@ Vue.component("editprofile", {
 <p>Surname:</p>
 </td>
 <td>
-<input id="surname" class="form-control" v-model="user.surname" v-on:blur="validateSurname" type="text" />
-</td>
-</tr>
-<tr>
-<td>
-<p>Username:</p>
-</td>
-<td>
-<input id="username" class="form-control" v-model="user.username" v-on:blur="duplicateUsername" type="text" />
+<input id="surname" class="form-control" v-model="user.surname" type="text" />
 </td>
 </tr>
 <tr>
@@ -70,10 +62,10 @@ Vue.component("editprofile", {
 </tr>
 <tr>
 <td>
-<a href="#/" ><input type="button"  v-on:click="editProfile();"  class="btn btn-success" value="Edit"/></a>
+<input type="button"  v-on:click="editProfile();routerBack();"  class="btn btn-success" value="Edit"/>
 </td>
 <td>
-<a href="#/" ><input  type="button"  class="btn btn-success"  value="Cancel"/></a>
+<input  type="button"  v-on:click="routerBack()"   class="btn btn-success"  value="Cancel"/>
 </td>
 </tr>
 </table>
@@ -85,11 +77,19 @@ methods : {
 				axios  
 		          .post('customer/editprofile',this.user)
 		          .then(response => (response.data))
-		          }
+		          },
 		
+	
+	routerBack : function()
+	{
+			router.push(`/`);
+		
+	}
 	}
 	
 ,mounted(){
-	
+		axios  
+		      .post('customer/useris',this.user)
+		      .then(response =>this.user = (response.data))
 	}
 })
