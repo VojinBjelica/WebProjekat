@@ -10,4 +10,5 @@ PlanetFitness;SportCenter;Group training;8-21;2.3;https://img.freepik.com/free-v
 Gold's gym;Gym;None;7-22;4.9;https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTPQpRBETBBRhKQ0ZyO_AkmvrebmqJnBJjOdw&usqp=CAU;2355;23435;Save Malesevica 48;Belgrade;1018-1;false;0
 Drugii;SportCenter;Treniraj;2-22;0.0;https://img.freepik.com/free-vector/gym-logo_219982-7.jpg;3434;2343;Tamo daleko;negdje;432423;false;0
 Kaktus;SportCenter;None;8-21;0.0;https://img.freepik.com/free-vector/gym-logo_219982-7.jpg;24342;34432;SlobodanaBajica 33;Novi Sad;2432482;false;0
-Celicana;Gym;None;6-19;0.0;https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTPQpRBETBBRhKQ0ZyO_AkmvrebmqJnBJjOdw&usqp=CAU;5354;2342;Brace Ribnikar 44;Novi Sad;400123;true;1
+Popo;Pool;None;4-19;0.0;https://img.freepik.com/free-vector/gym-logo_219982-7.jpg;3243;2342;Neka 24;Novi Sad;400123;false;0
+Opop;SportCenter;Sauna;5-22;0.0;https://img.freepik.com/free-vector/gym-logo_219982-7.jpg;4654;3242;Neka 23;Novi Sad;423657;true;0
