@@ -4,6 +4,7 @@ public enum ObjectTypeEnum {
 	
 	Gym,
 	Pool,
-	SportCenter
+	SportCenter,
+	None
 
 }

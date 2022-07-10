@@ -3,7 +3,8 @@ Vue.component("coachTraining", {
 		return {
 			trainingList:null,
 			personalList:null,
-			groupList:null
+			groupList:null,
+			searchData: {soName:null, soType:null, priceFrom:null, priceTo:null, type:null}
 			
 		}
 	},
@@ -11,102 +12,155 @@ Vue.component("coachTraining", {
 		<div class="add-so d-flex justify-content-center" >
 		<div >
 			<p class="h3 ms-5 mb-3">My trainings</p>
-			<div class="a">
-    			<table id="a" style="margin:auto;width:auto;">
-	    			<tr bgcolor="grey">
-	    				<th style="min-width:50px">Name </th>
-	    				<th style="min-width:50px">Type</th>
-	    				<th style="min-width:50px">Object <button v-on:click="sortNameDown()" >&uarr;</button><button v-on:click="sortNameUp()" >&darr;</button></th>
-	    				<th style="min-width:50px">Object type</th>
-	    				<th style="min-width:50px">Duration</th>
-	    				<th style="min-width:50px">Price  <button v-on:click="sortPriceDescending()" >&uarr;</button><button v-on:click="sortPriceAscending()" >&darr;</button></th>
-	    				<th style="min-width:50px">Coach</th>
-	    				<th style="min-width:50px">Description</th>
-	    				<th style="min-width:50px">Date</th>
+			<div >
+			<div class="d-flex flex-row">
+				<div >
+					<div class="a ">
+				
+    					<table id="a" style="margin:auto;width:auto;">
+	    					<tr bgcolor="grey">
+	    						<th style="min-width:50px">Name </th>
+	    						<th style="min-width:50px">Type</th>
+	    						<th style="min-width:50px">Object <button v-on:click="sortNameDown()" >&uarr;</button><button v-on:click="sortNameUp()" >&darr;</button></th>
+	    						<th style="min-width:50px">Object type</th>
+	    						<th style="min-width:50px">Duration</th>
+	    						<th style="min-width:50px">Price  <button v-on:click="sortPriceDescending()" >&uarr;</button><button v-on:click="sortPriceAscending()" >&darr;</button></th>
+	    						<th style="min-width:50px">Coach</th>
+	    						<th style="min-width:50px">Description</th>
+	    						<th style="min-width:50px">Date</th>
 	    				
-	    			</tr>
+	    					</tr>
 	    			
-	    			<tr class="data" v-for="sTraining in trainingList">
-	    				<td >{{sTraining.name}}</td>
-	    				<td >{{sTraining.type}}</td>
-	    				<td >{{sTraining.sportObject.objectName}}</td>
-	    				<td >{{sTraining.sportObject.objectType}}</td>
-	    				<td >{{sTraining.duration}}</td>
-	    				<td >{{sTraining.price}}</td>
-	    				<td >{{sTraining.trainer.name}}</td>
-	    				<td >{{sTraining.description}}</td>
-	    				<td >{{sTraining.trainingDate}}</td>
+	    					<tr class="data" v-for="sTraining in trainingList">
+	    						<td >{{sTraining.name}}</td>
+	    						<td >{{sTraining.type}}</td>
+	    						<td >{{sTraining.sportObject.objectName}}</td>
+	    						<td >{{sTraining.sportObject.objectType}}</td>
+	    						<td >{{sTraining.duration}}</td>
+	    						<td >{{sTraining.price}}</td>
+	    						<td >{{sTraining.trainer.name}}</td>
+	    						<td >{{sTraining.description}}</td>
+	    						<td >{{sTraining.trainingDate}}</td>
 	    				
-	    			</tr>
-	    		</table>
-	    		</div>
-	    		<br/>
-	    		<br/>
-	    		<br/>
-	    		<div class="a">
-    			<table id="aaaa" style="margin:auto;width:auto;">
-	    			<tr bgcolor="grey">
-	    				<th style="min-width:50px">Name </th>
-	    				<th style="min-width:50px">Type</th>
-	    				<th style="min-width:50px">Object <button v-on:click="sortNameDownPersonal()" >&uarr;</button><button v-on:click="sortNameUpPersonal()" >&darr;</button></th>
-	    				<th style="min-width:50px">Object type</th>
-	    				<th style="min-width:50px">Duration</th>
-	    				<th style="min-width:50px">Price  <button v-on:click="sortPriceDescendingPersonal()" >&uarr;</button><button v-on:click="sortPriceAscendingPersonal()" >&darr;</button></th>
-	    				<th style="min-width:50px">Coach</th>
-	    				<th style="min-width:50px">Description</th>
-	    				<th style="min-width:50px">Date</th>
-	    				<th style="min-width:50px">&nbsp</th>
+	    					</tr>
+	    				</table>
+	    			</div>
+	    			<br/>
+	    			<br/>
+	    			<br/>
+	    			<div class="a">
+    					<table id="aaaa" style="margin:auto;width:auto;">
+	    					<tr bgcolor="grey">
+	    						<th style="min-width:50px">Name </th>
+	    						<th style="min-width:50px">Type</th>
+	    						<th style="min-width:50px">Object <button v-on:click="sortNameDownPersonal()" >&uarr;</button><button v-on:click="sortNameUpPersonal()" >&darr;</button></th>
+	    						<th style="min-width:50px">Object type</th>
+	    						<th style="min-width:50px">Duration</th>
+	    						<th style="min-width:50px">Price  <button v-on:click="sortPriceDescendingPersonal()" >&uarr;</button><button v-on:click="sortPriceAscendingPersonal()" >&darr;</button></th>
+	    						<th style="min-width:50px">Coach</th>
+	    						<th style="min-width:50px">Description</th>
+	    						<th style="min-width:50px">Date</th>
+	    						<th style="min-width:50px">&nbsp</th>
 	    				
-	    			</tr>
+	    					</tr>
 	    			
-	    			<tr class="data" v-for="sTraining in personalList">
-	    				<td >{{sTraining.name}}</td>
-	    				<td >{{sTraining.type}}</td>
-	    				<td >{{sTraining.sportObject.objectName}}</td>
-	    				<td >{{sTraining.sportObject.objectType}}</td>
-	    				<td >{{sTraining.duration}}</td>
-	    				<td >{{sTraining.price}}</td>
-	    				<td >{{sTraining.trainer.name}}</td>
-	    				<td >{{sTraining.description}}</td>
-	    				<td >{{sTraining.trainingDate}}</td>
-	    				<td ><button v-on:click="cancelTraining(sTraining);ruterIdi();">Cancel</button></td>
-	    			</tr>
-	    		</table>
-	    		</div>
+	    					<tr class="data" v-for="sTraining in personalList">
+	    						<td >{{sTraining.name}}</td>
+	    						<td >{{sTraining.type}}</td>
+	    						<td >{{sTraining.sportObject.objectName}}</td>
+	    						<td >{{sTraining.sportObject.objectType}}</td>
+	    						<td >{{sTraining.duration}}</td>
+	    						<td >{{sTraining.price}}</td>
+	    						<td >{{sTraining.trainer.name}}</td>
+	    						<td >{{sTraining.description}}</td>
+	    						<td >{{sTraining.trainingDate}}</td>
+	    						<td ><button v-on:click="cancelTraining(sTraining);ruterIdi();">Cancel</button></td>
+	    					</tr>
+	    				</table>
+	    			</div>
 	    		
-	    		<br/>
-	    		<br/>
-	    		<br/>
-	    		<div class="a">
-    			<table id="aa"   style="margin:auto;width:auto;">
-	    			<tr bgcolor="grey">
-	    				<th style="min-width:50px">Name </th>
-	    				<th style="min-width:50px">Type</th>
-	    				<th style="min-width:50px">Object <button v-on:click="sortNameDownGroup()" >&uarr;</button><button v-on:click="sortNameUpGroup()" >&darr;</button></th>
-	    				<th style="min-width:50px">Object type</th>
-	    				<th style="min-width:50px">Duration</th>
-	    				<th style="min-width:50px">Price <button v-on:click="sortPriceDescending()" >&uarr;</button><button v-on:click="sortPriceAscending()" >&darr;</button></th>
-	    				<th style="min-width:50px">Coach</th>
-	    				<th style="min-width:50px">Description</th>
-	    				<th style="min-width:50px">Date</th>
+	    			<br/>
+	    			<br/>
+	    			<br/>
+	    			<div class="a">
+    					<table id="aa"   style="margin:auto;width:auto;">
+	    					<tr bgcolor="grey">
+	    						<th style="min-width:50px">Name </th>
+	    						<th style="min-width:50px">Type</th>
+	    						<th style="min-width:50px">Object <button v-on:click="sortNameDownGroup()" >&uarr;</button><button v-on:click="sortNameUpGroup()" >&darr;</button></th>
+	    						<th style="min-width:50px">Object type</th>
+	    						<th style="min-width:50px">Duration</th>
+	    						<th style="min-width:50px">Price <button v-on:click="sortPriceDescending()" >&uarr;</button><button v-on:click="sortPriceAscending()" >&darr;</button></th>
+	    						<th style="min-width:50px">Coach</th>
+	    						<th style="min-width:50px">Description</th>
+	    						<th style="min-width:50px">Date</th>
 	    				
-	    			</tr>
+	    					</tr>
 	    			
-	    			<tr class="data" v-for="sTraining in groupList">
-	    				<td >{{sTraining.name}}</td>
-	    				<td >{{sTraining.type}}</td>
-	    				<td >{{sTraining.sportObject.objectName}}</td>
-	    				<td >{{sTraining.sportObject.objectType}}</td>
-	    				<td >{{sTraining.duration}}</td>
-	    				<td >{{sTraining.price}}</td>
-	    				<td >{{sTraining.trainer.name}}</td>
-	    				<td >{{sTraining.description}}</td>
-	    				<td >{{sTraining.trainingDate}}</td>
-	    			</tr>
-	    		</table>
+	    					<tr class="data" v-for="sTraining in groupList">
+	    						<td >{{sTraining.name}}</td>
+	    						<td >{{sTraining.type}}</td>
+	    						<td >{{sTraining.sportObject.objectName}}</td>
+	    						<td >{{sTraining.sportObject.objectType}}</td>
+	    						<td >{{sTraining.duration}}</td>
+	    						<td >{{sTraining.price}}</td>
+	    						<td >{{sTraining.trainer.name}}</td>
+	    						<td >{{sTraining.description}}</td>
+	    						<td >{{sTraining.trainingDate}}</td>
+	    					</tr>
+	    				</table>
+	    			</div>
+	    			
+	    		</div>
+	    		<div>
+	    			<div style="margin-left:20px">
+	    			
+	    			<div class="container">
+	    				<p style="margin-top:10px">Search by sport object name: </p>
+	    				<input id="search-training-so-name" v-model="searchData.soName" class="form-control"  type="text" placeholder="Search...">
+	    			</div>
+	    			
+	    			<div class="container">
+	    				<p style="margin-top:10px">Search by sport object type: </p>
+	    				<select id="search-training-so-type" v-model="searchData.soType" class="form-select">
+	    					<option value="None" selected > </option>
+	    					<option value="Gym">Gym</option>
+	    					<option value="Pool">Pool</option>
+	    					<option value="SportCenter">SportCenter</option>
+	    				</select>
+	    			</div>
+	    			
+	    			<div class="container">
+	    				<p style="margin-top:10px">Price from: </p>
+	    				<input id="search-training-price-from" v-model="searchData.priceFrom" class="form-control"  type="text" placeholder="Search...">
+	    				
+	    			</div>
+	    			
+	    			<div class="container">
+	    				<p style="margin-top:10px">Price to: </p>
+	    				<input id="search-training-price-to" v-model="searchData.priceTo" class="form-control"  type="text" placeholder="Search...">
+	    				
+	    			</div>
+	    			
+	    			<div class="container">
+	    				<p style="margin-top:10px">Search by type: </p>
+	    				<select id="search-training-type" v-model="searchData.type" class="form-select">
+	    					<option value="None" selected > </option>
+	    					<option value="Personal">Personal trainings</option>
+	    					<option value="Group">Group trainings</option>
+	    					<option value="Gym">Gym</option>
+	    				</select>
+	    			</div>
+	    			<div class="search-btn-wrapper">
+	    				
+	    				<button class="btn btn-secondary" v-on:click="searchTrainings()"  >Search</button>
+	    			</div>
+	    		</div>
+	    		</div>
 	    		</div>
 	    		<input  type="button" v-on:click="goBack();" class="btn btn-primary" style="margin-top:10px;margin-left:40%" value="Cancel"/>
 
+			</div>
 			</div>
 		</div>
 	
@@ -195,6 +249,64 @@ Vue.component("coachTraining", {
 		
 		sortNameDownGroup : function() {
 			this.groupList.sort(this.compareNameDown);
+		},
+		
+		searchTrainings : function() {
+			
+			var nameSearch = document.getElementById('search-training-so-name').value;
+			var typeSearch = document.getElementById('search-training-so-type').value;
+			var priceFromSearch = document.getElementById('search-training-price-from').value;
+			var priceToSearch = document.getElementById('search-training-price-to').value;
+			var typeeSearch = document.getElementById('search-training-type').value;
+			
+			if (nameSearch == "") {
+				this.searchData.soName = "None";
+			}
+			
+			if (priceFromSearch == "") {
+				this.searchData.priceFrom = "None";
+			}
+			
+			if (priceToSearch == "") {
+				this.searchData.priceTo = "None";
+			}
+			
+			if (typeSearch == "") {
+				this.searchData.soType = "None";
+			}
+			
+			if (typeeSearch == "") {
+				this.searchData.type = "None";
+			}
+			
+			
+			
+			axios
+				.post('sportObject/searchTrainersGymTrainings', this.searchData)
+				.then(response => this.trainingList = response.data);
+				
+			axios
+				.post('sportObject/searchTrainersPersonalTrainings', this.searchData)
+				.then(response => this.personalList = response.data);
+				
+			axios
+				.post('sportObject/searchTrainersGroupTrainings', this.searchData)
+				.then(response => this.groupList = response.data);
+		},
+		
+		validateSearch : function () {
+			var priceFromSearch = document.getElementById('search-training-price-from').value;
+			var priceToSearch = document.getElementById('search-training-price-to').value;
+			var patternPrice = /^([0-9]+(.?[0-9]+))?$/;
+			
+			if (!patternPrice.test(priceFromSearch)) {
+				alert("Price must be a number (example: 4.8)");
+			} else if (!patternPrice.test(priceToSearch)) {
+				alert("Price must be a number (example: 4.8)");
+			} else {
+				this.searchTrainings();
+			}
+			
 		}
 		
 		

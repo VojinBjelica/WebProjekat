@@ -6,6 +6,7 @@ import FileStorage.SportObjectFileStorage;
 import beans.Manager;
 import beans.SportObject;
 import beans.Training;
+import beans.TrainingTypeEnum;
 
 public class SportObjectService {
 	public SportObjectFileStorage sofs;
@@ -43,6 +44,10 @@ public class SportObjectService {
 	
 	public SportObject getSportObjectByManager(Manager man) {
 		return sofs.getSportObjectByManager(man);
+	}
+	
+	public ArrayList<Training> searchTrainingsOfObject(SportObject so, String priceFrom, String priceTo, TrainingTypeEnum type){
+		return sofs.searchTrainingsOfObject(so, priceFrom, priceTo, type);
 	}
 	
 }

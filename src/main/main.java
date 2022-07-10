@@ -73,6 +73,10 @@ public class main {
 		SportObjectController.deleteTraining();
 		SportObjectController.searchTrainingsNameTypePrice();
 		SportObjectController.findTrainingsForObject();
+		SportObjectController.searchTrainersGymTrainings();
+		SportObjectController.searchTrainersPersonalTrainings();
+		SportObjectController.searchTrainersGroupTrainings();
+		SportObjectController.searchTrainingsOfObject();
 		// TODO Auto-generated method stub
 
 	}

@@ -9,7 +9,7 @@ nidza;nidza;Nikola;Adamovic;Male;2022-06-21;Testirammm
 nata;nata;Natalija;Obradovic;Male;2022-06-21;None
 steva;steva;Stevan;Stevanovic;Male;2022-06-14;None
 mica;mica;Milos;Milosevic;Male;2022-06-21;None
-aleksa;lakesa;Aleksa;Aleksic;Male;2022-06-21;None
+aleksa;lakesa;Aleksa;Aleksic;Male;2022-06-21;Celicana
 dzoni;dzoni;Nikola;Nikolic;Male;2022-06-21;None
 daca;daca;Danilo;Danilovic;Male;2022-06-21;None
 awdawd;awdawd;Aadnaw;Aawdawd;Male;2022-06-21;None

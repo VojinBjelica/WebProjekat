@@ -30,6 +30,7 @@ import beans.Dues;
 import beans.DuesTypeEnum;
 import beans.GenderEnum;
 import beans.Manager;
+import beans.ObjectTypeEnum;
 import beans.Points;
 import beans.PromoCode;
 import beans.RoleEnum;
@@ -1892,7 +1893,7 @@ public class CustomerFileStorage {
 			if(coach.getUsername().equals(c.getUsername()))
 			{
 				System.out.println(t.getType() + " == " + TrainingTypeEnum.Gym);
-				if(t.getType() == TrainingTypeEnum.Gym)
+				if(t.getType() == TrainingTypeEnum.Gym && t.getDeleted() == 0)
 				retList.add(t);
 			}
 		}
@@ -2085,6 +2086,250 @@ public class CustomerFileStorage {
 			}
 		}
 		return discount;
+	}
+	
+	public ArrayList<Training> searchTrainersGymTrainings(Coach c, String soName, ObjectTypeEnum soType, String priceFrom, String priceTo, TrainingTypeEnum type)
+	{
+		ArrayList<Training> trainingPrivList = readTraining();
+		ArrayList<Training> retList = new ArrayList<Training>();
+		
+		String searchName;
+		double searchPriceFrom;
+		double searchPriceTo;
+		
+		if (soName.equals("None")) {
+			searchName = " ";
+		} else {
+			searchName = soName;
+		}
+		
+		if (priceFrom.equals("None")) {
+			searchPriceFrom = 0;
+		} else {
+			searchPriceFrom = Double.parseDouble(priceFrom);
+		}
+		
+		if (priceTo.equals("None")) {
+			searchPriceTo = 1000000;
+		} else {
+			searchPriceTo = Double.parseDouble(priceTo);
+		}
+		
+		System.out.println(" Search Name : " + searchName);
+		System.out.println(" Search so type: " + soType);
+		System.out.println(" Search type : " + type);
+		System.out.println(" Search price from : " + searchPriceFrom);
+		System.out.println(" Search price to : " + searchPriceTo);
+		
+		for(Training t : trainingPrivList)
+		{
+			Coach coach = getCoachByUsername(t.getTrainer().getUsername());
+			if(coach.getUsername().equals(c.getUsername()))
+			{
+				if (type != TrainingTypeEnum.None && soType != ObjectTypeEnum.None) {
+					if(t.getType() == TrainingTypeEnum.Gym && t.getDeleted() == 0) {
+						if (t.getSportObject().getObjectName().toLowerCase().trim().contains(searchName.toLowerCase().trim()) 
+								&& t.getSportObject().getObjectType() == soType && t.getPrice() >= searchPriceFrom
+								&& t.getPrice() <= searchPriceTo && t.getType() == type) {
+							retList.add(t);
+						}
+					}
+				} else if (type == TrainingTypeEnum.None && soType != ObjectTypeEnum.None) {
+					if(t.getType() == TrainingTypeEnum.Gym && t.getDeleted() == 0) {
+						if (t.getSportObject().getObjectName().toLowerCase().trim().contains(searchName.toLowerCase().trim()) 
+								&& t.getSportObject().getObjectType() == soType && t.getPrice() >= searchPriceFrom
+								&& t.getPrice() <= searchPriceTo) {
+							retList.add(t);
+						}
+					}
+					
+				} else if (type != TrainingTypeEnum.None && soType == ObjectTypeEnum.None) {
+					if(t.getType() == TrainingTypeEnum.Gym && t.getDeleted() == 0) {
+						if (t.getSportObject().getObjectName().toLowerCase().trim().contains(searchName.toLowerCase().trim()) 
+								&& t.getPrice() >= searchPriceFrom
+								&& t.getPrice() <= searchPriceTo && t.getType() == type) {
+							retList.add(t);
+						}
+					}
+					
+				} else if (type == TrainingTypeEnum.None && soType == ObjectTypeEnum.None)  {
+					if(t.getType() == TrainingTypeEnum.Gym && t.getDeleted() == 0) {
+						if (t.getSportObject().getObjectName().toLowerCase().trim().contains(searchName.toLowerCase().trim()) 
+								 && t.getPrice() >= searchPriceFrom
+								&& t.getPrice() <= searchPriceTo) {
+							retList.add(t);
+						}
+					}
+				}
+				
+				else if (type == TrainingTypeEnum.None && soName.equals("None") && priceTo.equals("None") && priceFrom.equals("None") && soType == ObjectTypeEnum.None) {
+					if(t.getType() == TrainingTypeEnum.Gym && t.getDeleted() == 0) {
+						retList.add(t);
+					}					
+				}
+			}
+		}
+		return retList;
+	}
+	
+	public ArrayList<Training> searchTrainersPersonalTrainings(Coach c, String soName, ObjectTypeEnum soType, String priceFrom, String priceTo, TrainingTypeEnum type)
+	{
+		ArrayList<Training> trainingPrivList = readTraining();
+		ArrayList<Training> retList = new ArrayList<Training>();
+		
+		String searchName;
+		double searchPriceFrom;
+		double searchPriceTo;
+		
+		if (soName.equals("None")) {
+			searchName = " ";
+		} else {
+			searchName = soName;
+		}
+		
+		if (priceFrom.equals("None")) {
+			searchPriceFrom = 0;
+		} else {
+			searchPriceFrom = Double.parseDouble(priceFrom);
+		}
+		
+		if (priceTo.equals("None")) {
+			searchPriceTo = 1000000;
+		} else {
+			searchPriceTo = Double.parseDouble(priceTo);
+		}
+		
+		
+		
+		for(Training t : trainingPrivList)
+		{
+			Coach coach = getCoachByUsername(t.getTrainer().getUsername());
+			if(coach.getUsername().equals(c.getUsername()))
+			{
+				if (type != TrainingTypeEnum.None && soType != ObjectTypeEnum.None) {
+					if(t.getType() == TrainingTypeEnum.Personal && t.getDeleted() == 0) {
+						if (t.getSportObject().getObjectName().toLowerCase().trim().contains(searchName.toLowerCase().trim()) 
+								&& t.getSportObject().getObjectType() == soType && t.getPrice() >= searchPriceFrom
+								&& t.getPrice() <= searchPriceTo && t.getType() == type) {
+							retList.add(t);
+						}
+					}
+				} else if (type == TrainingTypeEnum.None && soType != ObjectTypeEnum.None) {
+					if(t.getType() == TrainingTypeEnum.Personal && t.getDeleted() == 0) {
+						if (t.getSportObject().getObjectName().toLowerCase().trim().contains(searchName.toLowerCase().trim()) 
+								&& t.getSportObject().getObjectType() == soType && t.getPrice() >= searchPriceFrom
+								&& t.getPrice() <= searchPriceTo) {
+							retList.add(t);
+						}
+					}
+					
+				} else if (type != TrainingTypeEnum.None && soType == ObjectTypeEnum.None) {
+					if(t.getType() == TrainingTypeEnum.Personal && t.getDeleted() == 0) {
+						if (t.getSportObject().getObjectName().toLowerCase().trim().contains(searchName.toLowerCase().trim()) 
+								&& t.getPrice() >= searchPriceFrom
+								&& t.getPrice() <= searchPriceTo && t.getType() == type) {
+							retList.add(t);
+						}
+					}
+					
+				} else if (type == TrainingTypeEnum.None && soType == ObjectTypeEnum.None)  {
+					if(t.getType() == TrainingTypeEnum.Personal && t.getDeleted() == 0) {
+						if (t.getSportObject().getObjectName().toLowerCase().trim().contains(searchName.toLowerCase().trim()) 
+								 && t.getPrice() >= searchPriceFrom
+								&& t.getPrice() <= searchPriceTo) {
+							retList.add(t);
+						}
+					}
+				}
+				
+				else if (type == TrainingTypeEnum.None && soName.equals("None") && priceTo.equals("None") && priceFrom.equals("None") && soType == ObjectTypeEnum.None) {
+					if(t.getType() == TrainingTypeEnum.Personal && t.getDeleted() == 0) {
+						retList.add(t);
+					}					
+				}
+			}
+		}
+		return retList;
+	}
+	
+	public ArrayList<Training> searchTrainersGroupTrainings(Coach c, String soName, ObjectTypeEnum soType, String priceFrom, String priceTo, TrainingTypeEnum type)
+	{
+		ArrayList<Training> trainingPrivList = readTraining();
+		ArrayList<Training> retList = new ArrayList<Training>();
+		
+		String searchName;
+		double searchPriceFrom;
+		double searchPriceTo;
+		
+		if (soName.equals("None")) {
+			searchName = " ";
+		} else {
+			searchName = soName;
+		}
+		
+		if (priceFrom.equals("None")) {
+			searchPriceFrom = 0;
+		} else {
+			searchPriceFrom = Double.parseDouble(priceFrom);
+		}
+		
+		if (priceTo.equals("None")) {
+			searchPriceTo = 1000000;
+		} else {
+			searchPriceTo = Double.parseDouble(priceTo);
+		}
+		
+		
+		
+		for(Training t : trainingPrivList)
+		{
+			Coach coach = getCoachByUsername(t.getTrainer().getUsername());
+			if(coach.getUsername().equals(c.getUsername()))
+			{
+				if (type != TrainingTypeEnum.None && soType != ObjectTypeEnum.None) {
+					if(t.getType() == TrainingTypeEnum.Group && t.getDeleted() == 0) {
+						if (t.getSportObject().getObjectName().toLowerCase().trim().contains(searchName.toLowerCase().trim()) 
+								&& t.getSportObject().getObjectType() == soType && t.getPrice() >= searchPriceFrom
+								&& t.getPrice() <= searchPriceTo && t.getType() == type) {
+							retList.add(t);
+						}
+					}
+				} else if (type == TrainingTypeEnum.None && soType != ObjectTypeEnum.None) {
+					if(t.getType() == TrainingTypeEnum.Group && t.getDeleted() == 0) {
+						if (t.getSportObject().getObjectName().toLowerCase().trim().contains(searchName.toLowerCase().trim()) 
+								&& t.getSportObject().getObjectType() == soType && t.getPrice() >= searchPriceFrom
+								&& t.getPrice() <= searchPriceTo) {
+							retList.add(t);
+						}
+					}
+					
+				} else if (type != TrainingTypeEnum.None && soType == ObjectTypeEnum.None) {
+					if(t.getType() == TrainingTypeEnum.Group && t.getDeleted() == 0) {
+						if (t.getSportObject().getObjectName().toLowerCase().trim().contains(searchName.toLowerCase().trim()) 
+								&& t.getPrice() >= searchPriceFrom
+								&& t.getPrice() <= searchPriceTo && t.getType() == type) {
+							retList.add(t);
+						}
+					}
+					
+				} else if (type == TrainingTypeEnum.None && soType == ObjectTypeEnum.None)  {
+					if(t.getType() == TrainingTypeEnum.Group && t.getDeleted() == 0) {
+						if (t.getSportObject().getObjectName().toLowerCase().trim().contains(searchName.toLowerCase().trim()) 
+								 && t.getPrice() >= searchPriceFrom
+								&& t.getPrice() <= searchPriceTo) {
+							retList.add(t);
+						}
+					}
+				}
+				
+				else if (type == TrainingTypeEnum.None && soName.equals("None") && priceTo.equals("None") && priceFrom.equals("None") && soType == ObjectTypeEnum.None) {
+					if(t.getType() == TrainingTypeEnum.Group && t.getDeleted() == 0) {
+						retList.add(t);
+					}					
+				}
+			}
+		}
+		return retList;
 	}
 	
 }

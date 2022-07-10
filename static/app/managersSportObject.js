@@ -240,7 +240,7 @@ Vue.component("managersSportObject", {
 	    			</div>
 	    			<div class="search-btn-wrapper">
 	    				
-	    				<button class="btn btn-secondary" v-on:click="searchTrainings()" >Search</button>
+	    				<button class="btn btn-secondary" v-on:click="validateSearch()" >Search</button>
 	    			</div>
 	    		</div>
 	    	</div>
@@ -420,7 +420,8 @@ Vue.component("managersSportObject", {
 		validateSearch : function() {
 			var priceFromSearch = document.getElementById('search-training-price-from').value;
 			var priceToSearch = document.getElementById('search-training-price-to').value;
-			var patternPrice = /^[0-9]+(.?[0-9]+)?$/;
+			var patternPrice = /^([0-9]+(.?[0-9]+))?$/;
+			
 			
 			if (!patternPrice.test(priceFromSearch)) {
 				alert("Price must be a number (example: 4.8)");

@@ -13,6 +13,8 @@ import beans.SportObject;
 import beans.Training;
 import beans.TrainingsSearchDTO;
 import beans.User;
+import beans.searchTrainersTrainingsDTO;
+import beans.searchTrainingsOfObjectDTO;
 import spark.Session;
 
 import static spark.Spark.get;
@@ -130,6 +132,17 @@ public class SportObjectController {
 			return g.toJson(retList);
 		});
 	}
+	
+	public static void searchTrainingsOfObject() {
+		post("sportObject/searchTrainingsOfObject", (req, res) -> {
+			String payload = req.body();
+			searchTrainingsOfObjectDTO tr = g.fromJson(payload, searchTrainingsOfObjectDTO.class);
+			ArrayList<Training> retList = sos.searchTrainingsOfObject(tempObject, tr.getPriceFrom(), tr.getPriceTo(), tr.getType());
+			return g.toJson(retList);
+		
+		});
+	}
+	
 	public static void getSelectedObject() {
 		post("sportObject/getOne", (req, res) -> {
 			String payload = req.body();
@@ -277,23 +290,7 @@ public class SportObjectController {
 		});
 	}
 	
-	public static void sortTrainingsDateAscending() {
-		post("sportObject/sortDateUp", (req, res) -> {
-			Session ss = req.session(true);
-			User user = ss.attribute("user");
-			Manager mana = cs.findManagerByUsername(user.getUsername());
-			SportObject so = sos.getSportObjectByManager(mana);
-			
-			
-			
-			ArrayList<Training> sortedList = new ArrayList<Training>();
-			//sortedList = cs.sortTrainingsDateAscending(so);
-			
-			
-			return g.toJson(sortedList);
-			
-		});
-	}
+	
 	
 	
 	public static void searchTrainingsNameTypePrice() {
@@ -311,5 +308,45 @@ public class SportObjectController {
 			return g.toJson(sortedList);
 		});
 	}
+	
+	public static void searchTrainersGymTrainings()
+	{
+		post("sportObject/searchTrainersGymTrainings", (req, res) -> {
+			ArrayList<Training> myTrainingList = new ArrayList<Training>();
+			Session ss = req.session(true);
+			User user = ss.attribute("user");
+			String payload = req.body();
+			searchTrainersTrainingsDTO train = g.fromJson(payload, searchTrainersTrainingsDTO.class);
+			myTrainingList = cs.searchTrainersGymTrainings(cs.getCoachByUsername(user.getUsername()), train.getSoName(), train.getSoType(), train.getPriceFrom(), train.getPriceTo(), train.getType());
+			return g.toJson(myTrainingList);
+		});
+	}
+	
+	public static void searchTrainersPersonalTrainings()
+	{
+		post("sportObject/searchTrainersPersonalTrainings", (req, res) -> {
+			ArrayList<Training> myTrainingList = new ArrayList<Training>();
+			Session ss = req.session(true);
+			User user = ss.attribute("user");
+			String payload = req.body();
+			searchTrainersTrainingsDTO train = g.fromJson(payload, searchTrainersTrainingsDTO.class);
+			myTrainingList = cs.searchTrainersPersonalTrainings(cs.getCoachByUsername(user.getUsername()), train.getSoName(), train.getSoType(), train.getPriceFrom(), train.getPriceTo(), train.getType());
+			return g.toJson(myTrainingList);
+		});
+	}
+	
+	public static void searchTrainersGroupTrainings()
+	{
+		post("sportObject/searchTrainersGroupTrainings", (req, res) -> {
+			ArrayList<Training> myTrainingList = new ArrayList<Training>();
+			Session ss = req.session(true);
+			User user = ss.attribute("user");
+			String payload = req.body();
+			searchTrainersTrainingsDTO train = g.fromJson(payload, searchTrainersTrainingsDTO.class);
+			myTrainingList = cs.searchTrainersGroupTrainings(cs.getCoachByUsername(user.getUsername()), train.getSoName(), train.getSoType(), train.getPriceFrom(), train.getPriceTo(), train.getType());
+			return g.toJson(myTrainingList);
+		});
+	}
+	
 	
 }

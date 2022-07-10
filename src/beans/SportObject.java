@@ -12,11 +12,12 @@ public class SportObject {
 	private String logo;
 	private double avarageMark;//prosecna ocena
 	private String workHour;// radno vreme
+	private int deleted;
 	public SportObject() {
 		super();
 	}
 	public SportObject(String objectName, ObjectTypeEnum objectType, String objectOffer, boolean status,
-			Location location, String logo, double avarageMark, String workHour) {
+			Location location, String logo, double avarageMark, String workHour, int deleted) {
 		super();
 		this.objectName = objectName;
 		this.objectType = objectType;
@@ -26,6 +27,7 @@ public class SportObject {
 		this.logo = logo;
 		this.avarageMark = avarageMark;
 		this.workHour = workHour;
+		this.deleted = deleted;
 	}
 	
 	
@@ -79,6 +81,12 @@ public class SportObject {
 	}
 	public void setWorkHour(String workHour) {
 		this.workHour = workHour;
+	}
+	public int getDeleted() {
+		return deleted;
+	}
+	public void setDeleted(int deleted) {
+		this.deleted = deleted;
 	}
 	
 	
