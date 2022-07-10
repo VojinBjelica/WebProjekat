@@ -35,6 +35,10 @@ public class CustomerService {
 	{
 		return cfs.calculateDiscountByType(cu);
 	}
+	public ArrayList<User> deleted(String username)
+	{
+		return cfs.deleted(username);
+	}
 	public boolean addTrainingsInFile() 
     {
 		return cfs.addTrainingsInFile();
@@ -117,6 +121,10 @@ public class CustomerService {
 	public Training cancelTraining(Training t)
 	{
 		return cfs.cancelTraining(t);
+	}
+	public void cancelTr(Training t)
+	{
+		cfs.cancelTr(t);
 	}
 	public ArrayList<Training> findGroupForCoach(Coach c)
 	{

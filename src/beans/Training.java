@@ -18,6 +18,7 @@ public class Training {
 	private int deleted;
 	private double price;
 	private int check;
+	private int cancel;
 	
 	
 	public Training(String name, TrainingTypeEnum type, SportObject sportObject, int duration, Coach trainer,
@@ -89,11 +90,37 @@ public class Training {
 		this.check = check;
 	}
 	
+	public Training(String name, TrainingTypeEnum type, SportObject sportObject, int duration, Coach trainer,
+			String description, String picture, Date date,int id,int deleted, double price,int check,int cancel) {
+		super();
+		this.name = name;
+		this.type = type;
+		this.sportObject = sportObject;
+		this.duration = duration;
+		this.trainer = trainer;
+		this.description = description;
+		this.picture = picture;
+		this.trainingDate = date;
+		this.id = id;
+		this.deleted = deleted;
+		this.price = price;
+		this.check = check;
+		this.cancel = cancel;
+	}
 	
 	public Training() {}
 
 	
 	
+	
+	public int getCancel() {
+		return cancel;
+	}
+
+	public void setCancel(int cancel) {
+		this.cancel = cancel;
+	}
+
 	public int getCheck() {
 		return check;
 	}

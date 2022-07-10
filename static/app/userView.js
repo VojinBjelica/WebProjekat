@@ -23,6 +23,7 @@ Vue.component("userview", {
 	    				<th style="min-width:50px">Date</th>
 	    				<th style="min-width:50px">Gender</th>
 	    				<th style="min-width:50px">Role </th>
+	    				<th style="min-width:50px">&nbsp </th>
 	    			</tr>
 	    			
 	    			<tr class="data" v-for="userr in userList">
@@ -33,6 +34,7 @@ Vue.component("userview", {
 	    				<td >{{userr.dateOfBirth}}</td>
 	    				<td >{{userr.gender}}</td>
 	    				<td >{{userr.role}}</td>
+	    				<td ><button v-on:click="setDeleted(userr);ruterIdi();">Delete</button></td>
 	    			</tr>
 	    		</table>
 	    		
@@ -50,6 +52,16 @@ Vue.component("userview", {
 		
 	},
     	methods: {
+		ruterIdi : function()
+		{
+			router.go(0);
+		},
+		setDeleted : function(training)
+		{
+			axios 
+				.post('customer/setdeleted', {"username": training.username})
+				.then(response => (this.userList = response.data))
+		}
 	
 	}
 	});

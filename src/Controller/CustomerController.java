@@ -88,9 +88,6 @@ public class CustomerController {
 			Dues pd = g.fromJson(payload, Dues.class);
 			String duestype = "";
 			String id = cs.generateID();
-			if(checker == true) return "Your due is still active";
-			else
-			{
 				Dues due = null;
 				if(pd.getDuesType() == DuesTypeEnum.Month)
 					due = new Dues(id,pd.getDuesType(),pd.getPayDate(),pd.getExpirationDateAndTime(),pd.getPrice(),c,true,30,0);
@@ -98,7 +95,7 @@ public class CustomerController {
 					due = new Dues(id,pd.getDuesType(),pd.getPayDate(),pd.getExpirationDateAndTime(),pd.getPrice(),c,true,365,0);
 				
 				cs.addDues(due);
-			}
+			
 			return "OK";
 		});
 	}
@@ -172,6 +169,7 @@ public class CustomerController {
 	public static void readListUser() {
 		get("customer/showuserlist", (req, res) -> {
 			ArrayList<User> userList = cs.readUsers();
+			ArrayList<User> retList = new ArrayList<User>();
 			String hashPass = null;
 
 			for(User u : userList)
@@ -182,10 +180,14 @@ public class CustomerController {
 					hashPass = u.getPassword().replaceAll(u.getPassword(),"Hidden");
 				}
 				u.setPassword(hashPass);
+				if(u.getDeleted() == 0)
+				{
+					retList.add(u);
+				}
 				
 				
 			}
-			return g.toJson(userList);
+			return g.toJson(retList);
 		});
 	}
 
@@ -195,6 +197,19 @@ public class CustomerController {
 			cs.addCustomerInFile();
 			
 			return "OK";
+		});
+	}
+	public static void deleted()
+	{
+		post("customer/setdeleted", (req, res) -> {
+			Session ss = req.session(true);
+			String payload = req.body();
+			User pd = g.fromJson(payload, User.class);
+			User user = ss.attribute("user");
+			ArrayList<User> retList = cs.deleted(pd.getUsername());
+			
+			System.out.println("RetList za deleted kontroler: " + retList.size());
+			return g.toJson(retList);
 		});
 	}
 	
@@ -282,8 +297,10 @@ public class CustomerController {
 			Training pd = g.fromJson(payload, Training.class);
 			System.out.println(pd.getId());
 			Training t = cs.findTrainingByName(pd.getName());
-			System.out.println(t.getName());
-			cs.cancelTraining(t);
+			System.out.println(t.getName() + " ime treninga");
+			Training tt = cs.cancelTraining(t);
+//			if(tt != null)
+//			cs.cancelTr(tt);
 			
 			return "OK";
 		});
@@ -388,9 +405,20 @@ public class CustomerController {
 			String payload = req.body();
 			Session ss = req.session(true);
 			User user = ss.attribute("user");
+			
+			
 			User pd = g.fromJson(payload, User.class);
 			cs.editProfile(user,pd);
 			return "OK";
+		});
+	}
+	public static void userIs()
+	{
+		post("customer/useris", (req, res) -> {
+			Session ss = req.session(true);
+			User user = ss.attribute("user");
+			User u = cs.findUserByUsername(user.getUsername());
+			return g.toJson(u);
 		});
 	}
 	public static void addUser()
