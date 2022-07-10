@@ -1823,7 +1823,8 @@ public class CustomerFileStorage {
 				{
 					if(tt.getTrainingDate().getDay() - date.getDay() >= 2)
 					{
-						tt.setDeleted(1);
+						//tt.setDeleted(1);
+						tt.setCheck(1);
 					}
 					else
 					{
@@ -1833,21 +1834,24 @@ public class CustomerFileStorage {
 						{
 							if(date.getMonth() - tt.getTrainingDate().getMonth() <= 28  )
 							{
-								tt.setDeleted(1);
+								//tt.setDeleted(1);
+								tt.setCheck(1);
 							}
 						}
 						else if (tt.getTrainingDate().getMonth() %2 == 0 && tt.getTrainingDate().getMonth() == 2)
 						{
 							if(date.getMonth() - tt.getTrainingDate().getMonth() <= 26  )
 							{
-								tt.setDeleted(1);
+								//tt.setDeleted(1);
+								tt.setCheck(1);
 							}
 						}
 						else
 						{
 							if(date.getMonth() - tt.getTrainingDate().getMonth() <= 29  )
 							{
-								tt.setDeleted(1);
+								//tt.setDeleted(1);
+								tt.setCheck(1);
 							}
 						}
 						}
@@ -1910,7 +1914,7 @@ public class CustomerFileStorage {
 			{
 				if(t.getType() == TrainingTypeEnum.Personal)
 				{
-					if(t.getDeleted() == 0)
+					if(t.getCheck() == 0)
 						retList.add(t);
 				}
 			}
