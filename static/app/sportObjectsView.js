@@ -4,12 +4,12 @@ Vue.component("sportObjectsView", {
 			sportObjectList: null,
 			sportObject: {objectName:null, objectType:null, objectOffer:null, status:null, location:null, logo:null, avarageMark:null, workHour:null},
 			hideFlag:null,
-			loggedUser:null
+			loggedRole:null
 		}
 	},
 	template: `  
     	<div class="home-page" style="background-color:lightgrey; margin-bottom:100px;">
-    		<div class="header-wrapper">
+    		<!-- <div class="header-wrapper">
     			<h3 style="margin:auto">Sport object view</h3>
     			<button v-on:click="goToLogin()" class="login-btn" id="btn-login" >Login</button>
     			<button v-on:click="goToRegister();" class="register-btn" id="btn-register">Register</button>
@@ -21,10 +21,116 @@ Vue.component("sportObjectsView", {
     			<button v-on:click="goToCustomerTrainings()" class="login-btn" id="btn-customer-training" >My trainings customer</button>
     			<button v-on:click="goToDues()" class="login-btn" id="btn-customer-dues" >Dues</button>
     			<button v-on:click="goToPromoCodes()" class="login-btn" id="btn-codes" >Codes</button>
-    			<button v-on:click="goToSchedule()" class="login-btn" id="btn-schedule" >Schedule Trainings</button>
-    			
-    			
-    		</div>
+    			<button v-on:click="goToSchedule()" class="login-btn" id="btn-schedule" >Schedule Trainings</button>	
+    		</div> -->
+    		
+    		<nav class="navbar navbar-expand-sm mb-3  bg-dark" v-if="loggedRole == 'None'">
+    			<div class="container-fluid">
+    				<ul class="navbar-nav ms-auto">
+    					<li class="nav-item">
+    						<button  v-on:click="goToLogin()" class="btn btn-success btn-margin-left"  >Login</button>
+    					</li>
+    					<li class="nav-item">
+    						<button v-on:click="goToRegister()" class="btn btn-success btn-margin-left" >Register</button>
+    					</li>
+    					<li class="nav-item">
+    						<button v-on:click="goToHomePage()" class="btn btn-primary btn-margin-left" >Home</button>
+    					</li>
+    					
+    				</ul>
+    			</div>
+    		</nav>
+    		
+    		<nav class="navbar navbar-expand-sm mb-3 bg-dark" v-if="loggedRole == 'Administrator'">
+    			<div class="container-fluid">
+    				<ul class="navbar-nav ms-auto">
+    					<li class="nav-item">
+    						<button v-on:click="goToRegister();" class="btn btn-success btn-margin-left" >Register</button>
+    					</li>
+    					<li class="nav-item">
+    						<button v-on:click="goToEditProfile()" class="btn btn-primary btn-margin-left" >Edit profile</button>
+    					</li>
+    					<li class="nav-item">
+    						<button v-on:click="goToHomePage()" class="btn btn-primary btn-margin-left" >Home</button>
+    					</li>
+    					<li class="nav-item">
+    						<button v-on:click="goToUsersView()" class="btn btn-primary btn-margin-left" >Users</button>
+    					</li>
+    					<li class="nav-item">
+    						<button v-on:click="goToPromoCodes()" class="btn btn-primary btn-margin-left" >Codes</button>
+    					</li>
+    					<li class="nav-item">
+    						<button v-on:click="logoutUser()" class="btn btn-danger btn-margin-left" >Log out</button>
+    					</li>
+    				</ul>
+    			</div>
+    		</nav>
+    		
+    		<nav class="navbar navbar-expand-sm mb-3 bg-dark" v-if="loggedRole == 'Manager'">
+    			<div class="container-fluid">
+    				<ul class="navbar-nav ms-auto">
+    					<li class="nav-item">
+    						<button v-on:click="goToEditProfile()" class="btn btn-primary btn-margin-left" >Edit profile</button>
+    					</li>
+    					<li class="nav-item">
+    						<button v-on:click="goToHomePage()" class="btn btn-primary btn-margin-left" >Home</button>
+    					</li>
+    					<li class="nav-item">
+    					
+    						<button v-on:click="goToManagersSO()" class="btn btn-primary btn-margin-left" >My sport object</button>
+    					</li>
+    					<li class="nav-item">
+    						<button v-on:click="logoutUser()" class="btn btn-danger btn-margin-left" >Log out</button>
+    					</li>
+    				</ul>
+    			</div>
+    		</nav>
+    		
+    		<nav class="navbar navbar-expand-sm mb-3 bg-dark" v-if="loggedRole == 'Coach'">
+    			<div class="container-fluid">
+    				<ul class="navbar-nav ms-auto">
+    					<li class="nav-item">
+    						<button v-on:click="goToEditProfile()" class="btn btn-primary btn-margin-left" >Edit profile</button>
+    					</li>
+    					<li class="nav-item">
+    						<button v-on:click="goToHomePage()" class="btn btn-primary btn-margin-left" >Home</button>
+    					</li>
+    					<li class="nav-item">
+    						<button v-on:click="goToMyTrainings()" class="btn btn-primary btn-margin-left"  >My trainings</button>
+    					</li>
+    					<li class="nav-item">
+    						<button v-on:click="logoutUser()" class="btn btn-danger btn-margin-left" >Log out</button>
+    					</li>
+    				</ul>
+    			</div>
+    		</nav>
+    		
+    		<nav class="navbar navbar-expand-md mb-3 bg-dark" v-if="loggedRole == 'Customer'">
+    			<div class="container-fluid ">
+    				<ul class="navbar-nav ms-auto">
+    					<li class="nav-item">
+    						<button v-on:click="goToEditProfile()" class="btn btn-primary btn-margin-left" >Edit profile</button>
+    					</li>
+    					<li class="nav-item">
+    						<button v-on:click="goToHomePage()" class="btn btn-primary btn-margin-left" >Home</button>
+    					</li>
+    					<li class="nav-item">
+    						<button v-on:click="goToCustomerTrainings()" class="btn btn-primary btn-margin-left" >My trainings</button>
+    					</li>
+    					<li class="nav-item">
+    						<button v-on:click="goToDues()" class="btn btn-primary btn-margin-left" >Dues</button>
+    					</li>
+    					<li class="nav-item">
+    						<button v-on:click="goToSchedule()" class="btn btn-primary btn-margin-left" >Schedule trainings</button>
+    					</li>
+    					<li class="nav-item">
+    						<button v-on:click="logoutUser()" class="btn btn-danger btn-margin-left" >Log out</button>
+    					</li>
+    				</ul>
+    			</div>
+    		</nav>
+    		
+    		<p class="h2 ms-auto me-auto mb-3">Sport objects</p>
     		<div class="sport-objects-view">
     			<table id="soTable"  style="margin:auto;">
 	    			<tr bgcolor="grey">
@@ -86,12 +192,12 @@ Vue.component("sportObjectsView", {
 	    		</div>
 	    	</div>
 	    	<div>
-	    		<button class="btn btn-primary invisible" id="add-so-btn" v-on:click="goToAddSportObject()" style="margin-top:15px; margin-left:75px">Add new sport object</button>
+	    		<button class="btn btn-primary " v-if="loggedRole=='Administrator'"  id="add-so-btn" v-on:click="goToAddSportObject()" style="margin-top:15px; margin-left:75px">Add new sport object</button>
 	    	</div>
     	</div>		  
     	`,
 	mounted(){
-		document.getElementById("btn-logout").disabled = true;
+		/*document.getElementById("btn-logout").disabled = true;
 		document.getElementById("btn-editprofile").disabled= true;
 		document.getElementById("btn-userview").disabled= true;
 		document.getElementById("btn-managers-s-o").disabled = true;	
@@ -99,20 +205,23 @@ Vue.component("sportObjectsView", {
 		document.getElementById("btn-customer-dues").disabled = true;
 		document.getElementById("btn-schedule").disabled = true;
 		
-    			document.getElementById("btn-codes").disabled = true;
+    			document.getElementById("btn-codes").disabled = true; */
 		
 		axios  
 		    .post('customer/calculatePoints',this.user)
-		    .then(response => alert(response.data))
+		    .then(response => response.data)
 		    
        
 		    
-		this.hideCheck();
+		//this.hideCheck();
 		
 		axios
 			.get('sportObjects/read', this.sportObjectList)
 			.then(response => (this.sportObjectList = response.data));
 			
+		axios
+			.get('customer/getLoggedRole') 
+			.then(response => this.loggedRole = response.data);
 		
 		
 			
@@ -124,11 +233,16 @@ Vue.component("sportObjectsView", {
 				.post('sportObjects/search', this.sportObject, this.sportObjectList)
 				.then(response => alert(response.data))
 		},
+		
+		
+		
 		logoutUser : function () {
-				this.hideButton("");
+				//this.hideButton("");
 				axios  
 		          .get('customer/logout',this.user)
 		          .then(response => (response.data))
+		         router.push("/");
+		         router.go(0);
 		},
 		showList: function() {
 			
@@ -588,8 +702,11 @@ Vue.component("sportObjectsView", {
 		
 		goToManagersSO : function() {
 			router.push(`/managersSportObject`);
-		}
+		},
 		
+		goToHomePage : function() {
+			router.push("/");
+		}
 		
 	}
 	

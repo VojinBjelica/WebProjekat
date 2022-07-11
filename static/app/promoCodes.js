@@ -7,12 +7,42 @@ Vue.component("promoCodes", {
 		    }
 	},
 	template: ` 
+<div>
+	<nav class="navbar navbar-expand-sm mb-3 bg-dark">
+    			<div class="container-fluid">
+    				<ul class="navbar-nav ms-auto">
+    					<li class="nav-item">
+    						<button v-on:click="goToRegister();" class="btn btn-success btn-margin-left" >Register</button>
+    					</li>
+    					<li class="nav-item">
+    						<button v-on:click="goToEditProfile()" class="btn btn-primary btn-margin-left" >Edit profile</button>
+    					</li>
+    					<li class="nav-item">
+    						<button v-on:click="goToHomePage()" class="btn btn-primary btn-margin-left" >Home</button>
+    					</li>
+    					<li class="nav-item">
+    						<button v-on:click="goToUsersView()" class="btn btn-primary btn-margin-left" >Users</button>
+    					</li>
+    					<li class="nav-item">
+    						<button v-on:click="goToPromoCodes()" class="btn btn-primary btn-margin-left" >Codes</button>
+    					</li>
+    					<li class="nav-item">
+    						<button v-on:click="logoutUser()" class="btn btn-danger btn-margin-left" >Log out</button>
+    					</li>
+    				</ul>
+    			</div>
+    		</nav>
+
+
 <div style="background-color:gray;position: fixed;
   left:40%;
   top:15%;
   width:25%;
   height:70%;
   text-align:center;">
+  	
+  
+  
   <br/>
   <br/>
 <h2 class="h2">Promo Codes</h2>
@@ -67,11 +97,12 @@ Vue.component("promoCodes", {
 <a href="#/" ><input type="button"  class="btn btn-success" v-on:click="addPromoCode();" value="Make code"/></a>
 </td>
 <td>
-<a href="#/" ><input  type="button"  class="btn btn-success"  value="Cancel"/></>
+<a href="#/" ><input  type="button"  class="btn btn-success"  value="Cancel"/></a>
 </td>
 </tr>
 </table>
 </form>
+</div>
 </div> `
 , 
 	methods : {
@@ -79,7 +110,31 @@ Vue.component("promoCodes", {
 				axios  
 		          .post('customer/addPromoCode',this.code)
 		          .then(response => alert(response.data))
-		          }
+		},
+		goToRegister : function() {
+			router.push(`/register`);
+		},
+		goToEditProfile : function() {
+			router.push(`/editprofile`);
+		},
+		goToHomePage : function() {
+			router.push("/");
+		},
+		goToUsersView : function() {
+			router.push(`/userview`);
+		},
+		goToPromoCodes : function()
+		{
+			router.push(`/promoCodes`);
+		},
+		logoutUser : function () {
+				//this.hideButton("");
+				axios  
+		          .get('customer/logout',this.user)
+		          .then(response => (response.data))
+		         router.push("/");
+		         router.go(0);
+		}
 		
 		
 	}
