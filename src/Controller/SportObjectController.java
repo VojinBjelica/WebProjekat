@@ -100,10 +100,22 @@ public class SportObjectController {
 	}
 	public static void hide() {
 		post("sportObjects/hide", (req, res) -> {
-			System.out.println("Bitan str: " + temp);
+			Session ss = req.session(true);
+			User user = ss.attribute("user");
+			User u = null;
+			String retString = "";
+			if(user != null)
+			{
+				u = cs.findUserByUsername(user.getUsername());
+				System.out.println("Bitan str: " + u.getRole());
+				retString = "logged " + u.getRole();
+				
+			}
+			
 			String payload = req.body();
 			String  pd = g.fromJson(payload, String.class);
-			pd = temp;
+			
+			pd = retString;
 			g.toJson(pd);
 			return pd;
 		});
@@ -157,6 +169,13 @@ public class SportObjectController {
 		post("sportObject/showOne", (req, res) -> {
 			System.out.println("temp obj:" + tempObject.getObjectName());
 			return g.toJson(tempObject);
+		});
+	}
+	public static void deleteSportObject() {
+		post("sportObject/deleteObject", (req, res) -> {
+			System.out.println("temp obj za delete:" + tempObject.getObjectName());
+			sos.deleteSportObject(tempObject);
+			return "Obrisan";
 		});
 	}
 	
@@ -287,6 +306,20 @@ public class SportObjectController {
 			cs.deleteTraining(train);
 			System.out.println("Deleted training: " + train.getName());
 			return "OK";
+		});
+	}
+	public static void catchUser() {
+		post("sportObject/catchrole", (req, res) -> {
+			Session ss = req.session(true);
+			User user = ss.attribute("user");
+			String retValue = "";
+			User u = null;
+			if(user != null)
+			{
+				 u = cs.findUserByUsername(user.getUsername());
+				 retValue = "" + u.getRole();
+			}
+			return retValue;
 		});
 	}
 	

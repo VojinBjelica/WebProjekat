@@ -2,6 +2,7 @@ Vue.component("register", {
 	data: function () {
 		    return {
 			  temp:null,
+			  roleCaught:null,
 			  hideFlag:null,
 		      list:null,
 		      user:{name:null,surname:null,username:null,password:null,gender:null,dateOfBirth:null,role:null}
@@ -87,7 +88,9 @@ Vue.component("register", {
 <a href="#/login" ><input type="button"  class="btn btn-success" value="Login"/></a>
 </td>
 <td>
-<input  type="button"  class="btn btn-success" v-on:click="validateText();duplicateUsername();addCustomer();goToLogin();" value="Register"/>
+<input v-if="roleCaught == false"  type="button"  class="btn btn-success" v-on:click="validateText();duplicateUsername();addCustomer();goToLogin();" value="Register"/>
+<input v-if="roleCaught == true"  type="button"  class="btn btn-success" v-on:click="validateText();duplicateUsername();addCustomer();goToStart();" value="Register "/>
+
 </td>
 </tr>
 </table>
@@ -138,6 +141,12 @@ Vue.component("register", {
 			
 				
 		},
+		catchRole : function(role)
+		{
+			if(role == "Administrator")this.roleCaught = true;
+			else this.roleCaught = false;
+			alert(this.roleCaught + " uhvacen");
+		} ,
 		
 		 validateSurname : function() {
 			let y = document.getElementById('surname').value;
@@ -163,6 +172,9 @@ Vue.component("register", {
 		goToLogin : function() {
 			router.push(`/login`);
 		},
+		goToStart : function() {
+			router.push(`/`);
+		},
 		duplicateUsername : function()
 		{
 			let z = document.getElementById('username').value;
@@ -179,7 +191,8 @@ Vue.component("register", {
 			{
 				alert("Invalid username");
 			}
-		}	 
+		}
+		
 	}
 	
 ,mounted(){
@@ -188,5 +201,8 @@ Vue.component("register", {
 		axios
 			.get('customer/listinit', this.list)
 			.then(response => (this.list = response.data));
+		axios
+			.post('sportObject/catchrole', this.list)
+			.then(response => this.catchRole(response.data));
 	}
 })

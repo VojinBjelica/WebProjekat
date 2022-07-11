@@ -25,6 +25,10 @@ public class SportObjectService {
 	public ArrayList<SportObject> searchObjectsByName(String searchInput) {
 		return sofs.searchObjectsByName(searchInput);
 	}
+	public SportObject deleteSportObject(SportObject so)
+	{
+		return sofs.deleteSportObject(so);
+	}
 	
 	public ArrayList<SportObject> filteredList(ArrayList<SportObject> list) {
 		return sofs.filteredList(list);

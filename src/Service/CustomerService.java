@@ -28,6 +28,10 @@ public class CustomerService {
 	{
 		return cfs.readCustomers("customers");
 	}
+	public boolean expirationChecker(String username)
+	{
+		return cfs.expirationChecker(username);
+	}
 	public CustomerType checkForTypeName(User u)
 	{
 		return cfs.checkForTypeName(u);

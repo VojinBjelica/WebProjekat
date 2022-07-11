@@ -3,7 +3,8 @@ Vue.component("oneSportObject", {
 		return {
 			sportObject: {objectName:null, objectType:null, objectOffer:null, status:null, location:null, logo:null, avarageMark:null, workHour:null},
 			searchData: {type:null, priceFrom:null, priceTo:null},
-			trainingList:null
+			trainingList:null,
+			roleCaught:null
 		}
 	},
 	template: `
@@ -79,7 +80,8 @@ Vue.component("oneSportObject", {
 	    			</div>
 	    			<div class="search-btn-wrapper">
 	    				
-	    				<button class="btn btn-secondary" v-on:click="validateSearch()" >Search</button>
+	    				<button class="btn btn-secondary" v-on:click="validateSearch()" >Search</button>&nbsp
+	    				<button v-if="roleCaught == true" class="btn btn-secondary" v-on:click="deleteObject();goBack();" >Delete Object</button>
 	    			</div>
 	    		</div>
 	    		
@@ -93,6 +95,9 @@ Vue.component("oneSportObject", {
 			.post('sportObject/showOne', this.sportObject)
 			.then(response => this.sportObject = response.data);
 		axios
+			.post('sportObject/catchrole', this.sportObject)
+			.then(response => this.catchRole(response.data));
+		axios
 			.post('sportObject/showtable', this.trainingList)
 			.then(response => this.trainingList = response.data);
 		axios
@@ -101,6 +106,21 @@ Vue.component("oneSportObject", {
 	},
 	methods: {
 		
+		goBack()
+		{
+			router.push(`/`);
+		},
+		deleteObject : function()
+		{
+			axios
+			.post('sportObject/deleteObject', this.sportObject)
+			.then(response => alert(response.data));
+		},
+		catchRole : function(role)
+		{
+			if(role == "Administrator")this.roleCaught = true;
+			else this.roleCaught = false;
+		},
 		searchTrainings : function() {
 			var typeSearch = document.getElementById('search-training-type').value;
 			var priceFromSearch = document.getElementById('search-training-price-from').value;

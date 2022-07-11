@@ -82,7 +82,7 @@ Vue.component("duesPayment", {
 </tr>
 <tr>
 <td>
-<input  type="button" class="btn btn-primary" v-on:click="makeDue();" style="margin-top:10px" value="Pay"/>
+<input  type="button" class="btn btn-primary" v-on:click="makeDue();expCheck();" style="margin-top:10px" value="Pay"/>
 &nbsp
 <input  type="button" class="btn btn-primary" v-on:click="calculateNewPrice();" style="margin-top:10px" value="Discount"/>
 
@@ -106,7 +106,13 @@ Vue.component("duesPayment", {
 				axios  
 		          .post('customer/calcdis',this.due)
 		          .then(response => this.due = response.data)
-		          },          
+		          },      
+		expCheck : function()
+		{
+			 axios  
+		    	.post('customer/expchecker',this.user)
+		    	.then(response => alert(response.data))
+		}   ,
 		calculateNewPrice : function () {
 				axios  
 		          .post('customer/promoDisc',this.due)
