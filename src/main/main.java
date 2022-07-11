@@ -53,7 +53,7 @@ public class main {
 		CustomerController.userIs();
 		CustomerController.deleted();
 		CustomerController.searchTrainingsForCustomer();
-		
+		CustomerController.getLoggedRole();
 		
 		
 		new SportObjectController();

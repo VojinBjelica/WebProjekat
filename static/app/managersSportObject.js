@@ -6,13 +6,34 @@ Vue.component("managersSportObject", {
 			viewers : null,
 			trainingsSO : null,
 			sortedList : null,
+			loggedRole:null,
 			searchData: {name: null, type:null, priceFrom:null, priceTo:null},
 			training: {name:null, type:null, sportObject:null, duration:null, trainer:null, description:null, price:null, picture:null, trainingDate:null, id:null, deleted:null},
 			allCoaches: null
 		}
 	},
 	template: `
-		<div  v-if="sortedList">
+		<div v-if="sortedList">
+			<nav class="navbar navbar-expand-sm mb-3 bg-dark" >
+    			<div class="container-fluid">
+    				<ul class="navbar-nav ms-auto">
+    					
+    					<li class="nav-item">
+    						<button v-on:click="goToEditProfile()" class="btn btn-primary btn-margin-left" >Edit profile</button>
+    					</li>
+    					<li class="nav-item">
+    						<button v-on:click="goToHomePage()" class="btn btn-primary btn-margin-left" >Home</button>
+    					</li>
+    					<li class="nav-item">
+    					
+    						<button v-on:click="goToManagersSO()" class="btn btn-primary btn-margin-left" >My sport object</button>
+    					</li>
+    					<li class="nav-item">
+    						<button v-on:click="logoutUser()" class="btn btn-danger btn-margin-left" >Log out</button>
+    					</li>
+    				</ul>
+    			</div>
+    		</nav>
 			<div class="mso-container " style="width:70%">
 				<img v-bind:src="sportObject.logo" style="width:20%"/>
 				<div style="display:flex;flex-direction:column;">
@@ -248,6 +269,7 @@ Vue.component("managersSportObject", {
 	    	
 		</div>
 		
+		
 	`,
 	mounted() {
 		axios
@@ -267,6 +289,11 @@ Vue.component("managersSportObject", {
 			.get('sportObject/getTrainingsForSO')
 			.then(response =>  { this.trainingsSO = response.data 
 								 this.sortedList = this.trainingsSO	});
+								 
+		axios
+			.get('customer/getLoggedRole') 
+			.then(response => this.loggedRole = response.data);							 
+		
 			
 	},
 	
@@ -290,6 +317,26 @@ Vue.component("managersSportObject", {
 				
 			router.push('/editTraining');
 			router.go(0);
+		},
+		goToRegister : function() {
+			router.push(`/register`);
+		},
+		goToEditProfile : function() {
+			router.push(`/editprofile`);
+		},
+		goToHomePage : function() {
+			router.push("/");
+		},
+		goToManagersSO : function() {
+			router.push(`/managersSportObject`);
+		},
+		logoutUser : function () {
+				//this.hideButton("");
+				axios  
+		          .get('customer/logout',this.user)
+		          .then(response => (response.data))
+		         router.push("/");
+		         router.go(0);
 		},
 		
 		validateAdding: function() {

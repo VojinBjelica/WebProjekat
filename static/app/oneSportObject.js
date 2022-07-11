@@ -8,35 +8,149 @@ Vue.component("oneSportObject", {
 			commentList:null,
 			fullcommentList:null,
 			roleCaught:null,
+			loggedRole:null,
 			tworole:null
 		}
 	},
 	template: `
 		<div class= "home-page">
-			<div class="container-fluid">
-				<div>
-					<p>Name: {{sportObject.objectName}}</p>
-				</div>
-				<div>
-					<p>Type: {{sportObject.objectType}}</p>
-				</div>
-				<div>
-					<p>Status: <span v-if="sportObject.status == true">Open</span><span v-else>Closed</span></p>
-				</div>
-				<div>
-					<p>Location: {{sportObject.location.longitude + ', ' + sportObject.location.latitude + ', ' + sportObject.location.address.streetAndNumber + ', '
-	    				+ sportObject.location.address.city + ', ' + sportObject.location.address.zipCode}}</p>
-				</div>
-				<div>
-					<p>Logo: </p><img v-bind:src="sportObject.logo" style="width:200px; height:200px;"></img>
-				</div>
-				<div>
-					<p>Average mark: {{sportObject.avarageMark}}</p>
-				</div>
-				
-				<div class="sport-objects-view d-flex flex-row">
+		
+			<nav class="navbar navbar-expand-sm mb-3  bg-dark" v-if="loggedRole == 'None'">
+    			<div class="container-fluid">
+    				<ul class="navbar-nav ms-auto">
+    					<li class="nav-item">
+    						<button  v-on:click="goToLogin()" class="btn btn-success btn-margin-left"  >Login</button>
+    					</li>
+    					<li class="nav-item">
+    						<button v-on:click="goToRegister()" class="btn btn-success btn-margin-left" >Register</button>
+    					</li>
+    					<li class="nav-item">
+    						<button v-on:click="goToHomePage()" class="btn btn-primary btn-margin-left" >Home</button>
+    					</li>
+    					
+    				</ul>
+    			</div>
+    		</nav>
     		
-				<table id="trTable"  style="margin:auto;height:200px">
+    		<nav class="navbar navbar-expand-sm mb-3 bg-dark" v-if="loggedRole == 'Administrator'">
+    			<div class="container-fluid">
+    				<ul class="navbar-nav ms-auto">
+    					<li class="nav-item">
+    						<button v-on:click="goToRegister();" class="btn btn-success btn-margin-left" >Register</button>
+    					</li>
+    					<li class="nav-item">
+    						<button v-on:click="goToEditProfile()" class="btn btn-primary btn-margin-left" >Edit profile</button>
+    					</li>
+    					<li class="nav-item">
+    						<button v-on:click="goToHomePage()" class="btn btn-primary btn-margin-left" >Home</button>
+    					</li>
+    					<li class="nav-item">
+    						<button v-on:click="goToUsersView()" class="btn btn-primary btn-margin-left" >Users</button>
+    					</li>
+    					<li class="nav-item">
+    						<button v-on:click="goToPromoCodes()" class="btn btn-primary btn-margin-left" >Codes</button>
+    					</li>
+    					<li class="nav-item">
+    						<button v-on:click="logoutUser()" class="btn btn-danger btn-margin-left" >Log out</button>
+    					</li>
+    				</ul>
+    			</div>
+    		</nav>
+    		
+    		<nav class="navbar navbar-expand-sm mb-3 bg-dark" v-if="loggedRole == 'Manager'">
+    			<div class="container-fluid">
+    				<ul class="navbar-nav ms-auto">
+    					
+    					<li class="nav-item">
+    						<button v-on:click="goToEditProfile()" class="btn btn-primary btn-margin-left" >Edit profile</button>
+    					</li>
+    					<li class="nav-item">
+    						<button v-on:click="goToHomePage()" class="btn btn-primary btn-margin-left" >Home</button>
+    					</li>
+    					<li class="nav-item">
+    					
+    						<button v-on:click="goToManagersSO()" class="btn btn-primary btn-margin-left" >My sport object</button>
+    					</li>
+    					<li class="nav-item">
+    						<button v-on:click="logoutUser()" class="btn btn-danger btn-margin-left" >Log out</button>
+    					</li>
+    				</ul>
+    			</div>
+    		</nav>
+    		
+    		<nav class="navbar navbar-expand-sm mb-3 bg-dark" v-if="loggedRole == 'Coach'">
+    			<div class="container-fluid">
+    				<ul class="navbar-nav ms-auto">
+    					
+    					<li class="nav-item">
+    						<button v-on:click="goToEditProfile()" class="btn btn-primary btn-margin-left" >Edit profile</button>
+    					</li>
+    					<li class="nav-item">
+    						<button v-on:click="goToHomePage()" class="btn btn-primary btn-margin-left" >Home</button>
+    					</li>
+    					<li class="nav-item">
+    						<button v-on:click="goToMyTrainings()" class="btn btn-primary btn-margin-left"  >My trainings</button>
+    					</li>
+    					<li class="nav-item">
+    						<button v-on:click="logoutUser()" class="btn btn-danger btn-margin-left" >Log out</button>
+    					</li>
+    				</ul>
+    			</div>
+    		</nav>
+    		
+    		<nav class="navbar navbar-expand-md mb-3 bg-dark" v-if="loggedRole == 'Customer'">
+    			<div class="container-fluid ">
+    				<ul class="navbar-nav ms-auto">
+    					<li class="nav-item">
+    						<button v-on:click="goToEditProfile()" class="btn btn-primary btn-margin-left" >Edit profile</button>
+    					</li>
+    					<li class="nav-item">
+    						<button v-on:click="goToHomePage()" class="btn btn-primary btn-margin-left" >Home</button>
+    					</li>
+    					<li class="nav-item">
+    						<button v-on:click="goToCustomerTrainings()" class="btn btn-primary btn-margin-left" >My trainings</button>
+    					</li>
+    					<li class="nav-item">
+    						<button v-on:click="goToDues()" class="btn btn-primary btn-margin-left" >Dues</button>
+    					</li>
+    					<li class="nav-item">
+    						<button v-on:click="goToSchedule()" class="btn btn-primary btn-margin-left" >Schedule trainings</button>
+    					</li>
+    					<li class="nav-item">
+    						<button v-on:click="logoutUser()" class="btn btn-danger btn-margin-left" >Log out</button>
+    					</li>
+    				</ul>
+    			</div>
+    		</nav>
+			
+			<div class="mso-container " style="width:70%; margin-bottom:20px">
+				<img v-bind:src="sportObject.logo" style="width:20%"/>
+				<div style="display:flex;flex-direction:column;">
+					<p class="mso-name  h3" >{{sportObject.objectName}}</p>
+					<div class="d-flex ">
+						<p style="font-size:20px;margin-left:10px">{{sportObject.objectType}}</p>
+						<p style="font-size:20px;margin-left:20px" >Status: <span class="badge rounded-pill bg-success" v-if="sportObject.status == true">Open</span><span class="badge rounded-pill bg-danger" v-else>Closed</span></p>
+					</div>
+					<div>
+						<p style="font-size:20px;margin-left:10px">Rating: <span class="badge rounded-pill bg-primary">{{sportObject.avarageMark}}</span></p>
+					</div>
+					<div>
+						<p style="font-size:20px;margin-left:10px">Offer: {{sportObject.objectOffer}}</p>
+					</div>
+				</div>
+				<div style="margin-left:50px; margin-top:45px" class="d-flex flex-column">
+					<p style="font-size:20px;margin-left:10px">Location: {{sportObject.location.longitude + ', ' + sportObject.location.latitude + ', ' + sportObject.location.address.streetAndNumber + ', '
+	    				+ sportObject.location.address.city + ', ' + sportObject.location.address.zipCode}}</p>
+					<p style="font-size:20px;margin-left:10px">Work hour: {{sportObject.workHour}}</p>
+				</div>
+			</div>
+			
+			<div class="container-fluid">
+				
+				
+				<div class="sport-objects-view d-flex flex-row" style="margin-bottom:10px">
+    		
+				<table id="trTable"  style="margin-bottom:10px; height:200px">
 	    			<tr bgcolor="grey">
 	    				<th style="min-width:50px">Name</th>
 	    				<th style="min-width:50px">Type</th>
@@ -158,6 +272,10 @@ Vue.component("oneSportObject", {
 		axios
 			.get('sportObject/addView')
 			.then(response => alert(response.data));
+			
+		axios
+			.get('customer/getLoggedRole') 
+			.then(response => this.loggedRole = response.data);
 		
 	},
 	methods: {
@@ -171,6 +289,55 @@ Vue.component("oneSportObject", {
 		{
 			router.go(0);
 		},
+		logoutUser : function () {
+				//this.hideButton("");
+				axios  
+		          .get('customer/logout',this.user)
+		          .then(response => (response.data))
+		         router.push("/");
+		         router.go(0);
+		},
+		goToLogin : function() {
+			router.push(`/login`);
+		},
+		goToEditProfile : function() {
+			router.push(`/editprofile`);
+		},
+		
+		goToRegister : function() {
+			router.push(`/register`);
+		},
+		goToUsersView : function() {
+			router.push(`/userview`);
+		},
+		goToMyTrainings : function()
+		{
+			router.push(`/coachTraining`);
+		},
+		goToCustomerTrainings : function()
+		{
+			router.push(`/customerTraining`);
+		},
+		goToDues : function()
+		{
+			router.push(`/duesPayment`);
+		},
+		goToPromoCodes : function()
+		{
+			router.push(`/promoCodes`);
+		},
+		goToSchedule : function()
+		{
+			router.push(`/scheduleTraining`);
+		},
+		goToManagersSO : function() {
+			router.push(`/managersSportObject`);
+		},
+		
+		goToHomePage : function() {
+			router.push("/");
+		},
+		
 		addComment : function()
 		{
 			alert(this.comment.text);

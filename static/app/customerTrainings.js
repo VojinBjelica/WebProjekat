@@ -9,6 +9,31 @@ Vue.component("customerTraining", {
 		}
 	},
 	template: `
+	<div>
+		<nav class="navbar navbar-expand-md bg-dark">
+    			<div class="container-fluid ">
+    				<ul class="navbar-nav ms-auto">
+    					<li class="nav-item">
+    						<button v-on:click="goToEditProfile()" class="btn btn-primary btn-margin-left" >Edit profile</button>
+    					</li>
+    					<li class="nav-item">
+    						<button v-on:click="goToHomePage()" class="btn btn-primary btn-margin-left" >Home</button>
+    					</li>
+    					<li class="nav-item">
+    						<button v-on:click="goToCustomerTrainings()" class="btn btn-primary btn-margin-left" >My trainings</button>
+    					</li>
+    					<li class="nav-item">
+    						<button v-on:click="goToDues()" class="btn btn-primary btn-margin-left" >Dues</button>
+    					</li>
+    					<li class="nav-item">
+    						<button v-on:click="goToSchedule()" class="btn btn-primary btn-margin-left" >Schedule trainings</button>
+    					</li>
+    					<li class="nav-item">
+    						<button v-on:click="logoutUser()" class="btn btn-danger btn-margin-left" >Log out</button>
+    					</li>
+    				</ul>
+    			</div>
+    		</nav>
 		<div class="add-so d-flex justify-content-center" >
 		<div >
 			<p class="h3 ms-5 mb-3">My trainings</p>
@@ -97,7 +122,7 @@ Vue.component("customerTraining", {
 		</div>
 		
 		</div>
-	
+	</div>
 	
 	`,
 	methods : {
@@ -171,6 +196,32 @@ Vue.component("customerTraining", {
 			}
 			
 			
+		},
+		goToEditProfile : function() {
+			router.push(`/editprofile`);
+		},
+		goToHomePage : function() {
+			router.push("/");
+		},
+		goToCustomerTrainings : function()
+		{
+			router.push(`/customerTraining`);
+		},
+		goToDues : function()
+		{
+			router.push(`/duesPayment`);
+		},
+		goToSchedule : function()
+		{
+			router.push(`/scheduleTraining`);
+		},
+		logoutUser : function () {
+				//this.hideButton("");
+				axios  
+		          .get('customer/logout',this.user)
+		          .then(response => (response.data))
+		         router.push("/");
+		         router.go(0);
 		}
 		
 	},

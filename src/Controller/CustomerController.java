@@ -633,6 +633,41 @@ public class CustomerController {
 		});
 	}
 	
+	public static void getLoggedRole() {
+		get("customer/getLoggedRole", (req, res) -> {
+			Session ss = req.session(true);
+			User user = ss.attribute("user");
+			
+			
+			
+			
+			String retVal = "Null je";
+			
+			
+			if (user == null) {
+				retVal = "None";
+				System.out.println("USER JE NULL?!?!??!?");
+			} else {
+				User u = cs.findUserByUsername(user.getUsername());
+				System.out.println("ULOGAAAAAAAA: " + u.getRole());
+				if (u.getRole() == RoleEnum.Administrator) {
+					retVal = "Administrator";
+				} else if (u.getRole() == RoleEnum.Coach) {
+					retVal = "Coach";
+				} else if (u.getRole() == RoleEnum.Manager) {
+					retVal = "Manager";
+				} else if (u.getRole() == RoleEnum.Customer) {
+					retVal = "Customer";
+				}
+				
+			}
+			
+			System.out.println("RETURN ULOGA: " + retVal);
+			return g.toJson(retVal);
+			
+		});
+	}
+	
 	
 	
 }

@@ -9,6 +9,32 @@ Vue.component("userview", {
 	},
 	template: `  
     	<div class="home-page" style="background-color:lightgrey; margin-bottom:100px;">
+    		
+    		<nav class="navbar navbar-expand-sm mb-3 bg-dark">
+    			<div class="container-fluid">
+    				<ul class="navbar-nav ms-auto">
+    					<li class="nav-item">
+    						<button v-on:click="goToRegister();" class="btn btn-success btn-margin-left" >Register</button>
+    					</li>
+    					<li class="nav-item">
+    						<button v-on:click="goToEditProfile()" class="btn btn-primary btn-margin-left" >Edit profile</button>
+    					</li>
+    					<li class="nav-item">
+    						<button v-on:click="goToHomePage()" class="btn btn-primary btn-margin-left" >Home</button>
+    					</li>
+    					<li class="nav-item">
+    						<button v-on:click="goToUsersView()" class="btn btn-primary btn-margin-left" >Users</button>
+    					</li>
+    					<li class="nav-item">
+    						<button v-on:click="goToPromoCodes()" class="btn btn-primary btn-margin-left" >Codes</button>
+    					</li>
+    					<li class="nav-item">
+    						<button v-on:click="logoutUser()" class="btn btn-danger btn-margin-left" >Log out</button>
+    					</li>
+    				</ul>
+    			</div>
+    		</nav>
+    		
     		<div class="header-wrapper">
     			<h3 style="margin:auto;text-align:center;">User view</h3>
     			
@@ -215,6 +241,30 @@ Vue.component("userview", {
 		sortPointsDown : function() {
 			this.userList.sort(this.compareNumDown);
 			this.searchName();
+		},
+		goToRegister : function() {
+			router.push(`/register`);
+		},
+		goToEditProfile : function() {
+			router.push(`/editprofile`);
+		},
+		goToHomePage : function() {
+			router.push("/");
+		},
+		goToUsersView : function() {
+			router.push(`/userview`);
+		},
+		goToPromoCodes : function()
+		{
+			router.push(`/promoCodes`);
+		},
+		logoutUser : function () {
+				//this.hideButton("");
+				axios  
+		          .get('customer/logout',this.user)
+		          .then(response => (response.data))
+		         router.push("/");
+		         router.go(0);
 		},
 		
 
