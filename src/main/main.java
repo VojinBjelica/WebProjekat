@@ -55,6 +55,7 @@ public class main {
 		CustomerController.searchTrainingsForCustomer();
 		
 		
+		
 		new SportObjectController();
 		SportObjectController.readSportObjects();
 		SportObjectController.searchObjectsByName();
@@ -80,6 +81,8 @@ public class main {
 		SportObjectController.searchTrainersPersonalTrainings();
 		SportObjectController.searchTrainersGroupTrainings();
 		SportObjectController.searchTrainingsOfObject();
+		SportObjectController.deleteSportObject();
+		SportObjectController.catchUser();
 		// TODO Auto-generated method stub
 
 	}

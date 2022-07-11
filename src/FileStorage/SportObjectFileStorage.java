@@ -121,9 +121,29 @@ public class SportObjectFileStorage {
 		return searchedList;
 	}
 	
+	public SportObject deleteSportObject(SportObject so)
+	{
+		sportObjectList = readSportObjects();
+		SportObject spo = null;
+		for(SportObject sp : sportObjectList)
+		{
+			if(sp.getObjectName().equals(so.getObjectName()))
+			{
+				System.out.println("postavio delete za: " + sp.getObjectName());
+				sp.setDeleted(1);
+				spo = sp;
+
+			}
+				
+		}
+		addSportObjectInFile("sportObjects");
+		return spo;
+	}
+	
 	public ArrayList<SportObject> filteredList(ArrayList<SportObject> list) {
 		ArrayList<SportObject> filtered = new ArrayList<SportObject>();
 		for (SportObject s : list) {
+			if(s.getDeleted() == 0)
 			filtered.add(s);
 	        
 		}

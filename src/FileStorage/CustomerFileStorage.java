@@ -207,17 +207,24 @@ public class CustomerFileStorage {
         }
         return customers;
     }
-	public boolean expirationChecker()
+	public boolean expirationChecker(String username)
 	{
 		LocalDate localDate = LocalDate.now();
 		Date date = Date.from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
-		
-		for(Dues d : readDues())
+		duesList = readDues();
+		for(Dues d : duesList)
 		{
 			if(d.getExpirationDateAndTime().before(date))
 			{
 				d.setStatus(false);
 			}
+			boolean temp = dueActive(username);
+			if(temp == true)
+			{
+				if(d.getCustomer().getUsername().equals(username))
+					d.setStatus(false);
+			}
+			
 		}
 		addDuesInFile();
 		return true;
@@ -945,7 +952,6 @@ public class CustomerFileStorage {
 	}
 	public boolean calculatePoints()
 	{
-		expirationChecker();
 		LocalDate localDate = LocalDate.now();
 		Date date = Date.from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
 		float bodovi = 0;
@@ -960,7 +966,7 @@ public class CustomerFileStorage {
 			broj_izgubljenih_bodova = 0;
 			if(d.getDone() == 0)
 			{
-			if(d.getExpirationDateAndTime().before(date))
+			if(d.getExpirationDateAndTime().before(date) || d.isStatus() == false)
 			{
 				d.setDone(1);
 				
@@ -980,11 +986,18 @@ public class CustomerFileStorage {
 				{
 					
 					bodovi += (d.getPrice()/1000.0) * d.getNumberOfAppointments();
-					if(d.getNumberOfAppointments() < 10)
+					if(d.getDuesType().equals(DuesTypeEnum.Month))
+					if(d.getNumberOfAppointments() >= 20 )
 					{
 					broj_izgubljenih_bodova = d.getPrice()/1000 * 133 * 4;
 					bodovi = bodovi - broj_izgubljenih_bodova;
 					}
+					if(d.getDuesType().equals(DuesTypeEnum.Year))
+						if(d.getNumberOfAppointments() >= 244 )
+						{
+						broj_izgubljenih_bodova = d.getPrice()/1000 * 133 * 4;
+						bodovi = bodovi - broj_izgubljenih_bodova;
+						}
 					Points p = new Points(d.getCustomer().getUsername(),bodovi);
 					retList.add(p);
 				}
@@ -998,11 +1011,18 @@ public class CustomerFileStorage {
 						if(date.getDay() - d.getExpirationDateAndTime().getDay() <= 29  )
 						{
 							bodovi += (d.getPrice()/1000.0) * d.getNumberOfAppointments();
-							if(d.getNumberOfAppointments() < 10)
-							{
-							broj_izgubljenih_bodova = d.getPrice()/1000 * 133 * 4;
-							bodovi = bodovi - broj_izgubljenih_bodova;
-							}
+							if(d.getDuesType().equals(DuesTypeEnum.Month))
+								if(d.getNumberOfAppointments() >= 20 )
+								{
+								broj_izgubljenih_bodova = d.getPrice()/1000 * 133 * 4;
+								bodovi = bodovi - broj_izgubljenih_bodova;
+								}
+								if(d.getDuesType().equals(DuesTypeEnum.Year))
+									if(d.getNumberOfAppointments() >= 244 )
+									{
+									broj_izgubljenih_bodova = d.getPrice()/1000 * 133 * 4;
+									bodovi = bodovi - broj_izgubljenih_bodova;
+									}
 							Points p = new Points(d.getCustomer().getUsername(),bodovi);
 							retList.add(p);
 						}
@@ -1012,11 +1032,19 @@ public class CustomerFileStorage {
 						if(date.getDay() - d.getExpirationDateAndTime().getDay() <= 27  )
 						{
 							bodovi += (d.getPrice()/1000.0) * d.getNumberOfAppointments();
-							if(d.getNumberOfAppointments() < 10)
-							{
-							broj_izgubljenih_bodova = d.getPrice()/1000 * 133 * 4;
-							bodovi = bodovi - broj_izgubljenih_bodova;
-							}Points p = new Points(d.getCustomer().getUsername(),bodovi);
+							if(d.getDuesType().equals(DuesTypeEnum.Month))
+								if(d.getNumberOfAppointments() >= 20 )
+								{
+								broj_izgubljenih_bodova = d.getPrice()/1000 * 133 * 4;
+								bodovi = bodovi - broj_izgubljenih_bodova;
+								}
+								if(d.getDuesType().equals(DuesTypeEnum.Year))
+									if(d.getNumberOfAppointments() >= 244 )
+									{
+									broj_izgubljenih_bodova = d.getPrice()/1000 * 133 * 4;
+									bodovi = bodovi - broj_izgubljenih_bodova;
+									}
+							Points p = new Points(d.getCustomer().getUsername(),bodovi);
 							retList.add(p);
 						}
 					}
@@ -1025,11 +1053,19 @@ public class CustomerFileStorage {
 						if(date.getDay() - d.getExpirationDateAndTime().getDay() <= 30  )
 						{
 							bodovi += (d.getPrice()/1000.0) * d.getNumberOfAppointments();
-							if(d.getNumberOfAppointments() < 10)
-							{
-							broj_izgubljenih_bodova = d.getPrice()/1000 * 133 * 4;
-							bodovi = bodovi - broj_izgubljenih_bodova;
-							}Points p = new Points(d.getCustomer().getUsername(),bodovi);
+							if(d.getDuesType().equals(DuesTypeEnum.Month))
+								if(d.getNumberOfAppointments() >= 20 )
+								{
+								broj_izgubljenih_bodova = d.getPrice()/1000 * 133 * 4;
+								bodovi = bodovi - broj_izgubljenih_bodova;
+								}
+								if(d.getDuesType().equals(DuesTypeEnum.Year))
+									if(d.getNumberOfAppointments() >= 244 )
+									{
+									broj_izgubljenih_bodova = d.getPrice()/1000 * 133 * 4;
+									bodovi = bodovi - broj_izgubljenih_bodova;
+									}
+							Points p = new Points(d.getCustomer().getUsername(),bodovi);
 							retList.add(p);
 						}
 					}
@@ -1042,11 +1078,19 @@ public class CustomerFileStorage {
 							{
 								
 								bodovi += (d.getPrice()/1000.0) * d.getNumberOfAppointments();
-								if(d.getNumberOfAppointments() < 10)
-								{
-								broj_izgubljenih_bodova = d.getPrice()/1000 * 133 * 4;
-								bodovi = bodovi - broj_izgubljenih_bodova;
-								}Points p = new Points(d.getCustomer().getUsername(),bodovi);
+								if(d.getDuesType().equals(DuesTypeEnum.Month))
+									if(d.getNumberOfAppointments() >= 20 )
+									{
+									broj_izgubljenih_bodova = d.getPrice()/1000 * 133 * 4;
+									bodovi = bodovi - broj_izgubljenih_bodova;
+									}
+									if(d.getDuesType().equals(DuesTypeEnum.Year))
+										if(d.getNumberOfAppointments() >= 244 )
+										{
+										broj_izgubljenih_bodova = d.getPrice()/1000 * 133 * 4;
+										bodovi = bodovi - broj_izgubljenih_bodova;
+										}
+								Points p = new Points(d.getCustomer().getUsername(),bodovi);
 								retList.add(p);
 							}
 						}
@@ -1055,11 +1099,19 @@ public class CustomerFileStorage {
 							if(date.getDay() - d.getExpirationDateAndTime().getDay() <= 27  )
 							{
 								bodovi += (d.getPrice()/1000.0) * d.getNumberOfAppointments();
-								if(d.getNumberOfAppointments() < 10)
-								{
-								broj_izgubljenih_bodova = d.getPrice()/1000 * 133 * 4;
-								bodovi = bodovi - broj_izgubljenih_bodova;
-								}Points p = new Points(d.getCustomer().getUsername(),bodovi);
+								if(d.getDuesType().equals(DuesTypeEnum.Month))
+									if(d.getNumberOfAppointments() >= 20 )
+									{
+									broj_izgubljenih_bodova = d.getPrice()/1000 * 133 * 4;
+									bodovi = bodovi - broj_izgubljenih_bodova;
+									}
+									if(d.getDuesType().equals(DuesTypeEnum.Year))
+										if(d.getNumberOfAppointments() >= 244 )
+										{
+										broj_izgubljenih_bodova = d.getPrice()/1000 * 133 * 4;
+										bodovi = bodovi - broj_izgubljenih_bodova;
+										}
+								Points p = new Points(d.getCustomer().getUsername(),bodovi);
 								retList.add(p);
 							}
 						}
@@ -1068,11 +1120,18 @@ public class CustomerFileStorage {
 							if(date.getDay() - d.getExpirationDateAndTime().getDay() <= 30  )
 							{
 								bodovi += (d.getPrice()/1000.0) * d.getNumberOfAppointments();
-								if(d.getNumberOfAppointments() < 10)
-								{
-								broj_izgubljenih_bodova = d.getPrice()/1000 * 133 * 4;
-								bodovi = bodovi - broj_izgubljenih_bodova;
-								}
+								if(d.getDuesType().equals(DuesTypeEnum.Month))
+									if(d.getNumberOfAppointments() >= 20 )
+									{
+									broj_izgubljenih_bodova = d.getPrice()/1000 * 133 * 4;
+									bodovi = bodovi - broj_izgubljenih_bodova;
+									}
+									if(d.getDuesType().equals(DuesTypeEnum.Year))
+										if(d.getNumberOfAppointments() >= 244 )
+										{
+										broj_izgubljenih_bodova = d.getPrice()/1000 * 133 * 4;
+										bodovi = bodovi - broj_izgubljenih_bodova;
+										}
 								Points p = new Points(d.getCustomer().getUsername(),bodovi);
 								retList.add(p);
 							}

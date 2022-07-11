@@ -37,6 +37,31 @@ Vue.component("userview", {
 	    				<td ><button v-on:click="setDeleted(userr);ruterIdi();">Delete</button></td>
 	    			</tr>
 	    		</table>
+	    		<div class="objects-search">
+	    			<div class="container">
+	    				<p style="margin-top:10px">Search by name: </p>
+	    				<input id="searchName" class="form-control"  type="text" placeholder="Search...">
+	    				
+	    			</div>
+	    			<div class="container">
+	    				<p style="margin-top:10px">Search by surname: </p>
+	    				<input id="searchSurname" class="form-control"  type="text" placeholder="Search...">
+	    				
+	    			</div>
+	    			<div class="container">
+	    				<p style="margin-top:10px">Search by username: </p>
+	    				<input id="searchUsername" class="form-control"  type="text" placeholder="Search...">
+	    			</div>
+	    			<div class="container">
+	    				<p style="margin-top:10px"	>Search by role: </p>
+	    				<input id="searchRole" class="form-control"  type="text" placeholder="Search...">
+	    			</div>
+	    			
+	    			<div class="search-btn-wrapper">
+	    				
+	    				<button type="submit" class="btn btn-secondary" v-on:click="searchName()">Search</button>
+	    			</div>
+	    		</div>
 	    		
 	    		</div>
 	    		<a href="#/"><button style="margin-left:45%;margin-top:5px" class="login-btn" id="btn-login" >Start page</button></a>
@@ -55,6 +80,38 @@ Vue.component("userview", {
 		ruterIdi : function()
 		{
 			router.go(0);
+		},
+		searchName: function() {
+			
+			var searchNameInput = document.getElementById("searchName").value;
+			var table = document.getElementById("soTable");
+			var searchSurnameInput = document.getElementById("searchSurname").value;
+			var searchUsernameInput = document.getElementById("searchUsername").value;
+			var searchRoleInput = document.getElementById("searchRole").value;
+			
+			
+			var tr = table.getElementsByClassName("data");
+			for (const s in this.userList) {
+					tr[s].style.display = "";
+				}
+			if (searchNameInput == "" && searchSurnameInput == "" && searchUsernameInput == "" && searchRoleInput == "") {
+				for (const s in this.userList) {
+					tr[s].style.display = "";
+				}
+			}	
+			
+			for (const s in this.userList) {
+				if (this.userList[s].name.toLowerCase().indexOf(searchNameInput.toLowerCase()) > -1 && this.userList[s].surname.toLowerCase().indexOf(searchSurnameInput) > -1
+				&& (this.userList[s].username.toLowerCase().indexOf(searchUsernameInput.toLowerCase()) > -1 && this.userList[s].role.toString().toLowerCase().indexOf(searchRoleInput.toLowerCase()) > -1) 
+				){
+					
+				}
+				else {
+					tr[s].style.display = "none";
+				}
+			}
+			
+			
 		},
 		setDeleted : function(training)
 		{

@@ -102,8 +102,11 @@ Vue.component("sportObjectsView", {
 		axios  
 		    .post('customer/calculatePoints',this.user)
 		    .then(response => alert(response.data))
+		    
        
+		    
 		this.hideCheck();
+		
 		axios
 			.get('sportObjects/read', this.sportObjectList)
 			.then(response => (this.sportObjectList = response.data));

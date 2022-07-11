@@ -1,7 +1,11 @@
-joca123;joca123;Joca;Jocic;Male;2022-06-14;Bronzani;
+joca123;joca123;Joca;Jocic;Male;2022-06-14;None;
 ala;ala;Joca;Jocic;Male;2022-06-14;None;
 laca;laca;Laca;Lacic;Male;2022-06-21;None;
 maca;maca;Maca;Macic;Female;2022-06-15;None;
 steva111;steva111;Steva;Stevanovic;Male;2022-04-06;None;
 vojo;vojo;Vojin;Vojinovic;Male;2022-06-01;None;
 qwert;qwert;Qwert;Qwert;Male;2022-03-15;None;
+luka123;luka123;Luka;Lukic;Male;2022-07-01;None;
+mio123;mio123;Miodrag;Miodragovic;Male;2022-07-08;None;
+peca123;peca123;Peca;Pecic;Male;2022-07-05;None;
+nele123;nele123;Neca;Necic;Male;2022-07-05;None;

@@ -332,6 +332,18 @@ public class CustomerController {
 			return "OK";
 		});
 	}
+	public static void expChecker()
+	{
+		post("customer/expchecker", (req, res) -> {
+			String payload = req.body();
+			Training pd = g.fromJson(payload, Training.class);
+			Session ss = req.session(true);
+			User user = ss.attribute("user");
+			cs.expirationChecker(user.getUsername());
+			
+			return "OK";
+		});
+	}
 	public static void scheduleTraining()
 	{
 		post("customer/scheduleTraining", (req, res) -> {

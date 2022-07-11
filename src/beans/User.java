@@ -14,7 +14,7 @@ public class User {
 	private int dues;
 	private String sportObject;
 	private String visitedObjects;
-	private int collectedPoints;
+	private float collectedPoints;
 	private String customerType;
 	private GenderEnum gender;
 	private int deleted;
@@ -46,6 +46,8 @@ public class User {
 		this.surname = surname;
 		this.dateOfBirth = dateOfBirth;
 		this.gender = gender;
+
+		this.collectedPoints = 0;
 	}
 	public User(String username, String password, String name, String surname, Date dateOfBirth, GenderEnum gender,RoleEnum role) {
 		super();
@@ -67,6 +69,19 @@ public class User {
 		this.gender = gender;
 		this.role = role;
 		this.deleted = deleted;
+		this.collectedPoints = 0;
+	}
+	public User(String username, String password, String name, String surname, Date dateOfBirth, GenderEnum gender,RoleEnum role,int deleted,float points) {
+		super();
+		this.username = username;
+		this.password = password;
+		this.name = name;
+		this.surname = surname;
+		this.dateOfBirth = dateOfBirth;
+		this.gender = gender;
+		this.role = role;
+		this.deleted = deleted;
+		this.collectedPoints = 0;
 	}
 	
 	public int getDeleted() {
@@ -129,10 +144,10 @@ public class User {
 	public void setVisitedObjects(String visitedObjects) {
 		this.visitedObjects = visitedObjects;
 	}
-	public int getCollectedPoints() {
+	public float getCollectedPoints() {
 		return collectedPoints;
 	}
-	public void setCollectedPoints(int collectedPoints) {
+	public void setCollectedPoints(float collectedPoints) {
 		this.collectedPoints = collectedPoints;
 	}
 	public String getCustomerType() {

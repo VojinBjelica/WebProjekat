@@ -40,3 +40,8 @@ jeca;jeca;Jelena;Jankovic;Female;2022-06-04;Manager;0
 qwert;qwert;Qwert;Qwert;Male;2022-03-15;Customer;0
 ppp;ppp;ooo;ooo;Male;2022-07-15;Manager;0
 leki123;leki123;Leki;Lekic;Male;2022-07-06;Manager;0
+luka123;luka123;Luka;Lukic;Male;2022-07-01;Customer;0
+mio123;mio123;Miodrag;Miodragovic;Male;2022-07-08;Customer;0
+mio123;mio123;Miodrag;Miodragovic;Male;2022-07-08;Customer;0
+peca123;peca123;Peca;Pecic;Male;2022-07-05;Customer;0
+nele123;nele123;Neca;Necic;Male;2022-07-05;Customer;0
