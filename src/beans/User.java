@@ -47,7 +47,6 @@ public class User {
 		this.dateOfBirth = dateOfBirth;
 		this.gender = gender;
 
-		this.collectedPoints = 0;
 	}
 	public User(String username, String password, String name, String surname, Date dateOfBirth, GenderEnum gender,RoleEnum role) {
 		super();
@@ -69,7 +68,6 @@ public class User {
 		this.gender = gender;
 		this.role = role;
 		this.deleted = deleted;
-		this.collectedPoints = 0;
 	}
 	public User(String username, String password, String name, String surname, Date dateOfBirth, GenderEnum gender,RoleEnum role,int deleted,float points) {
 		super();
@@ -81,7 +79,7 @@ public class User {
 		this.gender = gender;
 		this.role = role;
 		this.deleted = deleted;
-		this.collectedPoints = 0;
+		this.collectedPoints = points;
 	}
 	
 	public int getDeleted() {

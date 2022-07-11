@@ -195,6 +195,7 @@ public class CustomerController {
 	}
 	public static void readListUser() {
 		get("customer/showuserlist", (req, res) -> {
+			cs.writePointsInFile();
 			ArrayList<User> userList = cs.readUsers();
 			ArrayList<User> retList = new ArrayList<User>();
 			String hashPass = null;
@@ -211,6 +212,7 @@ public class CustomerController {
 				{
 					retList.add(u);
 				}
+				if(u.getUsername().equals("joca123"))System.out.println("Joca ima: " + u.getCollectedPoints());
 				
 				
 			}

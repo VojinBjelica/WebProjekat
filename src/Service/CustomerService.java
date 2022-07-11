@@ -28,6 +28,10 @@ public class CustomerService {
 	{
 		return cfs.readCustomers("customers");
 	}
+	public boolean writePointsInFile()
+	{
+		return cfs.writePointsInFile();
+	}
 	public boolean expirationChecker(String username)
 	{
 		return cfs.expirationChecker(username);

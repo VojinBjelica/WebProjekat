@@ -16,13 +16,14 @@ Vue.component("userview", {
     		<div class="sport-objects-view">
     			<table id="soTable"  style="margin:auto;width:auto">
 	    			<tr bgcolor="grey">
-	    				<th style="min-width:50px">Name </th>
-	    				<th style="min-width:50px">Surname</th>
-	    				<th style="min-width:50px">Username </th>
+	    				<th style="min-width:50px">Name<button v-on:click="sortNameFunction()" >&uarr;</button> <button v-on:click="sortNameDown()" >&darr;</button> </th>
+	    				<th style="min-width:50px">Surname<button v-on:click="sortSurnameFunction()" >&uarr;</button> <button v-on:click="sortSurnameDown()" >&darr;</button></th>
+	    				<th style="min-width:50px">Username<button v-on:click="sortUsernameFunction()" >&uarr;</button> <button v-on:click="sortUsernameDown()" >&darr;</button> </th>
 	    				<th style="min-width:50px">Password</th>
 	    				<th style="min-width:50px">Date</th>
 	    				<th style="min-width:50px">Gender</th>
 	    				<th style="min-width:50px">Role </th>
+	    				<th style="min-width:50px">Points<button v-on:click="sortPoints()" >&uarr;</button> <button v-on:click="sortPointsDown()" >&darr;</button> </th>
 	    				<th style="min-width:50px">&nbsp </th>
 	    			</tr>
 	    			
@@ -34,6 +35,7 @@ Vue.component("userview", {
 	    				<td >{{userr.dateOfBirth}}</td>
 	    				<td >{{userr.gender}}</td>
 	    				<td >{{userr.role}}</td>
+	    				<td >{{userr.collectedPoints}}</td>
 	    				<td ><button v-on:click="setDeleted(userr);ruterIdi();">Delete</button></td>
 	    			</tr>
 	    		</table>
@@ -113,6 +115,109 @@ Vue.component("userview", {
 			
 			
 		},
+		compareName : function( a, b ) {
+			  if ( a.name < b.name ){
+			    return -1;
+			  }
+			  if ( a.name > b.name ){
+			    return 1;
+			  }
+			  return 0;
+			},
+			
+		compareNameDown : function(a,b) {
+			if ( a.name < b.name ){
+			    return 1;
+			 }
+			 if ( a.name > b.name ){
+			    return -1;
+			 }
+			 return 0;	
+		},
+		compareSurname : function( a, b ) {
+			  if ( a.surname < b.surname ){
+			    return -1;
+			  }
+			  if ( a.surname > b.surname ){
+			    return 1;
+			  }
+			  return 0;
+			},
+			
+		compareSurnameDown : function(a,b) {
+			if ( a.surname < b.surname ){
+			    return 1;
+			 }
+			 if ( a.surname > b.surname ){
+			    return -1;
+			 }
+			 return 0;	
+		},
+		compareUsername : function( a, b ) {
+			  if ( a.username < b.username ){
+			    return -1;
+			  }
+			  if ( a.username > b.username ){
+			    return 1;
+			  }
+			  return 0;
+			},
+			
+		compareUsernameDown : function(a,b) {
+			if ( a.username < b.username ){
+			    return 1;
+			 }
+			 if ( a.username > b.username ){
+			    return -1;
+			 }
+			 return 0;	
+		},
+		
+		
+		sortNameDown : function() {
+			this.userList.sort(this.compareNameDown);
+			this.searchName();
+		},
+		
+		sortNameFunction : function () {
+			this.userList.sort(this.compareName);
+			this.searchName();
+		},
+		sortSurnameDown : function() {
+			this.userList.sort(this.compareSurnameDown);
+			this.searchName();
+		},
+		
+		sortSurnameFunction : function () {
+			this.userList.sort(this.compareName);
+			this.searchName();
+		},
+		sortUsernameDown : function() {
+			this.userList.sort(this.compareUsernameDown);
+			this.searchName();
+		},
+		
+		sortUsernameFunction : function () {
+			this.userList.sort(this.compareUsername);
+			this.searchName();
+		},
+		compareNum : function(a,b) {
+			return a.collectedPoints - b.collectedPoints;
+		},
+		
+		compareNumDown : function(a,b) {
+			return b.collectedPoints - a.collectedPoints;
+		},
+		sortPoints : function() {
+			this.userList.sort(this.compareNum);
+			this.searchName();
+		},
+		sortPointsDown : function() {
+			this.userList.sort(this.compareNumDown);
+			this.searchName();
+		},
+		
+
 		setDeleted : function(training)
 		{
 			axios 
