@@ -6,23 +6,47 @@ public class Comment {
 	private SportObject sportObject;
 	private String text;
 	private int mark;
-	public Comment(Customer customer, SportObject sportObject, String text, int mark) {
+	private int id;
+	private int approved;
+	public Comment(Customer customer, SportObject sportObject, String text, int mark, int approved,int id) {
 		super();
 		this.customer = customer;
 		this.sportObject = sportObject;
 		this.text = text;
 		this.mark = mark;
+		this.approved = approved;
+		this.id = id;
 	}
+	
+	
+	public int getId() {
+		return id;
+	}
+
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
+
+	public int getApproved() {
+		return approved;
+	}
+
+	public void setApproved(int approved) {
+		this.approved = approved;
+	}
+
 	public Customer getCustomer() {
 		return customer;
 	}
 	public void setCustomer(Customer customer) {
 		this.customer = customer;
 	}
-	public SportObject getSportObject() {
+	public SportObject getSportObjectt() {
 		return sportObject;
 	}
-	public void setSportObject(SportObject sportObject) {
+	public void setSportObjectt(SportObject sportObject) {
 		this.sportObject = sportObject;
 	}
 	public String getText() {

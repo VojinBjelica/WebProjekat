@@ -83,6 +83,10 @@ public class main {
 		SportObjectController.searchTrainingsOfObject();
 		SportObjectController.deleteSportObject();
 		SportObjectController.catchUser();
+		SportObjectController.addComment();
+		SportObjectController.fillList();
+		SportObjectController.fillfullList();
+		SportObjectController.approveComment();
 		// TODO Auto-generated method stub
 
 	}

@@ -55,6 +55,13 @@ html, body {
 	border-collapse: collapse; 
 	overflow-y: scroll; 
 }
+#comments {
+	display:block;
+	height:500px;
+	width: 600px;
+	border: 2px solid;
+	overflow-y: scroll; 
+}
 
 #soTable td {
 	 text-align: center;
@@ -69,6 +76,17 @@ html, body {
 
 #soTable tr:hover {
 	background-color:lightblue;
+}
+#comments td {
+	 text-align: center;
+	
+}
+
+
+
+
+#comments tr:hover {
+	background-color:lightgreen;
 }
 
 #trTable {
