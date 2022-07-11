@@ -97,6 +97,8 @@ Vue.component("sportObjectsView", {
 		document.getElementById("btn-managers-s-o").disabled = true;	
 		document.getElementById("btn-customer-training").disabled = true;
 		document.getElementById("btn-customer-dues").disabled = true;
+		document.getElementById("btn-schedule").disabled = true;
+		
     			document.getElementById("btn-codes").disabled = true;
 		
 		axios  
@@ -149,6 +151,8 @@ Vue.component("sportObjectsView", {
 				document.getElementById("btn-customer-training").disabled = true;
 				document.getElementById("btn-customer-dues").disabled = true;
     			document.getElementById("btn-codes").disabled = false;
+    			
+    			document.getElementById("btn-schedule").disabled = true;
 		
 
 
@@ -162,7 +166,7 @@ Vue.component("sportObjectsView", {
 					document.getElementById("btn-managers-s-o").disabled = false;
 					document.getElementById("add-so-btn").classList.add("invisible");
 				    document.getElementById("btn-userview").disabled= true;
-				    
+				    document.getElementById("btn-schedule").disabled = true;
 					document.getElementById("btn-coach-training").disabled= true;
 					document.getElementById("btn-customer-training").disabled = true;
 					document.getElementById("btn-customer-dues").disabled = true;
@@ -173,7 +177,7 @@ Vue.component("sportObjectsView", {
 				}
 				else if(myArray[1] == "Coach")
 				{
-					
+					document.getElementById("btn-schedule").disabled = true;
 					document.getElementById("btn-coach-training").disabled= false;
 					document.getElementById("btn-customer-training").disabled = true;
 					document.getElementById("btn-customer-dues").disabled = true;
@@ -186,6 +190,7 @@ Vue.component("sportObjectsView", {
 					document.getElementById("btn-customer-training").disabled = false;
 		document.getElementById("btn-customer-dues").disabled = false;
     			document.getElementById("btn-codes").disabled = true;
+    			document.getElementById("btn-schedule").disabled = false
 
 					document.getElementById("btn-userview").disabled= true;
 
@@ -208,6 +213,7 @@ Vue.component("sportObjectsView", {
 				document.getElementById("btn-customer-training").disabled = true;
 				document.getElementById("btn-customer-dues").disabled = true;
     			document.getElementById("btn-codes").disabled = true;
+    			document.getElementById("btn-schedule").disabled = true;
 		
 
 				
@@ -224,6 +230,7 @@ Vue.component("sportObjectsView", {
 				document.getElementById("btn-managers-s-o").disabled = true;
 				document.getElementById("btn-customer-dues").disabled = true;
     			document.getElementById("btn-codes").disabled = true;
+    			document.getElementById("btn-schedule").disabled = true;
 				document.getElementById("btn-customer-training").disabled = true;
 		
 

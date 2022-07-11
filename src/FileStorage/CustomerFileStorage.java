@@ -792,7 +792,7 @@ public class CustomerFileStorage {
         try {
             File file = new File("./users.txt");
             in = new BufferedReader(new FileReader(file));
-            String line, username = "", password = "", name = "",surname = "",gender = "",date = "",role="",deleted = "";
+            String line, username = "", password = "", name = "",surname = "",gender = "",date = "",role="",deleted = "",points = "";
             StringTokenizer st;
             try {
                 while ((line = in.readLine()) != null) {
@@ -809,6 +809,7 @@ public class CustomerFileStorage {
                         date = st.nextToken().trim();
                         role = st.nextToken().trim();
                         deleted = st.nextToken().trim();
+                        points = st.nextToken().trim();
                         }
                     SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
                     Date dt = formatter.parse(date);
@@ -820,7 +821,7 @@ public class CustomerFileStorage {
                     else if(role.equals("Administrator")) rol = RoleEnum.Administrator;
                     else if(role.equals("Coach")) rol = RoleEnum.Coach;
                     else rol = RoleEnum.Manager;
-                    User user = new User(username,password,name,surname, dt,gen,rol,Integer.parseInt(deleted));
+                    User user = new User(username,password,name,surname, dt,gen,rol,Integer.parseInt(deleted),Float.parseFloat(points));
                     users.add(user);
                 }
             } catch (Exception ex) {
@@ -1444,6 +1445,23 @@ public class CustomerFileStorage {
 		addCodesInFile();
 		return true;
 	}
+	public boolean writePointsInFile()
+	{
+		userList = readUsers();
+		pointsList = readPoints();
+		for(Points p : pointsList)
+		{
+			for(User u : userList)
+			{
+				if(p.getUserUsername().equals(u.getUsername()))
+				{
+					u.setCollectedPoints(p.getPoints());
+				}
+			}
+		}
+		addUsersInFile();
+		return true;
+	}
 	public boolean addCoachesObjectInFile() 
     {
 		
@@ -1496,7 +1514,8 @@ public class CustomerFileStorage {
             SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
             outputString += formatter.format(customer.getDateOfBirth());
             outputString += ";" + customer.getRole() + ";";
-            outputString += customer.getDeleted();
+            outputString += customer.getDeleted() + ";";
+            outputString += customer.getCollectedPoints();
             output.println(outputString);
         }
         //addCustomersToUsers();
@@ -1791,7 +1810,7 @@ public class CustomerFileStorage {
 		return cust;
 	}
 //	public User findCustomerByUsername(String username)
-//	{
+//	){
 //		ArrayList<User> customerList = readUsers();
 //		System.out.println(customerList.size());
 //		User cust = null;
