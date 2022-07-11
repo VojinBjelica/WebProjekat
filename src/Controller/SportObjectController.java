@@ -6,6 +6,7 @@ import com.google.gson.GsonBuilder;
 import Service.CustomerService;
 import Service.SportObjectService;
 import beans.Coach;
+import beans.Comment;
 import beans.Customer;
 import beans.Manager;
 import beans.RoleEnum;
@@ -91,6 +92,54 @@ public class SportObjectController {
 			System.out.println(sos.readSportObjects()); 
 			System.out.println("Velicina:" + sos.filteredList(objList).size());
 			return g.toJson(sos.filteredList(objList));
+		});
+	}
+	public static void addComment() {
+		post("sportObjects/addComment", (req, res) -> {
+			String payload = req.body();
+			Comment pd = g.fromJson(payload, Comment.class);
+			Session ss = req.session(true);
+			User user = ss.attribute("user");
+			Customer cust = cs.findCustomerByUsername(user.getUsername());
+			System.out.println("objekat:" + tempObject);
+			int id = cs.findNextID();
+			Comment c = new Comment(cust,tempObject,pd.getText(),0,0,id);
+			cs.addComment(c);
+			return "Komentar uspesno dodat";
+		});
+	}
+	public static void fillList() {
+		get("sportObjects/fillList", (req, res) -> {
+			String payload = req.body();
+			System.out.println("usao u fill list");
+			ArrayList<Comment> retList = cs.approvedComments(tempObject);
+			
+
+			
+			return g.toJson(retList);
+		});
+	}
+	public static void approveComment() {
+		post("sportObjects/approveComment", (req, res) -> {
+			String payload = req.body();
+			Comment pd = g.fromJson(payload, Comment.class);
+			System.out.println(pd.getId());
+			cs.approveComment(pd.getId());
+			
+
+			
+			return "Odobren";
+		});
+	}
+	public static void fillfullList() {
+		get("sportObjects/fillfullList", (req, res) -> {
+			String payload = req.body();
+			System.out.println("usao u fill list");
+			ArrayList<Comment> retList = cs.allComments(tempObject);
+			
+
+			
+			return g.toJson(retList);
 		});
 	}
 	public static void getTemp(String tmp)

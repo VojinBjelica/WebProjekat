@@ -3,8 +3,12 @@ Vue.component("oneSportObject", {
 		return {
 			sportObject: {objectName:null, objectType:null, objectOffer:null, status:null, location:null, logo:null, avarageMark:null, workHour:null},
 			searchData: {type:null, priceFrom:null, priceTo:null},
+			comment: {customer:null, sportObject:null,text:null,mark:null,approved:null,id:null},
 			trainingList:null,
-			roleCaught:null
+			commentList:null,
+			fullcommentList:null,
+			roleCaught:null,
+			tworole:null
 		}
 	},
 	template: `
@@ -32,7 +36,7 @@ Vue.component("oneSportObject", {
 				
 				<div class="sport-objects-view d-flex flex-row">
     		
-				<table id="trTable"  style="margin:auto;">
+				<table id="trTable"  style="margin:auto;height:200px">
 	    			<tr bgcolor="grey">
 	    				<th style="min-width:50px">Name</th>
 	    				<th style="min-width:50px">Type</th>
@@ -86,11 +90,62 @@ Vue.component("oneSportObject", {
 	    		</div>
 	    		
 	    		</div>
+	    		<table v-if="tworole == false" align="center" border="2px"  id="comments"  >
+	    			
+	    			
+	    			<tr class="data"  v-for="sObject in commentList">
+	    				<td >{{sObject.customer.name}}</td>
+	    				<td >&nbsp</td>
+	    				<td >{{sObject.customer.surname}}</td>
+	    				<td >&nbsp</td>
+	    				<td >&nbsp</td>
+	    				<td >&nbsp</td>
+	    				<td >&nbsp</td>
+	    				<td >&nbsp</td>
+	    				<td >{{sObject.text}}</td>
+	    				
+	    			</tr>
+	    			<tr>
+	    			</tr>
+	    		</table>
+	    		<table v-if="tworole == true" align="center" border="2px"  id="comments"  >
+	    			
+	    			
+	    			<tr class="data"  v-for="sObject in fullcommentList">
+	    				<td >{{sObject.customer.name}}</td>
+	    				<td >&nbsp</td>
+	    				<td >{{sObject.customer.surname}}</td>
+	    				<td >&nbsp</td>
+	    				<td >&nbsp</td>
+	    				<td >&nbsp</td>
+	    				<td >&nbsp</td>
+	    				<td >&nbsp</td>
+	    				<td >{{sObject.text}}</td>
+	    				<td >&nbsp</td>
+	    				<td >&nbsp</td>
+	    				<td >&nbsp</td>
+	    				<td ><button v-if="sObject.approved == 0" v-on:click="approveComment(sObject);idi();">Approve</button></td>
+	    				
+	    				
+	    				
+	    			</tr>
+	    			<tr>
+	    			</tr>
+	    		</table>
+	    		<input v-model="comment.text" align="center" type="text"  id="komentar" width="600px" height="200px"><br/>
+	    		<input align="center" type="button" v-on:click="addComment()" value="Add Comment">
+	    		
 			</div>
 		</div>
 	
 	`,
 	mounted() {
+		axios
+			.get('sportObjects/fillList', this.commentList)
+			.then(response => this.commentList = response.data);
+		axios
+			.get('sportObjects/fillfullList', this.fullcommentList)
+			.then(response => this.fullcommentList = response.data);
 		axios
 			.post('sportObject/showOne', this.sportObject)
 			.then(response => this.sportObject = response.data);
@@ -103,10 +158,27 @@ Vue.component("oneSportObject", {
 		axios
 			.get('sportObject/addView')
 			.then(response => alert(response.data));
+		
 	},
 	methods: {
-		
-		goBack()
+		approveComment : function(comm)
+		{
+			axios
+				.post('sportObjects/approveComment', {"id": '' + comm.id})
+				.then(response => (toast('Training ' + com.id + " has been canceled")))
+		},
+		idi : function()
+		{
+			router.go(0);
+		},
+		addComment : function()
+		{
+			alert(this.comment.text);
+			axios
+				.post('sportObjects/addComment',this.comment)
+				.then(response => alert(response.data));
+		},
+		goBack  : function()
 		{
 			router.push(`/`);
 		},
@@ -120,6 +192,12 @@ Vue.component("oneSportObject", {
 		{
 			if(role == "Administrator")this.roleCaught = true;
 			else this.roleCaught = false;
+			if(role == "Manager")this.tworole = true;
+			if(role == "Administrator")this.tworole = true;
+			if(role == "")this.tworole = false;
+			if(role == "Coach")this.tworole = false;
+			if(role == "Customer")this.tworole = false;
+			
 		},
 		searchTrainings : function() {
 			var typeSearch = document.getElementById('search-training-type').value;

@@ -24,6 +24,7 @@ import javax.swing.JOptionPane;
 
 import Service.SportObjectService;
 import beans.Coach;
+import beans.Comment;
 import beans.Customer;
 import beans.CustomerType;
 import beans.Dues;
@@ -44,6 +45,8 @@ import beans.User;
 public class CustomerFileStorage {
 	
 	public static ArrayList<Customer> customerList = new ArrayList<Customer>();
+	public static ArrayList<Comment> commentList = new ArrayList<Comment>();
+	
 	public static ArrayList<Customer> customerTraining = new ArrayList<Customer>();
 	public static ArrayList<Customer> customerViewList = new ArrayList<Customer>();
 	public static ArrayList<Manager> managerList = new ArrayList<Manager>();
@@ -159,6 +162,56 @@ public class CustomerFileStorage {
         }
         return customers;
     }
+	public ArrayList<Comment> readComments() {
+        ArrayList<Comment> customers = new ArrayList<Comment>();
+        BufferedReader in = null;
+        try {
+            File file = new File("./comments.txt");
+            in = new BufferedReader(new FileReader(file));
+            String line, customerUsername = "",id = "",sportObjectName = "", text = "", mark = "" , approved = "";
+            StringTokenizer st;
+            try {
+                while ((line = in.readLine()) != null) {
+                    line = line.trim();
+                    if (line.equals("") || line.indexOf('#') == 0)
+                        continue;
+                    st = new StringTokenizer(line, ";");
+                    while (st.hasMoreTokens()) {
+                    	customerUsername = st.nextToken().trim();
+                    	sportObjectName = st.nextToken().trim();
+                    	text = st.nextToken().trim();
+                    	mark = st.nextToken().trim();
+                    	approved = st.nextToken().trim();
+                    	id = st.nextToken().trim();
+                        }
+                    SportObjectService sos = new SportObjectService();
+                    Customer u = findCustByUsername(customerUsername);
+                    SportObject so = sos.getSportObjectByName(sportObjectName);
+                    Comment com = new Comment(u,so,text,Integer.parseInt(mark),Integer.parseInt(approved),Integer.parseInt(id));
+                    customers.add(com);
+                    
+                    commentList = customers;
+                }
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        finally {
+            if ( in != null ) {
+                try {
+                    in.close();
+                }
+                catch (Exception e) 
+                {
+                	
+                }
+                }
+        }
+        return customers;
+    }
+	
 	public ArrayList<CustomerType> readCustomerType() {
         ArrayList<CustomerType> customers = new ArrayList<CustomerType>();
         BufferedReader in = null;
@@ -885,6 +938,41 @@ public class CustomerFileStorage {
         }
         return true;
     }
+	public int findNextID()
+	{
+		int retid = 0;
+		for(Comment c : readComments())
+		{
+			retid = c.getId();
+		}
+		retid = retid + 1;
+		return retid;
+	}
+	public boolean addCommentInFile() 
+    {
+		
+        FileWriter fileWriter;
+        try {
+            fileWriter = new FileWriter("./comments.txt");
+        PrintWriter output = new PrintWriter(fileWriter, true);
+        for(Comment customer : commentList)
+        {
+            String outputString = "";
+            outputString += customer.getCustomer().getUsername() + ";";
+            outputString += customer.getSportObjectt().getObjectName() + ";";
+            outputString += customer.getText() + ";";
+            outputString += customer.getMark() + ";";
+            outputString += customer.getApproved() + ";";
+            outputString += customer.getId();
+            
+            output.println(outputString);
+        }
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        return true;
+    }
 	public boolean addPointsInFile(ArrayList<Points> thisList) 
     {
 		
@@ -1525,6 +1613,53 @@ public class CustomerFileStorage {
         }
         return true;
     }
+	public Comment addComment(Comment com)
+	{
+		commentList = readComments();
+		commentList.add(com);
+		System.out.println("Radi do ovde");
+		addCommentInFile();
+		return com;
+	}
+	public ArrayList<Comment> approvedComments(SportObject so)
+	{
+		commentList = readComments();
+		ArrayList<Comment> retList = new ArrayList<Comment>();
+		for(Comment c : commentList)
+		{
+			if(c.getSportObjectt().getObjectName().equals(so.getObjectName()))
+			if(c.getApproved() == 1)
+				retList.add(c);
+		}
+		return retList;
+	}
+	public ArrayList<Comment> allComments(SportObject so)
+	{
+		commentList = readComments();
+		ArrayList<Comment> retList = new ArrayList<Comment>();
+		for(Comment c : commentList)
+		{
+			if(c.getSportObjectt().getObjectName().equals(so.getObjectName()))
+			
+				retList.add(c);
+		}
+		return retList;
+	}
+	public Comment approveComment(int id)
+	{
+		commentList = readComments();
+		Comment co = null;
+		for(Comment c : commentList)
+		{
+			if(c.getId() == id)
+			{
+						c.setApproved(1);
+						co = c;
+			}	
+		}
+		addCommentInFile();
+		return co;
+	}
 	public ArrayList<User> deleted(String username)
 	{
 		userList = readUsers();

@@ -5,6 +5,7 @@ import java.util.Date;
 
 import FileStorage.CustomerFileStorage;
 import beans.Coach;
+import beans.Comment;
 import beans.Customer;
 import beans.CustomerType;
 import beans.Dues;
@@ -28,9 +29,32 @@ public class CustomerService {
 	{
 		return cfs.readCustomers("customers");
 	}
+	public ArrayList<Comment> readComments() {
+		return cfs.readComments();
+	}
+	public int findNextID()
+	{
+		return cfs.findNextID();
+	}
+	public ArrayList<Comment> approvedComments(SportObject so)
+	{
+		return cfs.approvedComments(so);
+	}
+	public ArrayList<Comment> allComments(SportObject so)
+	{
+		return cfs.allComments(so);
+	}
+	public Comment approveComment(int  com)
+	{
+		return cfs.approveComment(com);
+	}
 	public boolean writePointsInFile()
 	{
 		return cfs.writePointsInFile();
+	}
+	public Comment addComment(Comment com)
+	{
+		return cfs.addComment(com);
 	}
 	public boolean expirationChecker(String username)
 	{
