@@ -31,6 +31,7 @@ import beans.Training;
 import beans.TrainingHistory;
 import beans.TrainingTypeEnum;
 import beans.User;
+import beans.searchTrainingsForCustomerDTO;
 import spark.Request;
 import spark.Response;
 import spark.Route;
@@ -155,6 +156,32 @@ public class CustomerController {
 			return g.toJson(retList);
 		});
 	}
+	
+	public static void searchTrainingsForCustomer() {
+		post("customer/searchTrainingsForCustomer", (req, res) -> {
+			Session ss = req.session(true);
+			User user = ss.attribute("user");
+			ArrayList<Training> retList = new ArrayList<Training>();
+			User u = cs.findUserByUsername(user.getUsername());
+			String payload = req.body();
+			searchTrainingsForCustomerDTO train = g.fromJson(payload, searchTrainingsForCustomerDTO.class);
+			
+			
+			System.out.println("Controller search params : " + u.getUsername() + " " + train.getSoName() + " " + train.getPriceFrom() + " " + train.getPriceTo() + " " + train.getDateFrom() + " " + train.getDateTo() );
+
+			
+			if(u.getRole() == RoleEnum.Customer)
+			{
+				
+				retList = cs.searchTrainingsForCustomer(u, train.getSoName(), train.getPriceFrom(), train.getPriceTo(), train.getDateFrom(), train.getDateTo(), train.getSoType(), train.getType());
+				
+			}
+			
+			return g.toJson(retList);
+			
+		});
+	}
+	
 	public static void findViewers() {
 		get("customer/getViewers", (req, res) -> {
 			Session ss = req.session(true);
@@ -591,5 +618,7 @@ public class CustomerController {
 			return true;
 		});
 	}
+	
+	
 	
 }

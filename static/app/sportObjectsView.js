@@ -3,7 +3,8 @@ Vue.component("sportObjectsView", {
 		return {
 			sportObjectList: null,
 			sportObject: {objectName:null, objectType:null, objectOffer:null, status:null, location:null, logo:null, avarageMark:null, workHour:null},
-			hideFlag:null
+			hideFlag:null,
+			loggedUser:null
 		}
 	},
 	template: `  
@@ -35,6 +36,7 @@ Vue.component("sportObjectsView", {
 	    				<th style="min-width:50px">Offer</th>
 	    				<th style="min-width:50px">Average mark <button v-on:click="sortAvgMarkFunction()" >&uarr;</button> <button v-on:click="sortAvgMarkDown()" >&darr;</button></th>
 	    				<th style="min-width:100px">Status</th>
+	    				
 	    			</tr>
 	    			
 	    			<tr class="data" v-for="sObject in sportObjectList" v-on:click="showSelectedObject(sObject)">
@@ -47,6 +49,7 @@ Vue.component("sportObjectsView", {
 	    				<td >{{sObject.objectOffer}}</td>
 	    				<td >{{sObject.avarageMark}}</td>
 	    				<td ><span class="badge rounded-pill bg-success"" v-if="sObject.status == true">Open</span><span class="badge rounded-pill bg-danger" v-else>Closed</span></td>
+	    				
 	    			</tr>
 	    		</table>
 	    		<div class="objects-search">
@@ -104,6 +107,8 @@ Vue.component("sportObjectsView", {
 		axios
 			.get('sportObjects/read', this.sportObjectList)
 			.then(response => (this.sportObjectList = response.data));
+			
+		
 		
 			
 	},

@@ -153,7 +153,7 @@ Vue.component("coachTraining", {
 	    			</div>
 	    			<div class="search-btn-wrapper">
 	    				
-	    				<button class="btn btn-secondary" v-on:click="searchTrainings()"  >Search</button>
+	    				<button class="btn btn-secondary" v-on:click="validateSearch()"  >Search</button>
 	    			</div>
 	    		</div>
 	    		</div>
@@ -297,11 +297,32 @@ Vue.component("coachTraining", {
 		validateSearch : function () {
 			var priceFromSearch = document.getElementById('search-training-price-from').value;
 			var priceToSearch = document.getElementById('search-training-price-to').value;
-			var patternPrice = /^([0-9]+(.?[0-9]+))?$/;
+			var patternPrice = /^([0-9]+(.[0-9]+)?)?$/;
 			
-			if (!patternPrice.test(priceFromSearch)) {
-				alert("Price must be a number (example: 4.8)");
-			} else if (!patternPrice.test(priceToSearch)) {
+			var validFlagFrom = true;
+			var validFlagTo = true;
+			
+			if(!patternPrice.test(priceFromSearch)) {
+				validFlagFrom = false;
+			} 
+			if (!patternPrice.test(priceToSearch)) {
+				validFlagTo = false;
+			}
+			if (priceFromSearch == "") {
+				validFlagFrom = true;
+			}
+			if (priceToSearch == "") {
+				validFlagTo = true;
+			}
+			
+			if (priceFromSearch == "None") {
+				validFlagFrom = true;
+			}
+			if (priceToSearch == "None") {
+				validFlagTo = true;
+			}
+			
+			if (validFlagTo == false || validFlagFrom == false) {
 				alert("Price must be a number (example: 4.8)");
 			} else {
 				this.searchTrainings();

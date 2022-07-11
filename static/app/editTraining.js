@@ -78,7 +78,7 @@ Vue.component("editTraining", {
 							<input  type="button"  class="btn btn-success" v-on:click="editTraining()" value="Confirm"/>
 						</td>
 						<td>
-							<input type="button" class="btn btn-danger" value="Cancel"/>
+							<input type="button" class="btn btn-danger" v-on:click="goBack()" value="Cancel"/>
 						</td>
 					</tr>
 					
@@ -92,6 +92,11 @@ Vue.component("editTraining", {
 			axios
 				.post('sportObject/editTraining', this.training)
 				.then(response => response.data);
+			router.push('/managersSportObject');
+		},
+		
+		goBack : function() {
+			router.push('/managersSportObject');
 		}
 		
 	}

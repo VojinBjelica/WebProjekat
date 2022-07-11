@@ -52,6 +52,7 @@ public class main {
 		CustomerController.calculateDis();
 		CustomerController.userIs();
 		CustomerController.deleted();
+		CustomerController.searchTrainingsForCustomer();
 		
 		
 		new SportObjectController();

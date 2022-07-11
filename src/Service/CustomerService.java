@@ -1,6 +1,7 @@
 package Service;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 import FileStorage.CustomerFileStorage;
 import beans.Coach;
@@ -254,6 +255,10 @@ public class CustomerService {
 	
 	public ArrayList<Training> searchTrainersGroupTrainings(Coach c, String soName, ObjectTypeEnum soType, String priceFrom, String priceTo, TrainingTypeEnum type){
 		return cfs.searchTrainersGroupTrainings(c, soName, soType, priceFrom, priceTo, type);
+	}
+	
+	public ArrayList<Training> searchTrainingsForCustomer(User u, String soName, String priceFrom, String priceTo, Date dateFrom, Date dateTo, ObjectTypeEnum soType, TrainingTypeEnum type) {
+		return cfs.searchTrainingsForCustomer(u, soName, priceFrom, priceTo, dateFrom, dateTo, soType, type);
 	}
 	
 }
