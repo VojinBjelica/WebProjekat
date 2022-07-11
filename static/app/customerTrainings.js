@@ -4,6 +4,7 @@ Vue.component("customerTraining", {
 			trainingList:null,
 			personalList:null,
 			groupList:null,
+			searchData: {soName:null, priceFrom:null, priceTo:null, dateFrom:null, dateTo:null, soType:null, type:null}
 			
 		}
 	},
@@ -40,19 +41,16 @@ Vue.component("customerTraining", {
 		
 		
 		<div style="margin-left:20px">
-	    			<div class="container">
-	    				<p style="margin-top:10px">Search by name: </p>
-	    				<input id="search-training-name"  class="form-control"  type="text" placeholder="Search...">
-	    			</div>
+	    			
 	    			
 	    			<div class="container">
 	    				<p style="margin-top:10px">Search by sport object name: </p>
-	    				<input id="search-training-so-name"  class="form-control"  type="text" placeholder="Search...">
+	    				<input id="search-training-so-name" v-model="searchData.soName" class="form-control"  type="text" placeholder="Search...">
 	    			</div>
 	    			
 	    			<div class="container">
 	    				<p style="margin-top:10px">Search by sport object type: </p>
-	    				<select id="search-training-so-type"  class="form-select">
+	    				<select id="search-training-so-type" v-model="searchData.soType" class="form-select">
 	    					<option value="None" selected > </option>
 	    					<option value="Gym">Gym</option>
 	    					<option value="Pool">Pool</option>
@@ -61,25 +59,30 @@ Vue.component("customerTraining", {
 	    			</div>
 	    			
 	    			<div class="container">
-	    				<p style="margin-top:10px">Search by date: </p>
-	    				<input id="search-training-name"  class="form-control"  type="text" placeholder="Search...">
+	    				<p style="margin-top:10px">Date from: </p>
+	    				<input id="search-training-date-from" v-model="searchData.dateFrom" class="form-control"  type="date" placeholder="Search...">
+	    			</div>
+	    			
+	    			<div class="container">
+	    				<p style="margin-top:10px">Date to: </p>
+	    				<input id="search-training-date-to" v-model="searchData.dateTo" class="form-control"  type="date" placeholder="Search...">
 	    			</div>
 	    			
 	    			<div class="container">
 	    				<p style="margin-top:10px">Price from: </p>
-	    				<input id="search-training-price-from"  class="form-control"  type="text" placeholder="Search...">
+	    				<input id="search-training-price-from" v-model="searchData.priceFrom" class="form-control"  type="text" placeholder="Search...">
 	    				
 	    			</div>
 	    			
 	    			<div class="container">
 	    				<p style="margin-top:10px">Price to: </p>
-	    				<input id="search-training-price-to"  class="form-control"  type="text" placeholder="Search...">
+	    				<input id="search-training-price-to" v-model="searchData.priceTo" class="form-control"  type="text" placeholder="Search...">
 	    				
 	    			</div>
 	    			
 	    			<div class="container">
 	    				<p style="margin-top:10px">Search by type: </p>
-	    				<select id="search-training-type"  class="form-select">
+	    				<select id="search-training-type" v-model="searchData.type" class="form-select">
 	    					<option value="None" selected > </option>
 	    					<option value="Personal">Personal trainings</option>
 	    					<option value="Group">Group trainings</option>
@@ -88,7 +91,7 @@ Vue.component("customerTraining", {
 	    			</div>
 	    			<div class="search-btn-wrapper">
 	    				
-	    				<button class="btn btn-secondary" >Search</button>
+	    				<button class="btn btn-secondary" v-on:click="validateSearch()" >Search</button>
 	    			</div>
 	    		
 		</div>
@@ -101,8 +104,76 @@ Vue.component("customerTraining", {
 		
 		goBack : function() {
 			router.push(`/`);
-		}
 		},
+		
+		searchTrainings : function() {
+			var nameSearch = document.getElementById('search-training-so-name').value;
+
+			var priceFromSearch = document.getElementById('search-training-price-from').value;
+			var priceToSearch = document.getElementById('search-training-price-to').value;
+			var soTypeSearch = document.getElementById('search-training-so-type').value;
+			var typeSearch = document.getElementById('search-training-type').value;
+			
+			if (nameSearch == "") {
+				this.searchData.soName = "None";
+			}
+			
+			if (priceFromSearch == "") {
+				this.searchData.priceFrom = "None";
+			}
+			if (priceToSearch == "") {
+				this.searchData.priceTo = "None";
+			}
+			if (soTypeSearch == null) {
+				this.searchData.soType = None;
+			}
+			
+			if (typeSearch == null) {
+				this.searchData.type = None;
+			}
+			
+			axios
+				.post('customer/searchTrainingsForCustomer', this.searchData)
+				.then(response => this.trainingList = response.data);
+		},
+		
+		validateSearch : function() {
+			var priceFromSearch = document.getElementById('search-training-price-from').value;
+			var priceToSearch = document.getElementById('search-training-price-to').value;
+			var patternPrice = /^([0-9]+(.[0-9]+)?)?$/;
+			var validFlagFrom = true;
+			var validFlagTo = true;
+			
+			if(!patternPrice.test(priceFromSearch)) {
+				validFlagFrom = false;
+			} 
+			if (!patternPrice.test(priceToSearch)) {
+				validFlagTo = false;
+			}
+			if (priceFromSearch == "") {
+				validFlagFrom = true;
+			}
+			if (priceToSearch == "") {
+				validFlagTo = true;
+			}
+			
+			if (priceFromSearch == "None") {
+				validFlagFrom = true;
+			}
+			if (priceToSearch == "None") {
+				validFlagTo = true;
+			}
+			
+			if (validFlagTo == false || validFlagFrom == false) {
+				alert("Price must be a number (example: 4.8)");
+			} else {
+				this.searchTrainings();
+			}
+			
+			
+		}
+		
+	},
 	mounted() {
 		axios
 			.get('customer/showcustomertrainings', this.trainingList)

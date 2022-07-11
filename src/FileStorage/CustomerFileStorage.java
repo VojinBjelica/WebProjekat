@@ -1979,18 +1979,127 @@ public class CustomerFileStorage {
 	{
 		LocalDate localDate = LocalDate.now();
 		Date date = Date.from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
+		ArrayList<TrainingHistory> trHistory = readTrainingHistory();
 		ArrayList<Training> retList = new ArrayList<Training>();
-		readCustomerTrainings();
-		for(Customer c : customerTraining)
+		
+		for(TrainingHistory trh : trHistory)
 		{
-			if(c.getUsername().equals(u.getUsername()))
+			if(trh.getCustomer().getUsername().equals(u.getUsername()))
 			{
-				Training t = findTrainingById(c.getTrainingID());
-				if(t.getTrainingDate().getMonth() == date.getMonth())
-					retList.add(t);
+				if(trh.getTraining().getTrainingDate().getMonth() == date.getMonth())
+					retList.add(trh.getTraining());
 			}
 		}
 		return retList;
+	}
+	
+	public ArrayList<Training> searchTrainingsForCustomer(User u, String soName, String priceFrom, String priceTo, Date dateFrom, Date dateTo, ObjectTypeEnum soType, TrainingTypeEnum type) {
+		readCustomerTrainings();
+		ArrayList<Training> retList = new ArrayList<Training>();
+		ArrayList<TrainingHistory> trHistory = readTrainingHistory();
+		System.out.println("IMA OVOLIKO TRAINING HISTORYJA : " + trHistory.size());
+		
+		LocalDate localDate = LocalDate.now();
+		Date date = Date.from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
+		
+		String searchSoName;
+		double searchPriceFrom;
+		double searchPriceTo;
+		Date searchDateFrom;
+		Date searchDateTo;
+		
+		if (soName.equals("None")) {
+			searchSoName = " ";
+		} else {
+			searchSoName = soName;
+		}
+		if (dateTo == null) {
+			searchDateTo = new Date(195, 01, 01);
+		} else {
+			searchDateTo = dateTo;
+		}
+		
+		if (dateFrom == null) {
+			searchDateFrom = new Date(0, 01, 01);
+		} else {
+			searchDateFrom = dateFrom;
+		}
+		
+		
+		if (priceFrom.equals("None")) {
+			searchPriceFrom = 0;
+		} else {
+			searchPriceFrom = Double.parseDouble(priceFrom);
+		}
+		
+		if (priceTo.equals("None")) {
+			searchPriceTo = 1000000;
+		} else {
+			searchPriceTo = Double.parseDouble(priceTo);
+		}
+		
+		if (type == null) {
+			type = TrainingTypeEnum.None;
+		}
+		if (soType == null) {
+			soType = ObjectTypeEnum.None;
+		}
+		
+		System.out.println("Search params : " + u.getUsername() + " " + searchSoName + " " + searchPriceFrom + " " + searchPriceTo + " " + searchDateFrom + " " + searchDateTo );
+		System.out.println("Type i soType : " + soType + " " + type);
+			
+				for(TrainingHistory trh : trHistory)
+				{
+					if(trh.getCustomer().getUsername().equals(u.getUsername()))
+					{
+						if(trh.getTraining().getTrainingDate().getMonth() == date.getMonth()) {
+							System.out.println(" Nasao ovaj: " + trh.getTraining().getSportObject().getObjectName() + " " + trh.getTraining().getPrice() + " " + trh.getCheckInDate());
+							if (type != TrainingTypeEnum.None && soType != ObjectTypeEnum.None) {
+								if (trh.getTraining().getSportObject().getObjectName().toLowerCase().trim().contains(searchSoName.toLowerCase().trim()) &&
+										trh.getTraining().getPrice() >= searchPriceFrom && trh.getTraining().getPrice() <= searchPriceTo &&
+										trh.getCheckInDate().after(searchDateFrom) && trh.getCheckInDate().before(searchDateTo) 
+										&& trh.getTraining().getType() == type && trh.getTraining().getSportObject().getObjectType() == soType) {
+									System.out.println("DODAJEM TRENING: " + trh.getTraining().getName());
+									retList.add(trh.getTraining());
+								}
+							} else if (type != TrainingTypeEnum.None && soType == ObjectTypeEnum.None) {
+								if (trh.getTraining().getSportObject().getObjectName().toLowerCase().trim().contains(searchSoName.toLowerCase().trim()) &&
+										trh.getTraining().getPrice() >= searchPriceFrom && trh.getTraining().getPrice() <= searchPriceTo &&
+										trh.getCheckInDate().after(searchDateFrom) && trh.getCheckInDate().before(searchDateTo) &&
+										trh.getTraining().getType() == type) {
+									System.out.println("DODAJEM TRENING: " + trh.getTraining().getName());
+									retList.add(trh.getTraining());
+								}
+							} else if (type == TrainingTypeEnum.None && soType != ObjectTypeEnum.None) {
+								if (trh.getTraining().getSportObject().getObjectName().toLowerCase().trim().contains(searchSoName.toLowerCase().trim()) &&
+										trh.getTraining().getPrice() >= searchPriceFrom && trh.getTraining().getPrice() <= searchPriceTo &&
+										trh.getCheckInDate().after(searchDateFrom) && trh.getCheckInDate().before(searchDateTo) &&
+										trh.getTraining().getSportObject().getObjectType() == soType) {
+									System.out.println("DODAJEM TRENING: " + trh.getTraining().getName());
+									retList.add(trh.getTraining());
+								} 
+							}else if (soName.equals("None") && priceFrom.equals("None") && priceTo.equals("None") && dateFrom == null && dateTo == null) {
+								retList.add(trh.getTraining());
+							} else {
+								if (trh.getTraining().getSportObject().getObjectName().toLowerCase().trim().contains(searchSoName.toLowerCase().trim()) &&
+										trh.getTraining().getPrice() >= searchPriceFrom && trh.getTraining().getPrice() <= searchPriceTo &&
+										trh.getCheckInDate().after(searchDateFrom) && trh.getCheckInDate().before(searchDateTo)) {
+									System.out.println("DODAJEM TRENING: " + trh.getTraining().getName());
+									retList.add(trh.getTraining());
+								}
+							}
+						
+						}
+					}
+				}
+				return retList;
+				
+				
+				
+			
+		
+	
+	
 	}
 	
 	//nalazi treninge za neki sportski objekat (za menadzera)
@@ -2374,5 +2483,8 @@ public class CustomerFileStorage {
 		}
 		return retList;
 	}
+	
+	
+	
 	
 }
