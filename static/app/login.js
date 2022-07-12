@@ -77,7 +77,7 @@ Vue.component("login", {
 		},
 		popup : function()
 			{
-				alert(this.flag);
+				
 				if(this.flag == "login")alert("Your account doesn't exist");
 			},
 		check : function(data)

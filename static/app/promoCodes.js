@@ -109,7 +109,7 @@ Vue.component("promoCodes", {
 		addPromoCode : function () {
 				axios  
 		          .post('customer/addPromoCode',this.code)
-		          .then(response => alert(response.data))
+		          .then(response => response.data)
 		},
 		goToRegister : function() {
 			router.push(`/register`);

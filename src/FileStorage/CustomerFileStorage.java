@@ -562,7 +562,7 @@ public class CustomerFileStorage {
 			
 			if (nameReg == true && durationReg == true && nameDuplicate == true) {
 				trainingList.add(training);
-				System.out.println("Dodajem trening: " + training.getName());
+				System.out.println("Adding training: " + training.getName());
 				addTrainingsInFile();
 				return true;
 			}
@@ -1233,7 +1233,6 @@ public class CustomerFileStorage {
 			}
 		}
 		}
-		System.out.println(retList.size());
 		addDuesInFile();
 		addPointsInFile(retList);
 		return true;
@@ -1358,7 +1357,6 @@ public class CustomerFileStorage {
 		   StringBuilder sb = new StringBuilder(10);
 		   for(int i = 0; i < 10; i++)
 		      sb.append(AB.charAt(rnd.nextInt(AB.length())));
-		   System.out.println(sb.toString());
 		   return sb.toString();
 		
 	}
@@ -1434,7 +1432,6 @@ public class CustomerFileStorage {
     }
 	public boolean pickTraining(String u,Training tr)
 	{
-		System.out.println("Usao u pick training");
 		LocalDate localDate = LocalDate.now();
 		Date date = Date.from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
 		Training t = tr;
@@ -1446,7 +1443,6 @@ public class CustomerFileStorage {
 		}
 		else if(d.isStatus() == true && d.getNumberOfAppointments() != 0)
 		{
-			System.out.println("Smanjujem numApp");
 			trainingCheck = true;
 			decrementApp(d.getID());
 		}
@@ -1488,7 +1484,6 @@ public class CustomerFileStorage {
 				t.setNumberOfAppointments(t.getNumberOfAppointments()-1);
 			}
 		}
-		System.out.println("Smanjio numapp");
 		addDuesInFile();
 		return true;
 	}
@@ -1617,7 +1612,6 @@ public class CustomerFileStorage {
 	{
 		commentList = readComments();
 		commentList.add(com);
-		System.out.println("Radi do ovde");
 		addCommentInFile();
 		return com;
 	}
@@ -1664,7 +1658,6 @@ public class CustomerFileStorage {
 	{
 		userList = readUsers();
 		ArrayList<User> retList = new ArrayList<User>();
-		System.out.println("USer list: " + userList.size());
 		for(User u : userList)
 		{
 			if(u.getUsername().equals(username))
@@ -1674,8 +1667,6 @@ public class CustomerFileStorage {
 			}
 			retList.add(u);
 		}
-		System.out.println("USer list: " + userList.size());
-		System.out.println("RetList za deleted: " + retList.size());
 		addUsersInFile();
 		return retList;
 	}
@@ -1725,7 +1716,6 @@ public class CustomerFileStorage {
 		if(customer.getName() != null && customer.getSurname()!= null  && customer.getUsername() != null)
 		{
 		customerList = readCustomers("customers");
-		System.out.println("Duzina liste customera:" + customerList.size());
 		userList = readUsers();
 		boolean usernameDuplicate = true;
 		for(User u : userList)
@@ -1760,14 +1750,12 @@ public class CustomerFileStorage {
 	}
 	public TrainingHistory addTrainingHistory(TrainingHistory th)
 	{
-		System.out.println("usao u trening history");
 		trainingHistory = readTrainingHistory();
 
 		
 		trainingHistory.add(th);
 		addTrainingHistoryInFile();
 
-		System.out.println("dodao u trening history");
 		
 		return th;
 	}
@@ -1793,7 +1781,6 @@ public class CustomerFileStorage {
 	}
 	
 	public Training editTraining(Training tr1, Training tr2) {
-		System.out.println("Editujem trening u file storage");
 		Training retTraining = null;
 		ArrayList<Training> trList = new ArrayList<Training>();
 		trList = readTraining();
@@ -1903,7 +1890,6 @@ public class CustomerFileStorage {
 	public User loginUser(User customer)
 	{
 		ArrayList<User> customerList = readUsers();
-	    System.out.println(customerList.size());
 		User cust = null;
 		for(User c : customerList)
 		{
@@ -1919,7 +1905,6 @@ public class CustomerFileStorage {
 	public User findCustomerByUsernameAndPassword(String username,String password)
 	{
 		ArrayList<User> customerList = readUsers();
-		System.out.println(customerList.size());
 		User cust = null;
 		for(User c : customerList)
 		{
@@ -1933,7 +1918,6 @@ public class CustomerFileStorage {
 	public Customer findCustomerByUsername(String username)
 	{
 		ArrayList<Customer> customerList = readCustomers("customers");
-		System.out.println(customerList.size());
 		Customer cust = null;
 		for(Customer c : customerList)
 		{
@@ -1961,7 +1945,6 @@ public class CustomerFileStorage {
 	public User findUserByUsername(String username)
 	{
 		ArrayList<User> customerList = readUsers();
-		System.out.println(customerList.size());
 		User cust = null;
 		for(User c : customerList)
 		{
@@ -1975,7 +1958,6 @@ public class CustomerFileStorage {
 	public Customer findCustByUsername(String username)
 	{
 		ArrayList<Customer> customerList = readCustomers("customers");
-		System.out.println(customerList.size());
 		Customer cust = null;
 		for(Customer c : customerList)
 		{
@@ -2110,7 +2092,6 @@ public class CustomerFileStorage {
 		{
 			if(tt.getName().equals(t.getName()))
 				tt.setCancel(1);
-			System.out.println(tt.getCancel() + " cancel");
 		}
 		addTrainingsInFile();
 		
@@ -2148,7 +2129,6 @@ public class CustomerFileStorage {
 			Coach coach = getCoachByUsername(t.getTrainer().getUsername());
 			if(coach.getUsername().equals(c.getUsername()))
 			{
-				System.out.println(t.getType() + " == " + TrainingTypeEnum.Gym);
 				if(t.getType() == TrainingTypeEnum.Gym && t.getDeleted() == 0)
 				retList.add(t);
 			}
@@ -2258,21 +2238,17 @@ public class CustomerFileStorage {
 			soType = ObjectTypeEnum.None;
 		}
 		
-		System.out.println("Search params : " + u.getUsername() + " " + searchSoName + " " + searchPriceFrom + " " + searchPriceTo + " " + searchDateFrom + " " + searchDateTo );
-		System.out.println("Type i soType : " + soType + " " + type);
 			
 				for(TrainingHistory trh : trHistory)
 				{
 					if(trh.getCustomer().getUsername().equals(u.getUsername()))
 					{
 						if(trh.getTraining().getTrainingDate().getMonth() == date.getMonth()) {
-							System.out.println(" Nasao ovaj: " + trh.getTraining().getSportObject().getObjectName() + " " + trh.getTraining().getPrice() + " " + trh.getCheckInDate());
 							if (type != TrainingTypeEnum.None && soType != ObjectTypeEnum.None) {
 								if (trh.getTraining().getSportObject().getObjectName().toLowerCase().trim().contains(searchSoName.toLowerCase().trim()) &&
 										trh.getTraining().getPrice() >= searchPriceFrom && trh.getTraining().getPrice() <= searchPriceTo &&
 										trh.getCheckInDate().after(searchDateFrom) && trh.getCheckInDate().before(searchDateTo) 
 										&& trh.getTraining().getType() == type && trh.getTraining().getSportObject().getObjectType() == soType) {
-									System.out.println("DODAJEM TRENING: " + trh.getTraining().getName());
 									retList.add(trh.getTraining());
 								}
 							} else if (type != TrainingTypeEnum.None && soType == ObjectTypeEnum.None) {
@@ -2280,7 +2256,6 @@ public class CustomerFileStorage {
 										trh.getTraining().getPrice() >= searchPriceFrom && trh.getTraining().getPrice() <= searchPriceTo &&
 										trh.getCheckInDate().after(searchDateFrom) && trh.getCheckInDate().before(searchDateTo) &&
 										trh.getTraining().getType() == type) {
-									System.out.println("DODAJEM TRENING: " + trh.getTraining().getName());
 									retList.add(trh.getTraining());
 								}
 							} else if (type == TrainingTypeEnum.None && soType != ObjectTypeEnum.None) {
@@ -2288,7 +2263,6 @@ public class CustomerFileStorage {
 										trh.getTraining().getPrice() >= searchPriceFrom && trh.getTraining().getPrice() <= searchPriceTo &&
 										trh.getCheckInDate().after(searchDateFrom) && trh.getCheckInDate().before(searchDateTo) &&
 										trh.getTraining().getSportObject().getObjectType() == soType) {
-									System.out.println("DODAJEM TRENING: " + trh.getTraining().getName());
 									retList.add(trh.getTraining());
 								} 
 							}else if (soName.equals("None") && priceFrom.equals("None") && priceTo.equals("None") && dateFrom == null && dateTo == null) {
@@ -2297,7 +2271,6 @@ public class CustomerFileStorage {
 								if (trh.getTraining().getSportObject().getObjectName().toLowerCase().trim().contains(searchSoName.toLowerCase().trim()) &&
 										trh.getTraining().getPrice() >= searchPriceFrom && trh.getTraining().getPrice() <= searchPriceTo &&
 										trh.getCheckInDate().after(searchDateFrom) && trh.getCheckInDate().before(searchDateTo)) {
-									System.out.println("DODAJEM TRENING: " + trh.getTraining().getName());
 									retList.add(trh.getTraining());
 								}
 							}
@@ -2359,10 +2332,7 @@ public class CustomerFileStorage {
 			searchPriceTo = Double.parseDouble(priceTo);
 		}
 		
-		System.out.println(" Search Name : " + searchName);
-		System.out.println(" Search type : " + type);
-		System.out.println(" Search price from : " + searchPriceFrom);
-		System.out.println(" Search price to : " + searchPriceTo);
+		
 		
 		trainingsSO = readTraining();
 		for (Training t : trainingsSO) {
@@ -2401,12 +2371,9 @@ public class CustomerFileStorage {
 		TypeName custType = null;
 		for(CustomerType ct : typeList)
 		{
-			System.out.println(ct.getCustomerType());
 			String s = ct.getNeededPoints() +"";
-			System.out.println(ct.getNeededPoints() + " znak " + point.getPoints());
 			if(Float.parseFloat(s) <= point.getPoints())
 			{
-				System.out.println("Usao jednom cust uzima:" + ct.getCustomerType());
 				custType = ct.getCustomerType();
 				break;
 			}
@@ -2419,7 +2386,6 @@ public class CustomerFileStorage {
 				c.setUserType(custType);
 			}
 		}
-		System.out.println("Type:" + custType);
 		addCustomerInFile("customers");
 		CustomerType tc = null;
 		for(CustomerType ct : readCustomerType())
@@ -2480,11 +2446,7 @@ public class CustomerFileStorage {
 			searchPriceTo = Double.parseDouble(priceTo);
 		}
 		
-		System.out.println(" Search Name : " + searchName);
-		System.out.println(" Search so type: " + soType);
-		System.out.println(" Search type : " + type);
-		System.out.println(" Search price from : " + searchPriceFrom);
-		System.out.println(" Search price to : " + searchPriceTo);
+		
 		
 		for(Training t : trainingPrivList)
 		{

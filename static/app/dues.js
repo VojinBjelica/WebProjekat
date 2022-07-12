@@ -126,7 +126,7 @@ Vue.component("duesPayment", {
 		makeDue : function () {
 				axios  
 		          .post('customer/due',this.due)
-		          .then(response => alert(response.data))
+		          .then(response => response.data)
 		          },
 		disByType : function () {
 				axios  
@@ -137,7 +137,7 @@ Vue.component("duesPayment", {
 		{
 			 axios  
 		    	.post('customer/expchecker',this.user)
-		    	.then(response => alert(response.data))
+		    	.then(response => response.data)
 		}   ,
 		calculateNewPrice : function () {
 				axios  
@@ -146,7 +146,6 @@ Vue.component("duesPayment", {
 		          },
 		selectChanged : function(temp)
 		{
-			alert("Ovo je temp: " + temp);
 			if(temp == "Month")
 			{
 				this.selektovano = "Month";
@@ -234,7 +233,7 @@ var yyy = today.getFullYear();
 ,mounted(){
 		axios  
 		    .post('customer/calculateType',this.due)
-		    .then(response => alert(response.data))
+		    .then(response => response.data)
 }
 })
 	

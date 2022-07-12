@@ -106,7 +106,7 @@ Vue.component("register", {
 		addCustomer : function () {
 				axios  
 		          .post('customer/add',this.user)
-		          .then(response => alert(response.data))
+		          .then(response => response.data)
 		          
 		          },
 		hideCheck: function() {
@@ -118,8 +118,6 @@ Vue.component("register", {
 		
 		hideButton: function(check) {
 			this.hideFlag = check;
-			alert("Usao hide button");
-			alert(this.hideFlag);
 			
 			if (this.hideFlag == "Administrator" || this.hideFlag == "Coach" || this.hideFlag == "Manager" ) {
 				this.temp = false;
@@ -145,7 +143,6 @@ Vue.component("register", {
 		{
 			if(role == "Administrator")this.roleCaught = true;
 			else this.roleCaught = false;
-			alert(this.roleCaught + " uhvacen");
 		} ,
 		
 		 validateSurname : function() {

@@ -80,7 +80,7 @@ Vue.component("scheduleTraining", {
 		scheduleTraining : function (training) {
 			axios
 			.post('customer/scheduleTraining', {"name": training.name})
-			.then(response => alert(response.data))
+			.then(response => response.data)
 		},
 		ruterIdi : function()
 		{
