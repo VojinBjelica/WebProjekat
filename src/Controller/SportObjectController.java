@@ -62,7 +62,6 @@ public class SportObjectController {
 	
 	public static void getAvailableManagers() {
 		get("sportObjects/availableManagers", (req, res) -> {
-			System.out.println("Nasao slobodne menadzere");
 			return g.toJson(cs.findAvailableManagers());
 		});
 	}
@@ -71,15 +70,9 @@ public class SportObjectController {
 		post("sportObjects/search", (req, res) -> {
 			
 			String payload = req.body();
-			System.out.println(req.body());
 			SportObject pd = g.fromJson(payload, SportObject.class);
-			System.out.println(pd);
 			ArrayList<SportObject> searchedList = sos.searchObjectsByName(pd.getObjectName());
-			System.out.println(searchedList.size());
-			for (SportObject s : searchedList) {
-				
-				System.out.println(s.getObjectName());
-			}
+			
 			objList = searchedList;
 			g.toJson(searchedList);
 			return "OK";
@@ -89,8 +82,8 @@ public class SportObjectController {
 	public static void filteredList() {
 		get("sportObjects/show", (req, res) -> {
 			
-			System.out.println(sos.readSportObjects()); 
-			System.out.println("Velicina:" + sos.filteredList(objList).size());
+			//System.out.println(sos.readSportObjects()); 
+			//System.out.println("Velicina:" + sos.filteredList(objList).size());
 			return g.toJson(sos.filteredList(objList));
 		});
 	}
@@ -101,7 +94,6 @@ public class SportObjectController {
 			Session ss = req.session(true);
 			User user = ss.attribute("user");
 			Customer cust = cs.findCustomerByUsername(user.getUsername());
-			System.out.println("objekat:" + tempObject);
 			int id = cs.findNextID();
 			Comment c = new Comment(cust,tempObject,pd.getText(),0,0,id);
 			cs.addComment(c);
@@ -111,7 +103,6 @@ public class SportObjectController {
 	public static void fillList() {
 		get("sportObjects/fillList", (req, res) -> {
 			String payload = req.body();
-			System.out.println("usao u fill list");
 			ArrayList<Comment> retList = cs.approvedComments(tempObject);
 			
 
@@ -123,7 +114,6 @@ public class SportObjectController {
 		post("sportObjects/approveComment", (req, res) -> {
 			String payload = req.body();
 			Comment pd = g.fromJson(payload, Comment.class);
-			System.out.println(pd.getId());
 			cs.approveComment(pd.getId());
 			
 
@@ -134,7 +124,6 @@ public class SportObjectController {
 	public static void fillfullList() {
 		get("sportObjects/fillfullList", (req, res) -> {
 			String payload = req.body();
-			System.out.println("usao u fill list");
 			ArrayList<Comment> retList = cs.allComments(tempObject);
 			
 
@@ -156,7 +145,6 @@ public class SportObjectController {
 			if(user != null)
 			{
 				u = cs.findUserByUsername(user.getUsername());
-				System.out.println("Bitan str: " + u.getRole());
 				retString = "logged " + u.getRole();
 				
 			}
@@ -208,7 +196,6 @@ public class SportObjectController {
 		post("sportObject/getOne", (req, res) -> {
 			String payload = req.body();
 			SportObject so = g.fromJson(payload, SportObject.class);
-			System.out.println("Selected object name: " + so.getObjectName());
 			tempObject = so;
 			return "OK";
 		});
@@ -216,13 +203,11 @@ public class SportObjectController {
 	
 	public static void showSelectedObject() {
 		post("sportObject/showOne", (req, res) -> {
-			System.out.println("temp obj:" + tempObject.getObjectName());
 			return g.toJson(tempObject);
 		});
 	}
 	public static void deleteSportObject() {
 		post("sportObject/deleteObject", (req, res) -> {
-			System.out.println("temp obj za delete:" + tempObject.getObjectName());
 			sos.deleteSportObject(tempObject);
 			return "Obrisan";
 		});
@@ -230,7 +215,6 @@ public class SportObjectController {
 	
 	public static void addViewInFile() {
 		get("sportObject/addView", (req, res) -> {	
-			System.out.println("Usao u dodavanje view");
 			Session ss = req.session(true);
 			User user = ss.attribute("user");
 			if(user != null)
@@ -304,7 +288,6 @@ public class SportObjectController {
 			
 			ArrayList<Training> trList = new ArrayList<Training>();
 			trList = cs.findTrainingsBySportObject(so);
-			System.out.println("*********************************************Broj treninga: " + trList.size());
 			
 			return g.toJson(trList);
 			

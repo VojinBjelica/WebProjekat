@@ -112,7 +112,6 @@ public class CustomerController {
 			Manager mana = cs.findManagerByUsername(user.getUsername());
 			ArrayList<Coach> retList = new ArrayList<Coach>();
 			retList = cs.findCoachesByObject(mana.getSportObject());
-			System.out.println(retList.size());
 			return g.toJson(retList);
 		});
 	}
@@ -148,10 +147,8 @@ public class CustomerController {
 			{
 				
 				retList = cs.findTrainingsForCustomer(u);
-				System.out.println(retList.size() + " duzina liste treninga za " + u.getName());
 				
 			}
-			System.out.println(retList.size() + " duzina liste treninga 2 za " + u.getName());
 			
 			return g.toJson(retList);
 		});
@@ -167,7 +164,6 @@ public class CustomerController {
 			searchTrainingsForCustomerDTO train = g.fromJson(payload, searchTrainingsForCustomerDTO.class);
 			
 			
-			System.out.println("Controller search params : " + u.getUsername() + " " + train.getSoName() + " " + train.getPriceFrom() + " " + train.getPriceTo() + " " + train.getDateFrom() + " " + train.getDateTo() );
 
 			
 			if(u.getRole() == RoleEnum.Customer)
@@ -189,7 +185,6 @@ public class CustomerController {
 			Manager mana = cs.findManagerByUsername(user.getUsername());
 			ArrayList<Customer> retList = new ArrayList<Customer>();
 			retList = cs.findViewers(mana.getSportObject());
-			System.out.println(retList.size());
 			return g.toJson(retList);
 		});
 	}
@@ -212,7 +207,7 @@ public class CustomerController {
 				{
 					retList.add(u);
 				}
-				if(u.getUsername().equals("joca123"))System.out.println("Joca ima: " + u.getCollectedPoints());
+				
 				
 				
 			}
@@ -237,7 +232,7 @@ public class CustomerController {
 			User user = ss.attribute("user");
 			ArrayList<User> retList = cs.deleted(pd.getUsername());
 			
-			System.out.println("RetList za deleted kontroler: " + retList.size());
+			
 			return g.toJson(retList);
 		});
 	}
@@ -245,7 +240,6 @@ public class CustomerController {
 	public static void calculateType()
 	{
 		post("customer/calculateType", (req, res) -> {
-			System.out.println("Pozvan calculateType iz kontrolera");
 			Session ss = req.session(true);
 			User user = ss.attribute("user");
 			if(user != null)
@@ -260,7 +254,6 @@ public class CustomerController {
 	public static void calculateDis()
 	{
 		post("customer/calcdis", (req, res) -> {
-			System.out.println("Pozvan calcDis iz kontrolera");
 			String payload = req.body();
 			Dues pd = g.fromJson(payload, Dues.class);
 			Session ss = req.session(true);
@@ -281,7 +274,6 @@ public class CustomerController {
 	{
 		post("customer/promoDisc", (req, res) -> {
 			String payload = req.body();
-			System.out.println("Usao u discount");
 			Dues pd = g.fromJson(payload, Dues.class);
 			int newPrice = 0;
 			int helpPrice = 0;
@@ -309,7 +301,6 @@ public class CustomerController {
 					}
 				}
 
-				System.out.println("Nasao cenu:" + newPrice);
 				Dues retDue = new Dues(pd.getID(),pd.getDuesType(),pd.getPayDate(),pd.getExpirationDateAndTime(),newPrice,pd.getCustomer(),pd.isStatus(),pd.getNumberOfAppointments(),pd.getPromoCode());
 				return g.toJson(retDue);
 			}
@@ -324,9 +315,7 @@ public class CustomerController {
 		post("customer/cancelTraining", (req, res) -> {
 			String payload = req.body();
 			Training pd = g.fromJson(payload, Training.class);
-			System.out.println(pd.getId());
 			Training t = cs.findTrainingByName(pd.getName());
-			System.out.println(t.getName() + " ime treninga");
 			Training tt = cs.cancelTraining(t);
 //			if(tt != null)
 //			cs.cancelTr(tt);
@@ -363,7 +352,6 @@ public class CustomerController {
 			
 			if(check == true)
 			{
-				System.out.println("True je");
 				cs.scheduleCheck(t.getName());
 				TrainingHistory th = new TrainingHistory(date,t,cust,c);
 				cs.addTrainingHistory(th);
@@ -371,7 +359,6 @@ public class CustomerController {
 			else
 			{
 
-				System.out.println("nije true ");
 				return "Korisnik nema clanarinu ili termin";
 			}
 			return "OK";
@@ -394,7 +381,6 @@ public class CustomerController {
 			Session ss = req.session(true);
 			User user = ss.attribute("user");
 			myTrainingList = cs.findTrainingsForCoach(cs.getCoachByUsername(user.getUsername()));
-			System.out.println(myTrainingList.size());
 			return g.toJson(myTrainingList);
 		});
 	}
@@ -405,7 +391,6 @@ public class CustomerController {
 			Session ss = req.session(true);
 			User user = ss.attribute("user");
 			myTrainingList = cs.findPersonalForCoach(cs.getCoachByUsername(user.getUsername()));
-			System.out.println(myTrainingList.size());
 			return g.toJson(myTrainingList);
 		});
 	}
@@ -416,14 +401,12 @@ public class CustomerController {
 			Session ss = req.session(true);
 			User user = ss.attribute("user");
 			myTrainingList = cs.findGroupForCoach(cs.getCoachByUsername(user.getUsername()));
-			System.out.println(myTrainingList.size());
 			return g.toJson(myTrainingList);
 		});
 	}
 	public static void addCustomer()
 	{
 		post("customer/add", (req, res) -> {
-			System.out.println("Usao u add");
 			String payload = req.body();
 			Customer pd = g.fromJson(payload, Customer.class);
 			cs.addCustomer(pd);
@@ -433,7 +416,6 @@ public class CustomerController {
 	public static void addCoach()
 	{
 		post("customer/add", (req, res) -> {
-			System.out.println("Usao u add");
 			String payload = req.body();
 			Customer pd = g.fromJson(payload, Customer.class);
 			cs.addCustomer(pd);
@@ -466,9 +448,7 @@ public class CustomerController {
 	{
 		post("customer/add", (req, res) -> {
 			String payload = req.body();
-			System.out.println("Usao u add user");
 			User pd = g.fromJson(payload, User.class);
-			System.out.println("Uloga:" + pd.getRole());
 			Coach coach = new Coach(pd.getUsername(),pd.getPassword(),pd.getName(),pd.getSurname(),pd.getDateOfBirth(),pd.getGender(),RoleEnum.Coach);
 			Manager manager = new Manager(pd.getUsername(),pd.getPassword(),pd.getName(),pd.getSurname(),pd.getDateOfBirth(),pd.getGender(),RoleEnum.Manager);
 			Customer customer = new Customer(pd.getUsername(),pd.getPassword(),pd.getName(),pd.getSurname(),pd.getDateOfBirth(),pd.getGender(),RoleEnum.Customer);
@@ -533,9 +513,7 @@ public class CustomerController {
 			String payload = req.body();
 			String  pd = g.fromJson(payload, String.class);
 
-			System.out.println(temp + "roleeeee");
 			pd = temp;
-			System.out.println(temp + "role");
 			g.toJson(pd);
 			return pd;
 		});
@@ -577,7 +555,6 @@ public class CustomerController {
 			temp = role;
 			temptwo = role;
 			s = "logged";
-			System.out.println(role + " role za hide");
 			CustomerController.hidee();
 			SportObjectController.getTemp(s + " "+temp);
 			return role;
@@ -646,10 +623,8 @@ public class CustomerController {
 			
 			if (user == null) {
 				retVal = "None";
-				System.out.println("USER JE NULL?!?!??!?");
 			} else {
 				User u = cs.findUserByUsername(user.getUsername());
-				System.out.println("ULOGAAAAAAAA: " + u.getRole());
 				if (u.getRole() == RoleEnum.Administrator) {
 					retVal = "Administrator";
 				} else if (u.getRole() == RoleEnum.Coach) {
@@ -662,7 +637,6 @@ public class CustomerController {
 				
 			}
 			
-			System.out.println("RETURN ULOGA: " + retVal);
 			return g.toJson(retVal);
 			
 		});

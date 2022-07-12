@@ -144,7 +144,8 @@ Vue.component("oneSportObject", {
 					<p style="font-size:20px;margin-left:10px">Work hour: {{sportObject.workHour}}</p>
 				</div>
 			</div>
-			
+			<br>
+			<br>
 			<div class="container-fluid">
 				
 				
@@ -271,7 +272,7 @@ Vue.component("oneSportObject", {
 			.then(response => this.trainingList = response.data);
 		axios
 			.get('sportObject/addView')
-			.then(response => alert(response.data));
+			.then(response => response.data);
 			
 		axios
 			.get('customer/getLoggedRole') 
@@ -340,10 +341,10 @@ Vue.component("oneSportObject", {
 		
 		addComment : function()
 		{
-			alert(this.comment.text);
+			
 			axios
 				.post('sportObjects/addComment',this.comment)
-				.then(response => alert(response.data));
+				.then(response => response.data);
 		},
 		goBack  : function()
 		{
@@ -353,7 +354,7 @@ Vue.component("oneSportObject", {
 		{
 			axios
 			.post('sportObject/deleteObject', this.sportObject)
-			.then(response => alert(response.data));
+			.then(response => response.data);
 		},
 		catchRole : function(role)
 		{

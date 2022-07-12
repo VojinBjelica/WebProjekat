@@ -229,10 +229,10 @@ Vue.component("addSportObject", {
 			this.sportObject.avarageMark = 0;
 			axios
 				.post('sportObjects/addSOManager', this.selectedManager)
-				.then(response => alert(response.data));
+				.then(response => response.data);
 			axios
 				.post('sportObjects/add', this.sportObject)
-				.then(response => { alert(response.data)});
+				.then(response => { response.data});
 				
 			router.push(`/`);
 		},
@@ -241,7 +241,7 @@ Vue.component("addSportObject", {
 			this.sportObject.avarageMark = 0;
 			axios
 				.post('sportObjects/add', this.sportObject)
-				.then(response => { alert(response.data)});
+				.then(response => { response.data});
 				
 			router.push(`/`);
 		},
@@ -253,7 +253,7 @@ Vue.component("addSportObject", {
 			} else {
 				this.isListEmpty = false;
 			}
-			alert("Empty list? : " + this.isListEmpty);
+			
 			
 			var btn = document.getElementById("add-so-conf-btn");
 			if (this.isListEmpty == true) {
@@ -345,7 +345,7 @@ Vue.component("addSportObject", {
 		},
 		
 		validateManagerlessAdding : function () {
-			alert("Usao u validateManagerlessAdding 3");
+			
 			var name = document.getElementById('add-so-name').value;
 			var type = document.getElementById('add-so-type').value;
 			var longitude = document.getElementById('add-so-longitude').value;
@@ -417,7 +417,7 @@ Vue.component("addSportObject", {
 		},
 		
 		validateText : function() {
-			alert("Usao u validateText 1");
+			
 			let x = document.getElementById('nameMana').value;
 			let y = document.getElementById('surnameMana').value;
 			let z = document.getElementById('usernameMana').value;
@@ -443,7 +443,6 @@ Vue.component("addSportObject", {
 		},
 		
 		duplicateUsername: function() {
-			alert("Usao u duplicate username 2");
 			let z = document.getElementById('usernameMana').value;
 			let doubleFlag = false;
 			let regexxx = new RegExp('[A-Z]*[a-z]*[1-9]*');
@@ -465,11 +464,10 @@ Vue.component("addSportObject", {
 		},
 		
 		addNewManager : function () {
-			alert("Usao u addNewManager 4");
 			this.user.role = "Manager";
 			axios  
 		    	.post('sportObject/addManager',this.user)
-		        .then(response => alert(response.data))
+		        .then(response => response.data)
 		        
 		  	this.addManagerlessObject();
 		}

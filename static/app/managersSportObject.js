@@ -402,7 +402,7 @@ Vue.component("managersSportObject", {
 			
 			axios
 				.post('customers/addTraining', this.training)
-				.then(response => alert(response.data));
+				.then(response => response.data);
 				
 			router.go(0);
 		},

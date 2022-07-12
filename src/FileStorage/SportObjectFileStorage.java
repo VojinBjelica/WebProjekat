@@ -35,7 +35,6 @@ public class SportObjectFileStorage {
         BufferedReader in = null;
         try {
             File file = new File("./sportObjects.txt");
-            System.out.println(file.getCanonicalPath());
             in = new BufferedReader(new FileReader(file));
             String line, objectName = "", objectType = "", objectOffer = "",workHour = "",avarageMark = "",
             		logo="", longitude="", latitude="", streetAndNumber="", city="", zipCode="", status="", deleted="";
@@ -129,7 +128,6 @@ public class SportObjectFileStorage {
 		{
 			if(sp.getObjectName().equals(so.getObjectName()))
 			{
-				System.out.println("postavio delete za: " + sp.getObjectName());
 				sp.setDeleted(1);
 				spo = sp;
 
@@ -193,12 +191,10 @@ public class SportObjectFileStorage {
 			}
 			if (sportObject.getWorkHour().matches("([01]?[0-9]|2[0-3]):?[0-5]?[0-9]?-([01]?[0-9]|2[0-3]):?[0-5]?[0-9]?")) {
 				workHourReg = true;
-				System.out.println("Dobri work hours");
 			}
 			
 			if (nameReg == true && nameDuplicate == true && streetReg == true && cityReg == true && workHourReg == true ) {
 				sportObjectList.add(sportObject);
-				System.out.println("Dodajem: " + sportObject.getObjectName());
 				addSportObjectInFile("sportObjects");
 				return true;
 			}
@@ -269,7 +265,6 @@ public class SportObjectFileStorage {
 		try {
 			fileWriter = new FileWriter("./"+who+".txt");
 			PrintWriter output = new PrintWriter(fileWriter, true);
-			System.out.println("Donja duzina: " + sportObjectList.size() );
 			for (SportObject so : sportObjectList) {
 				String outputString = "";
 				outputString += so.getObjectName() + ";";

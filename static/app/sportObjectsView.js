@@ -228,10 +228,9 @@ Vue.component("sportObjectsView", {
 	},
 	methods: {
 		searchByName: function() {
-			alert(this.sportObject.objectName);
 			axios 
 				.post('sportObjects/search', this.sportObject, this.sportObjectList)
-				.then(response => alert(response.data))
+				.then(response => response.data)
 		},
 		
 		
@@ -248,11 +247,10 @@ Vue.component("sportObjectsView", {
 			
 			axios 
 				.get('sportObjects/show', this.sportObjectList)
-				.then(response => alert(response.data))
+				.then(response => response.data)
 		},
 		hideButton: function(check) {
 			this.hideFlag = check;
-			alert(this.hideFlag + " iz objecta");
 			const myArray = this.hideFlag.split(" ");
 			if (myArray[0] == "logged") {
 				document.getElementById("btn-login").disabled= true;
@@ -260,7 +258,6 @@ Vue.component("sportObjectsView", {
 				
 				if(myArray[1] == "Administrator")
 				{
-					alert("pali register");
 				document.getElementById("btn-userview").disabled= false;
 				document.getElementById("btn-customer-training").disabled = true;
 				document.getElementById("btn-customer-dues").disabled = true;
